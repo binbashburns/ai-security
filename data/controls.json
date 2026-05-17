@@ -1,0 +1,3534 @@
+[
+  {
+    "id": "AISMM-1-PROTECT-NO-INVENTORY",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "No inventory of AI tools in use",
+    "summary": "No record exists of which AI systems, models, agents, or AI-backed SaaS features are operating in the environment, by whom, or against which data.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM",
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.1 (categorize AI systems in scope)",
+        "MAP 1.6"
+      ],
+      "iso_42001": [
+        "A.6.2.4 (AI system inventory)"
+      ],
+      "aicm": [
+        "AIGV-01 (AI inventory)"
+      ],
+      "eu_ai_act": [
+        "Art. 49 (registration of high-risk AI systems)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Stand up a single AI asset register before tooling. Four columns is enough at this stage: tool name, data classification accessed, human owner, approved or not. Front any sanctioned LLM calls through a logging gateway so usage is at least observable. LiteLLM and Open WebUI are the common OSS starting points; both can sit between users/apps and any model provider.",
+        "links": [
+          {
+            "label": "LiteLLM (OSS LLM gateway)",
+            "url": "https://github.com/BerriAI/litellm"
+          },
+          {
+            "label": "Open WebUI",
+            "url": "https://docs.openwebui.com/"
+          },
+          {
+            "label": "NIST AI 600-1 Generative AI Profile",
+            "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Stand up the inventory across two AWS surfaces. For managed services: enable Bedrock model invocation logging to CloudWatch and capture model access via CloudTrail data events. For shadow agents and SaaS-installed assistants: use IAM Access Analyzer and AWS Config conformance packs to catch unexpected Bedrock identities.",
+        "links": [
+          {
+            "label": "Bedrock model invocation logging",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"
+          },
+          {
+            "label": "CloudTrail data events for Bedrock",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/logging-using-cloudtrail.html"
+          },
+          {
+            "label": "IAM Access Analyzer external access",
+            "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-PROTECT-NO-THREAT-AWARENESS",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "No understanding of AI-specific threats",
+    "summary": "The security team cannot describe what prompt injection, data exfiltration via model output, model inversion, training-data poisoning, or model extraction look like in the organization's environment.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE",
+        "Threats overview"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1 (identify AI risks)",
+        "MEASURE 2.7"
+      ],
+      "iso_42001": [
+        "A.5.2 (AI risks and impacts)"
+      ],
+      "mitre_atlas": [
+        "ATLAS Matrix overview"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Read the OWASP AI Exchange threat sections (2 through 4) and the MITRE ATLAS matrix together. Both are vendor-neutral and free. For hands-on practice, run Garak against any LLM you can hit, including hosted endpoints.",
+        "links": [
+          {
+            "label": "OWASP AI Exchange threats",
+            "url": "https://owaspai.org/goto/threatsoverview/"
+          },
+          {
+            "label": "MITRE ATLAS Matrix",
+            "url": "https://atlas.mitre.org/matrices/ATLAS"
+          },
+          {
+            "label": "Garak LLM vulnerability scanner",
+            "url": "https://github.com/NVIDIA/garak"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Use the AWS Generative AI Security Scoping Matrix as the starting threat-awareness reference; it categorizes AI risks by deployment pattern (consumer SaaS, enterprise SaaS, foundation model, customized model, self-trained).",
+        "links": [
+          {
+            "label": "AWS Generative AI Security Scoping Matrix",
+            "url": "https://aws.amazon.com/blogs/security/securing-generative-ai-an-introduction-to-the-generative-ai-security-scoping-matrix/"
+          },
+          {
+            "label": "AWS Well-Architected ML Lens",
+            "url": "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/welcome.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-PROTECT-INTERNAL-MODELS-UNPROTECTED",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "Any internal AI/ML models are unprotected",
+    "summary": "Internal models, training data, and inference endpoints have no access controls, monitoring, or threat modeling beyond whatever the underlying compute happens to provide.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#RUNTIME MODEL INTEGRITY",
+        "#RUNTIME MODEL CONFIDENTIALITY",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3",
+        "MEASURE 2.6"
+      ],
+      "iso_42001": [
+        "A.6.2.2 (AI system security)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "If you have any internal models or fine-tunes, treat them like production code: store weights in artifact storage with access logging, never serve directly from a developer workstation, put inference behind an authenticated proxy, and tag every endpoint as Confidential or Internal in the asset register.",
+        "links": [
+          {
+            "label": "OWASP runtime model integrity controls",
+            "url": "https://owaspai.org/goto/runtimemodelintegrity/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Custom models live in SageMaker. Put them in a private VPC, attach a SageMaker Model Registry with approval gating, and front inference endpoints with VPC endpoints rather than public URLs.",
+        "links": [
+          {
+            "label": "SageMaker Model Registry",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-registry.html"
+          },
+          {
+            "label": "VPC endpoints for SageMaker",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/interface-vpc-endpoint.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-PROTECT-NO-SUPPLY-CHAIN-VISIBILITY",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "No visibility into the AI supply chain",
+    "summary": "Models, datasets, and AI-enabled libraries enter the environment without provenance, signature verification, or vendor risk review.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 4.1 (third-party AI)",
+        "MANAGE 3.1"
+      ],
+      "iso_42001": [
+        "A.10 (Third-party and customer relationships)"
+      ],
+      "aicm": [
+        "AISC-01 (AI supply chain)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Treat models like dependencies. Pin model identifiers, capture a hash, and require a documented source URL for every model entering the environment. ModelScan and picklescan catch the most common pickle-format risks in Hugging Face artifacts.",
+        "links": [
+          {
+            "label": "Protect AI modelscan",
+            "url": "https://github.com/protectai/modelscan"
+          },
+          {
+            "label": "picklescan",
+            "url": "https://github.com/mmaitre314/picklescan"
+          },
+          {
+            "label": "Hugging Face model security",
+            "url": "https://huggingface.co/docs/hub/security"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Prefer Bedrock Marketplace and SageMaker JumpStart for third-party models; both record source, license, and version in account-scoped registries. Block direct downloads from public model hubs at the VPC egress proxy.",
+        "links": [
+          {
+            "label": "Bedrock Marketplace",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-marketplace.html"
+          },
+          {
+            "label": "SageMaker JumpStart foundation models",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-PROTECT-UNVERIFIED-MODELS",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "Developers pulling models from Hugging Face or similar repositories without verification",
+    "summary": "Engineers download pretrained weights ad hoc, often in pickle formats, with no verification step. Pickle files can execute arbitrary code on load.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE",
+        "#DEV SECURITY"
+      ],
+      "nist_ai_rmf": [
+        "MAP 4.1",
+        "MANAGE 3.2"
+      ],
+      "iso_42001": [
+        "A.10.2"
+      ],
+      "mitre_atlas": [
+        "AML.T0010 (ML Supply Chain Compromise)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Prefer safetensors over pickle. Scan any pickle artifact before load. Mirror approved models into an internal registry so downloads do not happen at run time from arbitrary external hosts.",
+        "links": [
+          {
+            "label": "safetensors",
+            "url": "https://huggingface.co/docs/safetensors/index"
+          },
+          {
+            "label": "MITRE ATLAS: ML Supply Chain Compromise",
+            "url": "https://atlas.mitre.org/techniques/AML.T0010"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Use JumpStart or Marketplace as the canonical model source. If a use case demands a Hugging Face model not in JumpStart, mirror through a controlled S3 bucket after pickle-scanning; never let SageMaker training jobs download from public hubs at run time.",
+        "links": [
+          {
+            "label": "Customize JumpStart foundation models",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-PROTECT-NO-THIRD-PARTY-AGENT-VISIBILITY",
+    "stage": 1,
+    "pillar": "Protect",
+    "title": "No visibility into third-party AI agents or plugins granted access to corporate environments",
+    "summary": "OAuth-installed agents, browser extensions, and AI-augmented SaaS plugins reach corporate data without an inventory or access review.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MODEL ACCESS CONTROL",
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 4.1",
+        "GOVERN 6.1"
+      ],
+      "iso_42001": [
+        "A.6.2.3",
+        "A.10.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Pull OAuth grant logs from your identity provider and list every third-party app with read access to mail, docs, or chat. Revoke anything that no owner can name. Repeat monthly until BYOAI surface is bounded.",
+        "links": [
+          {
+            "label": "OWASP Top 10 for LLM Apps (LLM06: Excessive Agency)",
+            "url": "https://genai.owasp.org/llmrisk/llm06-excessive-agency/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Audit IAM identities with `bedrock:InvokeModel` or `bedrock-agent:*` through IAM Access Analyzer. Any identity outside the AI inventory is a candidate for removal or onboarding.",
+        "links": [
+          {
+            "label": "Bedrock IAM actions",
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-UTILIZE-NO-AI-IN-SECURITY",
+    "stage": 1,
+    "pillar": "Utilize",
+    "title": "No AI/ML used in security tools or operations",
+    "summary": "Detection, triage, and response are entirely rules-based or human-driven. Vendor AI features in existing tools are either absent or disabled.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.4 (broad use of AI)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Audit the SIEM/EDR/SOAR you already pay for. Vendor-shipped ML detections (UEBA modules, anomaly baselines) are the cheapest first step. Enable them at vendor defaults, document the change, and reassess in 30 days.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Turn on the AWS security services that already ship ML detections: GuardDuty (with all data sources enabled), Macie, and Inspector. Pipe Security Hub findings into a single review.",
+        "links": [
+          {
+            "label": "Amazon GuardDuty detection types",
+            "url": "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-active.html"
+          },
+          {
+            "label": "AWS Security Hub",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-UTILIZE-NO-AI-AWARENESS",
+    "stage": 1,
+    "pillar": "Utilize",
+    "title": "The security team is unaware of available AI capabilities",
+    "summary": "Security engineers cannot describe what AI features their existing tools ship with, what they cost, or what they would change if enabled.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 4.1 (workforce literacy)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Have each tool owner produce a one-page brief on the AI features in their product, default state (on/off), tier dependency, and known false-positive behavior. Compile into an internal index.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AWS Skill Builder has a free generative AI learning plan and a paid security path. Set a baseline expectation that at least one engineer per security domain completes it.",
+        "links": [
+          {
+            "label": "AWS Skill Builder",
+            "url": "https://skillbuilder.aws/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-UTILIZE-MANUAL-DETECTION",
+    "stage": 1,
+    "pillar": "Utilize",
+    "title": "Manual processes dominate detection and response",
+    "summary": "Alerts are triaged by hand, with no automated enrichment, no model-assisted classification, and no playbook automation.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Capture the top 10 alerts by volume and time-to-disposition. Anything routine and high-volume is a candidate for automation before AI: SOAR-style playbooks first, model-assisted triage later when there is baseline data to evaluate it against.",
+        "links": [
+          {
+            "label": "TheHive (OSS SOAR/IR)",
+            "url": "https://thehive-project.org/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Wire EventBridge rules off Security Hub findings into Step Functions or Lambda for automated triage of routine alert classes (e.g., GuardDuty IAM finding categories).",
+        "links": [
+          {
+            "label": "Security Hub automation with EventBridge",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe-integration.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-NO-POLICY",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "No AI usage policy exists",
+    "summary": "There is no written policy stating which AI tools are permitted, what data can be entered, or who owns AI decisions.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM",
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1 (policies and procedures)",
+        "GOVERN 1.2"
+      ],
+      "iso_42001": [
+        "A.4.1 (AI policy)"
+      ],
+      "aicm": [
+        "AIGV-02 (AI policy)"
+      ],
+      "eu_ai_act": [
+        "Art. 9 (risk management system)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Draft a one-page AI acceptable use policy in week one. State sanctioned tools, prohibited tools, what data classes can be entered into each, the policy owner, and the consequence model. Publish it, attest it, and revisit in 90 days. Policy precision improves with usage data; do not block on perfection.",
+        "links": [
+          {
+            "label": "SANS AISMM (source)",
+            "url": "https://www.sans.org/ai"
+          },
+          {
+            "label": "OWASP AI Exchange #AI PROGRAM",
+            "url": "https://owaspai.org/goto/aiprogram/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Add an SCP at the organization root that denies all `bedrock:*` actions outside designated accounts. That forces every AI use case to ride through an approved account where logging and policy apply.",
+        "links": [
+          {
+            "label": "Service control policies",
+            "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-BYOAI",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "BYOAI proliferates unchecked",
+    "summary": "Employees use personal or unapproved AI tools (ChatGPT, Claude.ai, Gemini, niche assistants) for work tasks. There is no policy to call this Shadow AI; it is BYOAI.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1",
+        "MAP 1.2"
+      ],
+      "iso_42001": [
+        "A.4.1",
+        "A.6.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Run a BYOAI discovery survey before blocking. Anonymous, opt-in, listing tools and use cases. Pair with egress log review for known AI domains. The output is a sanctioned list and a remediation list; not a punishment list.",
+        "links": [
+          {
+            "label": "SANS guidance on BYOAI discovery",
+            "url": "https://www.sans.org/ai"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "An SCP that allows `bedrock:InvokeModel` only for approved model IDs is the structural enforcement; pair with a Bedrock model-invocation logging policy so even allowed use is observable.",
+        "links": [
+          {
+            "label": "Bedrock model-specific IAM conditions",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-NO-VISIBILITY-EMP-TOOLS",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "No visibility into what AI tools employees are using",
+    "summary": "There is no log of AI domain access, no DLP rule for AI endpoints, and no integration between identity and AI usage.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE",
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.2",
+        "MEASURE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Start with egress logs. Most networks see AI tool access concentrated in a small set of domains. A weekly report of top AI domains by user (or by department) is enough to start governing. CASB or SASE products extend this with policy at the proxy.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "VPC Flow Logs plus a curated AI-domain enrichment list in your SIEM gives department-level visibility into external AI tool usage. For Bedrock-internal traffic, model invocation logs cover the same need.",
+        "links": [
+          {
+            "label": "VPC Flow Logs",
+            "url": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-NO-RISK-ASSESSMENT",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "No AI risk assessment has been conducted",
+    "summary": "AI risk is not on the enterprise risk register, is not scored, and is not reviewed in any cadence.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Risk analysis (chapter 0)",
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1",
+        "MEASURE 2"
+      ],
+      "iso_42001": [
+        "A.5.2 (AI risk assessment)",
+        "Cl. 6.1"
+      ],
+      "eu_ai_act": [
+        "Art. 9 (risk management system)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use the OWASP AI Exchange risk-analysis decision tree as the starting framework. Add a single AI line to the enterprise risk register naming the top three threats your organization plausibly faces (almost certainly: data exfiltration, vendor lock-in or outage, regulatory exposure).",
+        "links": [
+          {
+            "label": "OWASP AI Exchange risk analysis",
+            "url": "https://owaspai.org/goto/riskanalysis/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "AWS Audit Manager has a Generative AI Best Practices framework that exposes a starting set of controls and evidence collectors. The framework alone is not a risk assessment, but it makes the gaps explicit.",
+        "links": [
+          {
+            "label": "Audit Manager generative AI framework",
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices-framework.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-LEADERSHIP-UNAWARE",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "Leadership unaware of AI exposure",
+    "summary": "Executives cannot answer 'how much of our data has been sent to public AI models in the last quarter?' or 'who owns AI decisions here?'",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1",
+        "GOVERN 2.1"
+      ],
+      "iso_42001": [
+        "Cl. 5 (Leadership)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Brief leadership with two numbers and one named owner: number of AI tools in the inventory, percentage of staff who have touched one in the last 30 days (egress log estimate is fine), and the named AI governance lead. The point of the brief is to anchor accountability, not to recommend tooling.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Cost Explorer tagged by service surfaces Bedrock and SageMaker spend trend lines that translate well to executive briefs. Pair with a count of distinct IAM identities invoking Bedrock per month.",
+        "links": [
+          {
+            "label": "AWS Cost Explorer",
+            "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-1-GOVERN-NO-CONVERSATIONAL-AGENTIC-DISTINCTION",
+    "stage": 1,
+    "pillar": "Govern",
+    "title": "No distinction is made between conversational AI and action-taking AI",
+    "summary": "Policy and threat modeling treat chatbots and agentic systems identically, ignoring that agents can invoke functions, send mail, write code, and authorize transactions.",
+    "source": "SANS AISMM 2026 edition, p.8",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Threats to agentic AI",
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.5",
+        "GOVERN 1.4"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add a single sentence to the policy: 'AI that can take actions on systems requires explicit security review before deployment, separate from conversational AI.' That sentence does most of the work at Stage 1. Implementation comes at Stage 3.",
+        "links": [
+          {
+            "label": "OWASP Agentic AI Threats and Mitigations",
+            "url": "https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock distinguishes model invocation (InvokeModel) from agentic action (Agents for Bedrock and AgentCore). Treat any role with `bedrock-agent:*` permissions as agentic in your policy.",
+        "links": [
+          {
+            "label": "Amazon Bedrock AgentCore",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-PARTIAL-INVENTORY",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "Inventory of sanctioned AI tools exists but may be incomplete",
+    "summary": "A list of approved AI tools is maintained but rarely reconciled against actual usage. Shadow AI is suspected but unmeasured.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.1",
+        "MAP 1.6"
+      ],
+      "iso_42001": [
+        "A.6.2.4"
+      ],
+      "aicm": [
+        "AIGV-01"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Reconcile the inventory against actual egress quarterly. Anything in egress but not in the inventory is either an addition or a remediation. Use Phin, Hatching, or just SIEM correlations against a curated AI-domain list.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AWS Config conformance packs against Bedrock and SageMaker resources reconcile the inventory automatically. Drift becomes a Security Hub finding.",
+        "links": [
+          {
+            "label": "AWS Config conformance packs",
+            "url": "https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-RISK-AWARENESS",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "Basic understanding of AI risks at the leadership level",
+    "summary": "Leadership recognizes AI as a risk category but does not yet have a defended risk taxonomy or assigned risk owners.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ],
+      "iso_42001": [
+        "Cl. 5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Adopt a five-risk taxonomy and stop there for now: data leakage, model misuse, third-party AI, regulatory, hallucination/legal. Anything more granular is overkill at Stage 2.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-NO-AI-TESTING",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "No AI-specific security testing",
+    "summary": "Existing pentests do not include prompt injection, model extraction, or instruction-manipulation cases. AI components are in scope only by accident.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#PROMPT INJECTION I/O HANDLING",
+        "Chapter 5 (AI security testing)"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ],
+      "mitre_atlas": [
+        "AML.T0051 (LLM Prompt Injection)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add an AI testing rider to the next pentest scope. At minimum: prompt injection (direct and indirect), output handling for PII, and basic model extraction prompts. Garak and Promptfoo cover most of this in OSS.",
+        "links": [
+          {
+            "label": "Garak",
+            "url": "https://github.com/NVIDIA/garak"
+          },
+          {
+            "label": "Promptfoo red-team plugins",
+            "url": "https://www.promptfoo.dev/docs/red-team/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock model evaluation supports automated and human evaluation jobs against curated test sets, including custom adversarial sets seeded by Garak or Promptfoo output.",
+        "links": [
+          {
+            "label": "Bedrock model evaluation",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-MODEL-ORIGIN",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "Basic visibility into where models originate",
+    "summary": "Engineering can describe where the models in use came from (vendor, Hugging Face org, internal build), but provenance is not verified cryptographically or tracked in a registry.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 4.1"
+      ],
+      "iso_42001": [
+        "A.10.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Adopt an internal model registry (MLflow, ZenML, or a folder in object storage with hashes and a README). Record source URL, hash, license, and approver.",
+        "links": [
+          {
+            "label": "MLflow Model Registry",
+            "url": "https://mlflow.org/docs/latest/model-registry.html"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "JumpStart model cards and Marketplace listing pages record source, license, training data attestation, and version. Pin to model ARNs in code rather than friendly names.",
+        "links": [
+          {
+            "label": "SageMaker JumpStart model cards",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-PICKLE-AWARENESS",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "Awareness that pickled model files pose risk",
+    "summary": "Engineers know pickle deserialization is dangerous but verification is ad hoc.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE",
+        "#DEV SECURITY"
+      ],
+      "mitre_atlas": [
+        "AML.T0010"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Mandate safetensors for new internal artifacts. Quarantine any pickle that has not been scanned by ModelScan or picklescan.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock foundation models do not load customer-supplied pickle artifacts. For SageMaker custom training, restrict input sources to S3 buckets owned by the workload account and pickle-scan as part of the data pipeline.",
+        "links": [
+          {
+            "label": "SageMaker S3 input modes",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-access-training-data.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-PROTECT-API-AGENT-RISK-AWARENESS",
+    "stage": 2,
+    "pillar": "Protect",
+    "title": "Basic awareness of the risks of granting AI tools API access or system integrations",
+    "summary": "The organization knows that granting a chatbot or assistant API tokens carries risk, but there is no review process before grants are issued.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MODEL ACCESS CONTROL",
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 4.1",
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Require a short threat-model exercise on any AI tool that requests scopes broader than read-only. Add the integration to the asset register before any grant is approved.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Treat any AWS principal granted `bedrock-agent:*`, `lambda:InvokeFunction` across boundaries, or cross-account assume-role into an AI workload as an agentic integration requiring threat-model review.",
+        "links": [
+          {
+            "label": "Bedrock IAM service authorization reference",
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-VENDOR-AI-UNCONFIGURED",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "Security tools with AI-based features used but not intentionally configured",
+    "summary": "AI features in the SIEM/EDR are turned on but no one has tuned thresholds, evaluated detections against environment data, or measured false-positive rates.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Pick one AI feature per tool. Document baseline false-positive rate over a fixed window. Tune. Repeat.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "GuardDuty, Inspector, and Security Hub all ship measurable detection sets. Tune each in a documented sequence, measuring suppression vs. additional findings against a labeled month of incident data.",
+        "links": [
+          {
+            "label": "AWS Security Hub controls reference",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-controls-reference.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-NO-CUSTOMIZATION",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "No customization or tuning of AI security features",
+    "summary": "Detections, summarizations, and alert classifications all run at vendor defaults regardless of environment fit.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Allocate analyst time for tuning. Vendor defaults assume a generic environment; an unconfigured AI feature is usually noisier than its predecessor rule-based detection.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-BASIC-SPAM-MALWARE-AI",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "Basic spam/malware detection using vendor AI",
+    "summary": "Mail and endpoint vendors apply their own AI models to detection, but the organization does not contribute telemetry back or evaluate the outcome.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Capture monthly detection rates from each vendor with AI-backed detection. Build a single internal dashboard that compares.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "GuardDuty Malware Protection plus Amazon SES email feedback metrics give a measurable baseline. Pipe both into a single Security Hub dashboard.",
+        "links": [
+          {
+            "label": "GuardDuty Malware Protection",
+            "url": "https://docs.aws.amazon.com/guardduty/latest/ug/malware-protection.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-NO-SECOPS-AI-STRATEGY",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "No AI strategy for security operations",
+    "summary": "There is no roadmap for where AI augmentation should land in the SOC workflow.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.4"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Pick one workflow (alert triage, IR write-up generation, threat intel summarization) and target it for Stage 3 enablement. Do not try to AI-augment the whole SOC at once.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Security Hub's posture management gives a coverage map to plan against. Pick one workflow and target a Bedrock-backed automation (alert summarization or playbook explanation) as the first integration.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-TEAM-LACKS-AI-SKILLS",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "Security team lacks AI/ML skills",
+    "summary": "No team member has hands-on experience with prompt engineering, model evaluation, or ML pipeline security.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Send at least one engineer through SANS SEC545 or equivalent. Cross-train so AI security knowledge does not concentrate in a single person.",
+        "links": [
+          {
+            "label": "SANS SEC545",
+            "url": "https://www.sans.org/cyber-security-courses/securing-ai-powered-applications-llm-workflows/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-UTILIZE-NO-VENDOR-VALIDATION",
+    "stage": 2,
+    "pillar": "Utilize",
+    "title": "No validation of vendor AI claims",
+    "summary": "Vendors marketing 'AI-powered' features are accepted at face value. There is no test against environment data or measured outcome.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add a short AI questionnaire to vendor reviews: what model, on whose data, with what evaluation, under what retention. Refuse procurement of 'AI' features that cannot answer.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Marketplace and JumpStart listings include the model card, license, and benchmark scores when available. Treat that as the bar for any AI vendor: if they cannot match Marketplace metadata, refuse procurement.",
+        "links": [
+          {
+            "label": "Bedrock Marketplace listings",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-marketplace.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-AUP-PUBLISHED",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "AI acceptable use policy published; may be binary rather than nuanced",
+    "summary": "An AUP exists. Common shape: a list of allowed tools, a list of prohibited tools, and a paragraph on data classes.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1",
+        "GOVERN 1.2"
+      ],
+      "iso_42001": [
+        "A.4.1"
+      ],
+      "aicm": [
+        "AIGV-02"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Annual policy review with a feedback channel. The Stage 2 policy will be wrong; the only way to improve it is to make it easy to challenge.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Encode the policy in SCPs and IAM tag-based conditions. The policy text is the human-readable layer; the SCP is the enforcement layer that prevents drift between intent and reality.",
+        "links": [
+          {
+            "label": "Tag-based authorization for Bedrock",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-DATA-CLASS-GAP",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "Data classification for AI usage is absent or incomplete",
+    "summary": "The AUP references data classes but the underlying data classification work has not been done or is partial.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#DATA MINIMIZE",
+        "#ALLOWED DATA"
+      ],
+      "nist_ai_rmf": [
+        "MAP 2.3"
+      ],
+      "iso_42001": [
+        "A.7.4"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Data classification is the Stage 3 prerequisite. If it is not done, this is the next thing to fund. Use Presidio for PII detection in unstructured stores.",
+        "links": [
+          {
+            "label": "Microsoft Presidio",
+            "url": "https://microsoft.github.io/presidio/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Macie auto-classifies S3 objects against managed and custom data identifiers. Run a one-shot scan over the data lake to surface PHI / PII / financial data before drafting the AI data classification rules.",
+        "links": [
+          {
+            "label": "Macie managed data identifiers",
+            "url": "https://docs.aws.amazon.com/macie/latest/user/managed-data-identifiers.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-BASIC-AWARENESS",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "Basic awareness training mentions AI risks",
+    "summary": "AI is referenced in annual security training but not addressed in role-specific depth.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add a five-minute module: what to never paste into AI tools, what to do if you find an AI feature in a vendor product, where to report.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-NO-RISK-REGISTER",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "No AI risk register",
+    "summary": "AI risks are not tracked alongside other enterprise risks with owners, treatments, and review cadence.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM",
+        "Risk analysis (chapter 0)"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1",
+        "MANAGE 1.3"
+      ],
+      "iso_42001": [
+        "Cl. 6.1",
+        "A.5.2"
+      ],
+      "eu_ai_act": [
+        "Art. 9"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add an 'AI' risk category to the existing enterprise risk register. Three to five risks at this stage. Owner, current treatment, residual rating, review date.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Use AWS Audit Manager's Generative AI Best Practices framework as the seed for the register; its assessments map to common control families (CC, AC, AT) and emit evidence artifacts.",
+        "links": [
+          {
+            "label": "Audit Manager generative AI framework",
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices-framework.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-NO-AI-GOV-BODY",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "No cross-functional AI governance body",
+    "summary": "AI decisions are made in silos: legal in one channel, engineering in another, security in a third.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ],
+      "iso_42001": [
+        "Cl. 5.3"
+      ],
+      "aicm": [
+        "AIGV-03"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Form a working group, not a committee. Standing 30-minute monthly meeting, named members from security, legal, engineering, and a business sponsor. Output is a public decisions log.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-2-GOVERN-POLICY-CONV-VS-ACTION",
+    "stage": 2,
+    "pillar": "Govern",
+    "title": "Policy begins to differentiate between conversational AI and AI granted permission to take actions",
+    "summary": "The AUP distinguishes chat-style AI from agentic AI in scope and review requirements.",
+    "source": "SANS AISMM 2026 edition, p.10",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Threats to agentic AI",
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.5",
+        "GOVERN 1.4"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Define 'agentic AI' in the policy: any AI that invokes tools, writes to systems, or sends communications. Require a security architecture review before any agentic deployment.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "In AWS terms: `bedrock:InvokeModel` is conversational, `bedrock-agent:*` and AgentCore are agentic. Write the policy with these IAM action families as the dividing line so enforcement is structural, not narrative.",
+        "links": [
+          {
+            "label": "Bedrock agent IAM actions",
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-FULL-INVENTORY",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Complete inventory of AI systems and models; AI included in asset classification",
+    "summary": "Every AI system, model, agent, and AI-augmented SaaS feature is recorded with owner, classification, approved use, and review cadence.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MAP 1.1",
+        "MAP 1.6"
+      ],
+      "iso_42001": [
+        "A.6.2.4"
+      ],
+      "aicm": [
+        "AIGV-01"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Promote the asset register to a system of record with API access for SIEM/SOAR. Reconcile automatically against egress logs and IdP grants.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AWS Config recorder for Bedrock, SageMaker, and Lambda resources, with custom rules for AI-specific attributes (model used, knowledge base attached, agent role). Findings to Security Hub.",
+        "links": [
+          {
+            "label": "AWS Config supported resource types",
+            "url": "https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-DATA-FLOWS",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Data flows to and from AI systems are documented with data lineage visibility",
+    "summary": "For each AI system, the data classes consumed, generated, and persisted are documented end to end.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#DATA MINIMIZE",
+        "#ALLOWED DATA"
+      ],
+      "nist_ai_rmf": [
+        "MAP 2.3",
+        "MEASURE 2.10"
+      ],
+      "iso_42001": [
+        "A.7.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use OpenLineage or a comparable lineage tool for ETL into model contexts. Capture system prompt, tool definitions, retrieval index, and output sink.",
+        "links": [
+          {
+            "label": "OpenLineage",
+            "url": "https://openlineage.io/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Use AWS DataZone or a SageMaker Feature Store catalog for upstream data lineage. For Bedrock Knowledge Bases, the data source manifest plus CloudTrail data events give end-to-end retrieval lineage.",
+        "links": [
+          {
+            "label": "Amazon Bedrock Knowledge Bases",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base.html"
+          },
+          {
+            "label": "Amazon DataZone",
+            "url": "https://docs.aws.amazon.com/datazone/latest/userguide/what-is-datazone.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-NHI",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Internal AI agents assigned distinct NHIs with strict access control",
+    "summary": "Every AI agent has its own Non-Human Identity with scoped credentials, a documented human owner, and least-privilege access to tools, data, and APIs.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.4",
+        "MANAGE 2.3"
+      ],
+      "iso_42001": [
+        "A.6.2.3"
+      ],
+      "aicm": [
+        "AIIA-01 (AI identity)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Issue short-lived credentials per agent via Vault or SPIFFE. Scope each agent to a single tool surface. Every credential ties back to a named human owner in the asset register.",
+        "links": [
+          {
+            "label": "HashiCorp Vault agent identity",
+            "url": "https://developer.hashicorp.com/vault/docs/agent-and-proxy/agent"
+          },
+          {
+            "label": "SPIFFE / SPIRE",
+            "url": "https://spiffe.io/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "AgentCore Identity issues per-agent IAM roles scoped to `bedrock:InvokeModel` on specific model ARNs and to the exact tool ARNs each agent needs. Tie the role tag to a human-owner attribute enforced by SCP.",
+        "links": [
+          {
+            "label": "AgentCore Identity",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-identity.html"
+          },
+          {
+            "label": "IAM Roles Anywhere",
+            "url": "https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-API-SCOPE",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "AI tool and API access strictly scoped",
+    "summary": "AI tool access is scoped to specific resources, time windows, and operations. No broad credentials.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Define a tool-access policy DSL (OPA, Cedar) that scopes per-agent invocations. Deny by default; allow per tool, per resource.",
+        "links": [
+          {
+            "label": "Open Policy Agent",
+            "url": "https://www.openpolicyagent.org/"
+          },
+          {
+            "label": "AWS Cedar policy language",
+            "url": "https://www.cedarpolicy.com/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "IAM condition keys (`aws:RequestTag`, `bedrock:ModelId`, `bedrock:GuardrailIdentifier`) narrow Invoke permissions to specific models, with guardrails, and for tagged callers.",
+        "links": [
+          {
+            "label": "Bedrock IAM condition keys",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-PROMPT-INJECTION",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Prompt injection and instruction manipulation defenses implemented",
+    "summary": "Production AI systems apply layered defenses: input segregation, instruction hierarchy, retrieval sanitization, and output validation.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#PROMPT INJECTION I/O HANDLING",
+        "#INPUT SEGREGATION"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.6",
+        "MEASURE 2.7"
+      ],
+      "mitre_atlas": [
+        "AML.T0051"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Combine LLM Guard or NeMo Guardrails for I/O filtering with a system-prompt design that places untrusted content in a clearly demarcated section. Test with Garak and Promptfoo in CI.",
+        "links": [
+          {
+            "label": "LLM Guard",
+            "url": "https://github.com/protectai/llm-guard"
+          },
+          {
+            "label": "NeMo Guardrails",
+            "url": "https://github.com/NVIDIA/NeMo-Guardrails"
+          },
+          {
+            "label": "OWASP Top 10 LLM01 Prompt Injection",
+            "url": "https://genai.owasp.org/llmrisk/llm01-prompt-injection/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Guardrails apply content filtering, denied topics, contextual grounding checks, and PII redaction inline at InvokeModel time. Combine with prompt-template hygiene that segregates retrieval context.",
+        "links": [
+          {
+            "label": "Amazon Bedrock Guardrails",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-IO-FILTERING",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Input validation and output filtering deployed",
+    "summary": "User-facing AI applications validate inputs against schema and filter outputs for PII, sensitive markers, and unsafe content.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SENSITIVE OUTPUT HANDLING",
+        "#ANOMALOUS INPUT HANDLING"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.6"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "LLM Guard or Promptfoo's redactor for outputs. Presidio for PII. Block-on-confidence rather than allow-on-pass.",
+        "links": [
+          {
+            "label": "Microsoft Presidio",
+            "url": "https://microsoft.github.io/presidio/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Guardrails for inline filtering, plus Macie scanning of any data the model has read or written to S3. PII redaction settings on the guardrail are scoped per use case.",
+        "links": [
+          {
+            "label": "Bedrock Guardrails PII filters",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-sensitive-filters.html"
+          },
+          {
+            "label": "Amazon Macie",
+            "url": "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-AI-IN-PENTEST",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "AI systems included in penetration testing scope; basic adversarial emulation conducted",
+    "summary": "AI systems are scoped into routine pentests with named adversarial test cases.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Chapter 5 (AI security testing)"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ],
+      "mitre_atlas": [
+        "ATLAS Matrix"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add ATLAS-aligned test cases to the pentest SOW. Require evidence of prompt-injection, model-extraction, and instruction-manipulation attempts in the report.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AWS customer support policy allows testing of customer-owned AI workloads on Bedrock without prior approval; bring the ATLAS-aligned test cases and supply prompt-injection seeds. Bedrock Guardrails will return blocked-content metadata that helps measure defense efficacy.",
+        "links": [
+          {
+            "label": "AWS penetration testing policy",
+            "url": "https://aws.amazon.com/security/penetration-testing/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-MODEL-PROVENANCE",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Model provenance verification in place",
+    "summary": "Every model entering the environment is verified against its publisher signature or hash before deployment.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 3.2"
+      ],
+      "iso_42001": [
+        "A.10.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Mirror approved models internally with signed manifests. Sigstore for signing. Block direct download from external registries at the egress proxy.",
+        "links": [
+          {
+            "label": "Sigstore",
+            "url": "https://www.sigstore.dev/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "JumpStart and Bedrock Marketplace models are signed by AWS or the model publisher and pinned by ARN. Custom models trained via SageMaker can be registered with model approval status and lineage in the registry.",
+        "links": [
+          {
+            "label": "SageMaker model lineage tracking",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/lineage-tracking.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-ATLAS-MAPPING",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Controls mapped to MITRE ATLAS techniques",
+    "summary": "Defensive controls are inventoried and mapped to the ATLAS techniques they address, exposing coverage gaps.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "mitre_atlas": [
+        "ATLAS Matrix coverage exercise"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Reuse the same MITRE ATT&CK Navigator approach you already use for endpoint coverage. ATLAS Navigator JSON is published.",
+        "links": [
+          {
+            "label": "MITRE ATLAS Navigator",
+            "url": "https://mitre-atlas.github.io/atlas-navigator/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-RUNTIME-TOOL-VALIDATION",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Runtime validation of dynamically loaded agent tools and plugins",
+    "summary": "Agent tool definitions, descriptions, and capabilities are validated at load time against an allow-list of approved tool signatures.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MODEL ACCESS CONTROL",
+        "#INPUT SEGREGATION"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Hash each registered tool definition. Refuse to load a tool whose signature has changed since approval. Audit changes through code review, not at run time.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-PROTECT-A2A-AUTH",
+    "stage": 3,
+    "pillar": "Protect",
+    "title": "Secure agent-to-agent communication and mutual authentication",
+    "summary": "Agents authenticate to each other with mTLS or workload identity; messages are bound to identities, not trust-by-default channels.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Service mesh with mTLS (Linkerd, Istio) or SPIFFE SVIDs for direct agent-to-agent calls. Apply OPA policy at the receiving side.",
+        "links": [
+          {
+            "label": "Linkerd mTLS",
+            "url": "https://linkerd.io/2-edge/features/automatic-mtls/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Use AgentCore for managed inter-agent communication. For self-hosted agents on ECS or EKS, App Mesh or VPC Lattice with TLS plus IAM auth provides equivalent mutual authentication.",
+        "links": [
+          {
+            "label": "Amazon VPC Lattice",
+            "url": "https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-TUNED-DETECTION",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "AI-powered threat detection tuned to the environment",
+    "summary": "AI-based detections are tuned against organizational data, with measured precision and recall.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5",
+        "MEASURE 2.6"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Tune each detection against historical incident data. Capture precision/recall on a labeled subset before promoting a detection to production.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "GuardDuty and Security Hub provide tunable detection thresholds. SageMaker custom models trained on local detection data integrate via Lambda detectors that emit Security Hub findings.",
+        "links": [
+          {
+            "label": "GuardDuty findings",
+            "url": "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-ALERT-TRIAGE",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "AI-assisted alert triage and prioritization in place",
+    "summary": "An AI layer triages incoming alerts: deduplication, severity ranking, and recommended next action.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "If vendor SOAR ships AI triage, enable and measure it. Where it does not, a small LLM front-end against alert payloads (with redaction) can do the same job for routine alert classes.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Lambda-based alert summarization using Bedrock InvokeModel with a guardrail that redacts PII before model invocation. Output back into Security Hub as a note.",
+        "links": [
+          {
+            "label": "Security Hub Notes API",
+            "url": "https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_BatchUpdateFindings.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-UEBA",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "Behavioral analytics (UEBA) deployed and customized for anomaly detection",
+    "summary": "UEBA models cover users, service accounts, and AI agent NHIs.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Extend UEBA models to include AI agent NHIs as a distinct identity class with their own baselines.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "GuardDuty IAM finding types behave as UEBA for AWS principals. Add a custom detection layer for Bedrock invocation patterns: model, region, prompt-size distributions per IAM role.",
+        "links": [
+          {
+            "label": "GuardDuty IAM-related findings",
+            "url": "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-iam.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-AUTOMATED-PLAYBOOKS",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "AI-assisted automated playbooks deployed for common scenarios",
+    "summary": "Routine response actions (phishing reports, suspect IP triage) are partially or fully automated with AI assistance.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Adopt or extend an OSS SOAR (Shuffle, TheHive Cortex). Pair AI summarization with deterministic action steps; never let an LLM be the sole decider on a containment action at this stage.",
+        "links": [
+          {
+            "label": "Shuffle SOAR",
+            "url": "https://shuffler.io/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Step Functions orchestrates the deterministic steps; Bedrock InvokeModel as a Lambda task handles the language work (write-ups, classification). Never let Bedrock be the sole decider on a containment branch.",
+        "links": [
+          {
+            "label": "Step Functions",
+            "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-TI-ENRICHMENT",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "AI-powered threat intelligence enrichment",
+    "summary": "Incoming threat intel is automatically enriched (entity extraction, related-actor mapping, summarization).",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Run intel through an LLM with extraction prompts (entities, TTPs, IOCs) and post structured output back into the TIP.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock with a structured-output guardrail for entity / TTP / IOC extraction. Inferentia or Trainium instances handle high-volume enrichment more cost-effectively than on-demand model pricing.",
+        "links": [
+          {
+            "label": "AWS Inferentia",
+            "url": "https://aws.amazon.com/machine-learning/inferentia/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-AIML-FUNDAMENTALS",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "Security team trained on AI/ML fundamentals",
+    "summary": "Engineers understand model evaluation basics, prompt engineering, and AI failure modes.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC EDUCATE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Adopt a role-based training matrix: general workforce (15 min), engineers (2 hours), AI specialists (multi-day).",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AWS Skill Builder ML and security learning plans plus the AWS Generative AI Security Scoping Matrix as the org-internal reference. Annual recertification on the matrix.",
+        "links": [
+          {
+            "label": "AWS Skill Builder",
+            "url": "https://skillbuilder.aws/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-UTILIZE-VENDOR-AI-ASSESSMENT",
+    "stage": 3,
+    "pillar": "Utilize",
+    "title": "Genuine AI/ML capability and environment compatibility assessed at procurement",
+    "summary": "Vendors selling AI features must demonstrate genuine capability and fit; AI-washing is rejected.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Require model cards, adversarial test results, and a defined evaluation set from any AI vendor. No proof, no procurement.",
+        "links": [
+          {
+            "label": "Model Cards guidance",
+            "url": "https://modelcards.withgoogle.com/about"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Marketplace and JumpStart listings include model cards; treat their structure as the bar for non-AWS vendors. No model card, no procurement.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-COUNCIL",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "AI Governance Council established with cross-functional membership and decision authority",
+    "summary": "A standing body with security, legal, privacy, engineering, and business representation makes binding decisions on AI use cases.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ],
+      "iso_42001": [
+        "Cl. 5.3"
+      ],
+      "aicm": [
+        "AIGV-03"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Publish the charter. Publish decisions. Republish quarterly.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-COMPREHENSIVE-POLICY",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "Comprehensive AI policy addressing use cases and data classification",
+    "summary": "Policy is specific by use case and by data class, not binary block/allow.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1",
+        "GOVERN 1.2"
+      ],
+      "iso_42001": [
+        "A.4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Map approved tools to data classes in a single table. The policy reads in seconds.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Map the policy table to IAM permission boundaries and tag-condition policies; the human-readable policy and the SCP set should be reconciled monthly.",
+        "links": [
+          {
+            "label": "IAM permissions boundaries",
+            "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-ETHICS",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "AI ethics guidelines established",
+    "summary": "Ethical considerations (fairness, transparency, human oversight) are codified.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#OVERSIGHT",
+        "#MODEL ALIGNMENT"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.2",
+        "GOVERN 5.1"
+      ],
+      "iso_42001": [
+        "A.5.5"
+      ],
+      "eu_ai_act": [
+        "Art. 13 (transparency)",
+        "Art. 14 (human oversight)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use NIST AI RMF Playbook prompts to seed the ethics guidelines rather than writing from scratch.",
+        "links": [
+          {
+            "label": "NIST AI RMF Playbook",
+            "url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-THIRD-PARTY-ASSESSMENT",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "Third-party AI assessment requirements defined",
+    "summary": "Vendor AI systems are assessed against a defined questionnaire before purchase.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC PROGRAM",
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.1",
+        "MAP 4.1"
+      ],
+      "iso_42001": [
+        "A.10.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Adopt a standard vendor AI questionnaire (HiTRUST AI Risk Management, NIST AI 100-1 derived). Refuse to onboard vendors that decline.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Marketplace vendor profiles publish model cards, eval results, and provenance. Build the in-house questionnaire to mirror Marketplace metadata so internal evaluation aligns with the canonical source.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-RISK-REGISTER-METHODOLOGY",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "AI risks included in the enterprise risk register with a defined assessment methodology",
+    "summary": "AI risks use a documented method (likelihood, impact, treatment) consistent with the rest of the register.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Risk analysis (chapter 0)"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1",
+        "MEASURE 2.1",
+        "MANAGE 1.3"
+      ],
+      "iso_42001": [
+        "Cl. 6.1",
+        "A.5.2"
+      ],
+      "eu_ai_act": [
+        "Art. 9"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "FAIR (Factor Analysis of Information Risk) extended for AI scenarios is the most common starting point at Stage 3 to 4.",
+        "links": [
+          {
+            "label": "FAIR Institute",
+            "url": "https://www.fairinstitute.org/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Audit Manager assessments emit structured evidence that feeds a FAIR-extended methodology cleanly. Use the Generative AI framework as the starting assessment set and add custom controls per AI scenario.",
+        "links": [
+          {
+            "label": "Audit Manager controls",
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/controls.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-IR-PROCEDURES",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "AI-specific incident response procedures in place",
+    "summary": "IR playbooks address prompt injection, model exfiltration, agent misuse, and AI vendor outages.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ],
+      "iso_42001": [
+        "A.8.4"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add 'AI incident' as a category in the IR runbook with sub-types: prompt injection, agent misuse, data exfiltration via output, model unavailability.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Add Bedrock-specific runbooks: prompt-injection containment (rotate the guardrail and the agent role), data exfiltration via output (revoke Bedrock invoke for the offending role, capture invocation logs for the window), agent misuse (decommission the AgentCore identity).",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-HITL-THRESHOLDS",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "Human-in-the-loop thresholds and automated policy enforcement defined for high-risk agent workflows",
+    "summary": "Policy decision points, intent gates, and consequence-based checks are defined for high-risk agentic actions.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#OVERSIGHT"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ],
+      "eu_ai_act": [
+        "Art. 14"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Codify a 'consequence ladder': low-impact actions can run autonomously, mid-impact require log review, high-impact require synchronous human approval.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Step Functions has a wait-for-human-task pattern; AgentCore supports action policies that require explicit approval. Define the consequence ladder once and reference it from both.",
+        "links": [
+          {
+            "label": "Step Functions human approval pattern",
+            "url": "https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html#connect-wait-token"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-AGENT-OWNER",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "Every deployed AI agent has a documented human owner",
+    "summary": "No anonymous agents; every running agent ties to a named human.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ],
+      "iso_42001": [
+        "A.6.2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "The asset register's 'owner' column is the source of truth. Any agent without an owner is decommissioned.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Enforce a required tag (Owner=<human-IAM-Identity-Center-user>) on every AgentCore identity via SCP. AWS Config rule flags identities missing the tag for decommission.",
+        "links": [
+          {
+            "label": "AWS Config tag-rule examples",
+            "url": "https://docs.aws.amazon.com/config/latest/developerguide/required-tags.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-3-GOVERN-STRUCTURED-LOGGING",
+    "stage": 3,
+    "pillar": "Govern",
+    "title": "Structured logging with trace IDs across agent steps and tool calls",
+    "summary": "Every agent action carries a trace ID that links back to the originating request, system prompt, tool invocation, and result.",
+    "source": "SANS AISMM 2026 edition, p.12",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.10"
+      ],
+      "iso_42001": [
+        "A.6.2.6 (logging)"
+      ],
+      "eu_ai_act": [
+        "Art. 12 (record-keeping)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Langfuse, Arize Phoenix, or OpenTelemetry GenAI semantic conventions cover this.",
+        "links": [
+          {
+            "label": "Langfuse",
+            "url": "https://langfuse.com/"
+          },
+          {
+            "label": "OpenTelemetry GenAI Semantic Conventions",
+            "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock model invocation logging captures request, response, and guardrail decision; AgentCore traces capture each tool step. Stream both to CloudWatch Logs with a per-trace correlation ID; export to S3 for long retention.",
+        "links": [
+          {
+            "label": "Bedrock invocation logging schema",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-SECURE-LIFECYCLE",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Security integrated into the AI/ML development lifecycle",
+    "summary": "Security gates exist at each phase of the AI lifecycle: design, data, training, eval, deploy, monitor.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC DEV PROGRAM",
+        "#DEV SECURITY"
+      ],
+      "nist_ai_rmf": [
+        "MAP",
+        "MEASURE",
+        "MANAGE (full lifecycle)"
+      ],
+      "iso_42001": [
+        "A.6.2 (AI system development)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Define gate criteria per phase. Tie to the standard SDLC change-management workflow.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "SageMaker Pipelines with Model Cards, Model Monitor, and Clarify covers the end-to-end lifecycle. Promote each pipeline stage to a Security Hub control so gate evidence is centralized.",
+        "links": [
+          {
+            "label": "SageMaker Pipelines",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-THREAT-MODELING",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Threat modeling required for all AI systems",
+    "summary": "STRIDE or PASTA threat models extended for AI threats are mandatory before deployment.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Threats overview"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1"
+      ],
+      "mitre_atlas": [
+        "ATLAS technique selection"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use the OWASP AI Exchange threat tree as the AI-specific extension to whatever threat-modeling method the org already uses.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-CONFUSED-DEPUTY",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Confused Deputy defenses deployed to isolate untrusted inputs from agent execution tools",
+    "summary": "An agent's authority to invoke tools is bound to the request context, not the agent itself, preventing untrusted user inputs from inducing high-authority actions.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#INPUT SEGREGATION",
+        "#LEAST MODEL PRIVILEGE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use OPA or Cedar at the tool boundary with the request principal in the policy, not just the agent identity.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Add a Lambda authorizer to the AgentCore tool path that re-evaluates the request principal, not just the agent role. AgentCore action policies can carry the consequence ladder as policy attributes.",
+        "links": [
+          {
+            "label": "AgentCore action groups",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-groups.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-EXECUTION-GUARDRAILS",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Execution guardrails with real-time monitoring for AI agent API calls",
+    "summary": "Each agent API call is evaluated in real time against the agent's scope and the current consequence ladder.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MODEL ACCESS CONTROL",
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3",
+        "MEASURE 2.10"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Combine NeMo Guardrails for I/O with a policy engine (OPA/Cedar) for action authorization. Log denies for tuning.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Guardrails (content filters, denied topics, contextual grounding) plus AgentCore action policies. Pair with a Lambda authorizer in the tool path that re-evaluates the request principal and consequence rating.",
+        "links": [
+          {
+            "label": "Bedrock Guardrails",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+          },
+          {
+            "label": "AgentCore policies",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-RED-TEAM",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Comprehensive AI model and agentic red teaming program",
+    "summary": "A dedicated AI red team conducts continuous adversarial assessments distinct from traditional pentesting.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Chapter 5 (AI security testing)"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ],
+      "mitre_atlas": [
+        "Full ATLAS coverage"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Stand up a recurring red-team cadence with documented test plans. AI red teaming is distinct from pentesting (which exercises the surrounding application).",
+        "links": [
+          {
+            "label": "OWASP AI Red Teaming Guide",
+            "url": "https://genai.owasp.org/resource/genai-red-teaming-guide/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock model evaluation supports custom adversarial test sets. Pipe Garak and Promptfoo outputs into evaluation jobs and track findings as Security Hub items.",
+        "links": [
+          {
+            "label": "Bedrock model evaluation",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-CASCADE-CONTROLS",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Controls for cascading failures in multi-agent systems",
+    "summary": "When one agent fails or is compromised, isolation prevents propagation through shared memory, delegated tasks, or trusted communication channels.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE",
+        "#INPUT SEGREGATION"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Partition shared memory per agent. Treat agent-to-agent messages as untrusted input and apply the same I/O guardrails as external input.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Per-agent SQS queues with DLQs prevent message propagation on failure. Bedrock Guardrails can be agent-specific so a compromise of one agent does not lower the policy bar of another.",
+        "links": [
+          {
+            "label": "SQS dead-letter queues",
+            "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-CICD-ADVERSARIAL",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Automated adversarial testing integrated into CI/CD pipelines",
+    "summary": "Every AI build is tested against an adversarial suite before deployment.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SEC DEV PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Add Garak and Promptfoo runs to CI. Fail builds on regression beyond a defined tolerance.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "CodePipeline stage that runs Bedrock evaluation against the build candidate. Fail the stage on regression beyond tolerance.",
+        "links": [
+          {
+            "label": "AWS CodePipeline",
+            "url": "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-ATLAS-FULL-KILLCHAIN",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "MITRE ATLAS alignment covering the full kill chain",
+    "summary": "Controls are mapped to ATLAS techniques across all tactics including exfiltration and impact.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "mitre_atlas": [
+        "Full ATLAS Matrix coverage"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Use the ATLAS Navigator with explicit coverage tracking; gaps drive next quarter's roadmap.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-MODEL-SCANNING",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Automated model scanning and provenance verification",
+    "summary": "Every model artifact is scanned for known-bad serialization, malicious operators, and signature mismatches.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#SUPPLY CHAIN MANAGE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 3.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "ModelScan + safetensors-only enforcement in CI for first-party models; signed manifests for third-party.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Inspector scans container images that host inference workloads. For raw model artifacts, run ModelScan in a build step and publish the result to Security Hub.",
+        "links": [
+          {
+            "label": "Amazon Inspector for ECR",
+            "url": "https://docs.aws.amazon.com/inspector/latest/user/scanning-ecr.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-REALTIME-PROMPT-INJECTION-DETECTION",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "Real-time prompt injection detection",
+    "summary": "Inline detection of prompt-injection patterns, instruction inversion, and known jailbreak signatures.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#PROMPT INJECTION I/O HANDLING"
+      ],
+      "mitre_atlas": [
+        "AML.T0051"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "LLM Guard inline. Custom detectors for environment-specific patterns.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Guardrails apply prompt-injection-aware content filters in line at invoke time. Pair with a Guardrails CloudWatch metric alarm for blocked-content trending.",
+        "links": [
+          {
+            "label": "Bedrock Guardrails content filters",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-PROTECT-MLSECOPS",
+    "stage": 4,
+    "pillar": "Protect",
+    "title": "MLSecOps implemented: secure pipelines, model versioning and provenance, training data validation",
+    "summary": "An end-to-end MLSecOps pipeline covers data, training, eval, deploy, and monitoring with security gates at each step.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#DEV SECURITY",
+        "#SUPPLY CHAIN MANAGE",
+        "#DATA QUALITY CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "MAP",
+        "MEASURE",
+        "MANAGE (lifecycle)"
+      ],
+      "iso_42001": [
+        "A.6.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Treat ML pipelines as software supply-chain risks: signed artifacts, dataset provenance, reproducible training, evaluation gates.",
+        "links": [
+          {
+            "label": "MLSecOps Top 10",
+            "url": "https://mlsecops.com/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "SageMaker Pipelines with Model Cards, Model Monitor, Clarify (bias and explainability), and the Model Registry. Provenance and approval gating native; integrate with EventBridge to feed Security Hub on policy violation.",
+        "links": [
+          {
+            "label": "SageMaker Pipelines",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html"
+          },
+          {
+            "label": "SageMaker Model Cards",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-CUSTOM-MODELS",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "Custom ML models developed for organization-specific threat detection",
+    "summary": "Internal models trained on local data outperform generic vendor models in measured ways.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "MLflow or ZenML for training pipelines. Capture training data lineage, eval set, and deployment metadata.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock Custom Models for foundation model fine-tunes, SageMaker for from-scratch training. Both write into the SageMaker Model Registry with lineage and approval status.",
+        "links": [
+          {
+            "label": "Bedrock Custom Models",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-DECEPTION",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "AI-powered deception technologies and honeypots deployed",
+    "summary": "Honeypots and decoy assets are generated and managed with AI assistance.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Generate realistic decoy documents, accounts, and endpoints with LLM assistance. Watch for any access.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-AUTONOMOUS-RESPONSE",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "Autonomous response enabled for defined, validated scenarios",
+    "summary": "Specific response actions run without human approval when triggered by validated, high-confidence detections.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Maintain a whitelist of autonomous actions, with measured false-positive ceilings. Anything outside the whitelist still requires human approval.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Step Functions state machines call AWS APIs autonomously for whitelisted actions; AgentCore for the same with stricter audit. CloudWatch Synthetics for measured FP rate prior to whitelist expansion.",
+        "links": [
+          {
+            "label": "AWS Step Functions",
+            "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-SOAR-AI",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "SOAR platform enhanced with AI-driven decision support",
+    "summary": "SOAR playbooks consume AI-driven recommendations at branch points.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Capture AI recommendations alongside human decisions. Audit divergence to tune.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Step Functions and Lambda for orchestration; Bedrock for recommendation generation; Security Hub for routing and metric capture. Capture human override vs. AI recommendation as a tuning signal.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-AI-THREAT-HUNTING",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "AI-powered threat hunting operational",
+    "summary": "Hunt hypotheses generated by AI agents and validated by humans.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "LLM front-ends against SIEM data for hypothesis generation. Hunt outcomes feed detection authoring.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Athena over Security Lake or CloudTrail data for hypothesis generation with Bedrock; resulting detections promoted to GuardDuty custom threat lists or SIEM rules.",
+        "links": [
+          {
+            "label": "Amazon Security Lake",
+            "url": "https://docs.aws.amazon.com/security-lake/latest/userguide/what-is-security-lake.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-PREDICTIVE",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "Predictive threat analytics in use",
+    "summary": "Models forecast likely attack patterns based on telemetry trends.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Time-series forecasts on attack telemetry. Models retrained on a defined cadence.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-UTILIZE-CONTINUOUS-RETRAINING",
+    "stage": 4,
+    "pillar": "Utilize",
+    "title": "Continuous model tuning with A/B testing and automated retraining",
+    "summary": "Production models retrain on a schedule with A/B comparison and rollback.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION",
+        "#DEV SECURITY"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.10",
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Versioned datasets, versioned models, holdout eval sets. A/B traffic via the inference gateway.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "SageMaker Pipelines with Model Monitor drives the retraining trigger; Bedrock Custom Models supports versioned fine-tune deployments. A/B traffic split via inference gateways or Bedrock endpoint routing.",
+        "links": [
+          {
+            "label": "SageMaker Model Monitor",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-ERM-INTEGRATION",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "AI governance integrated with enterprise risk management",
+    "summary": "AI risk is not a separate process; it is part of how the enterprise risk function operates.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1",
+        "MANAGE 1.3"
+      ],
+      "iso_42001": [
+        "Cl. 6"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Same register, same review cadence, same risk treatment options.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-BOARD-REPORTING",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Board-level AI risk reporting established",
+    "summary": "The board sees AI risk on a documented cadence with quantitative metrics.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Quarterly slide: top three AI risks, treatment status, incident summary, regulatory horizon.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Security Hub dashboards exported to QuickSight feed the quarterly board pack. Snapshot the same metrics each quarter for trend comparability.",
+        "links": [
+          {
+            "label": "Security Hub findings export to QuickSight",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-customizations.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-QUANT-METHOD",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Quantitative AI risk methodology adopted",
+    "summary": "FAIR or equivalent quantitative method extended for AI-specific risk scenarios.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "Risk analysis (chapter 0)"
+      ],
+      "nist_ai_rmf": [
+        "MAP 5.1",
+        "MEASURE 2.1"
+      ],
+      "iso_42001": [
+        "Cl. 6.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "FAIR loss event frequency and magnitude curves for top AI scenarios.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-RISK-APPETITE",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "AI risk appetite and tolerance formally defined",
+    "summary": "The board has signed off on AI risk appetite in quantifiable terms.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.3"
+      ],
+      "iso_42001": [
+        "Cl. 6.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Couple appetite to the FAIR curves so the threshold has measurable enforcement.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-REG-MONITORING",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Proactive monitoring of AI regulations and standards",
+    "summary": "Legal and compliance track regulatory horizon (EU AI Act, US state laws, sectoral rules) and shape policy accordingly.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CHECK COMPLIANCE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1"
+      ],
+      "iso_42001": [
+        "Cl. 4.2",
+        "A.4.2"
+      ],
+      "eu_ai_act": [
+        "Full Act tracking"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Subscribe to the EU AI Act explorer and equivalent national trackers. Quarterly horizon review.",
+        "links": [
+          {
+            "label": "EU AI Act explorer",
+            "url": "https://artificialintelligenceact.eu/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "AWS Artifact for compliance artifacts (SOC, ISO, FedRAMP); Audit Manager for the active control framework state. The Generative AI Best Practices framework is the AWS lens on the AI Act and ISO 42001.",
+        "links": [
+          {
+            "label": "AWS Artifact",
+            "url": "https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-ETHICS-BOARD",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "AI ethics board or review process in place",
+    "summary": "An ethics review function evaluates high-stakes AI decisions independently of product owners.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#OVERSIGHT"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 5.1"
+      ],
+      "iso_42001": [
+        "A.5.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "External members on the panel for credibility. Public summary of decisions.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-BIAS-MONITORING",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Bias and fairness monitoring operational",
+    "summary": "Production AI systems are continuously evaluated for bias against defined fairness criteria.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#UNWANTED BIAS TESTING"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.11"
+      ],
+      "iso_42001": [
+        "A.6.2.5"
+      ],
+      "eu_ai_act": [
+        "Art. 10 (data and governance)"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "IBM AIF360, Fairlearn, or custom evaluation harnesses against held-out demographic data.",
+        "links": [
+          {
+            "label": "Fairlearn",
+            "url": "https://fairlearn.org/"
+          }
+        ]
+      },
+      "aws_bedrock": {
+        "summary": "SageMaker Clarify for both pre-training data bias and post-training prediction bias, with Model Monitor for drift over time. Findings to Security Hub.",
+        "links": [
+          {
+            "label": "SageMaker Clarify",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-fairness-and-explainability.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-REASONING-TRACEABILITY",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Reasoning traceability and decision audit artifacts",
+    "summary": "For each high-stakes AI decision, the reasoning chain is retained and auditable.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#EXPLAINABILITY",
+        "#AI TRANSPARENCY"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.8"
+      ],
+      "eu_ai_act": [
+        "Art. 12",
+        "Art. 13"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Trace IDs link to retrieval context, tool calls, and intermediate outputs. Retention aligned to regulatory and contractual requirements.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Bedrock invocation logs (request, response, guardrail decision) plus CloudTrail data events (who called what model when) plus AgentCore traces (every tool step). Stream into a single CloudWatch Logs group with retention aligned to regulatory requirements.",
+        "links": [
+          {
+            "label": "CloudTrail data events for Bedrock",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/logging-using-cloudtrail.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-4-GOVERN-NHI-LIFECYCLE",
+    "stage": 4,
+    "pillar": "Govern",
+    "title": "Formal NHI lifecycle management with automated credential rotation and decommissioning",
+    "summary": "Agent NHIs are provisioned, rotated, and decommissioned through automation tied to the asset register.",
+    "source": "SANS AISMM 2026 edition, p.14",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ],
+      "iso_42001": [
+        "A.6.2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Vault dynamic secrets or SPIFFE workload identity with automated rotation. Decommission ties to the asset-register lifecycle.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "IAM Identity Center for human-tied agent ownership. AgentCore Identity for the agent itself, with credential rotation tied to the agent lifecycle and an AWS Config rule that flags AgentCore identities older than the rotation window.",
+        "links": [
+          {
+            "label": "IAM Identity Center",
+            "url": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-SELF-IMPROVING",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "Self-improving AI defenses",
+    "summary": "Defenses adapt their detections and controls based on continuous adversarial feedback.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION",
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Closed-loop: red-team output flows into detection authoring with measured time-to-coverage.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-AUTONOMOUS-ADVERSARIAL-DETECTION",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "Autonomous adversarial detection operational",
+    "summary": "Novel adversarial techniques are detected by the system without human pre-definition.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Anomaly-on-anomaly approaches against agent behavior baselines. Requires sustained eval infrastructure.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-CHAOS-ENGINEERING",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "AI system chaos engineering conducted continuously",
+    "summary": "Chaos exercises validate resilience of agentic systems under fault, latency, and adversarial conditions.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Litmus or Chaos Mesh applied to AI inference stacks. Adversarial chaos in addition to fault chaos.",
+        "links": [
+          {
+            "label": "Chaos Mesh",
+            "url": "https://chaos-mesh.org/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-ZT-AGENTS",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "Zero Trust architecture fully extended to autonomous AI agents with context-aware, JIT permissions",
+    "summary": "Agent authorization is computed per request, with just-in-time elevation and consequence-based gating.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#LEAST MODEL PRIVILEGE",
+        "#MODEL ACCESS CONTROL"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 2.3"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Cedar/OPA policies with request context and consequence rating. Synchronous human approval reserved for irreversible or high-impact actions.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AgentCore Identity with per-request session policies and IAM Roles Anywhere for cross-environment workload identity. Cedar evaluates the consequence ladder per action.",
+        "links": [
+          {
+            "label": "AgentCore Identity",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-identity.html"
+          },
+          {
+            "label": "AWS Cedar policy language",
+            "url": "https://www.cedarpolicy.com/"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-ANTIFRAGILE",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "AI systems demonstrate antifragile properties",
+    "summary": "Failures and attacks produce systemic improvements rather than degradation.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Postmortem outputs feed automated detection and policy updates; measured time-to-improvement is the KPI.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-PROTECT-CONTINUOUS-VALIDATION",
+    "stage": 5,
+    "pillar": "Protect",
+    "title": "Continuous AI security validation",
+    "summary": "Validation against the full ATLAS matrix runs continuously, with novel-technique discovery measured as a metric.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.7"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Continuous Garak / custom-suite runs as a service, dashboards per AI system.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "Scheduled Bedrock model evaluation jobs against a continuously expanding adversarial suite. Findings publish to Security Hub for trend visibility.",
+        "links": [
+          {
+            "label": "Bedrock model evaluation",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-AUTONOMOUS-L1",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "AI agents authorized for Level 1 remediation",
+    "summary": "Validated agents perform Level 1 incident response actions autonomously, with human review for exceptions.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "L1 scope tightly defined and audited. Out-of-scope actions deny by default with escalation.",
+        "links": []
+      },
+      "aws_bedrock": {
+        "summary": "AgentCore agents scoped to L1-only actions with explicit allow-lists and Guardrails. Out-of-scope tool calls deny with escalation to the on-call human via PagerDuty or AWS Chatbot.",
+        "links": [
+          {
+            "label": "AWS Chatbot",
+            "url": "https://docs.aws.amazon.com/chatbot/latest/adminguide/what-is.html"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-SELF-HEALING",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "Self-healing security infrastructure operational",
+    "summary": "Configuration drift, control failure, and policy violation are remediated automatically with notification.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CONTINUOUS VALIDATION"
+      ],
+      "nist_ai_rmf": [
+        "MANAGE 4.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "GitOps + policy-as-code with automated remediation tied to known-good baselines.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-PREDICTIVE-DEFENSE",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "Predictive defense deployment",
+    "summary": "Defenses deploy ahead of expected attack patterns based on predictive models.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Telemetry-driven forecasting of attack patterns informs control posture changes.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-GENAI-SIMULATION",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "Generative AI used for threat simulation",
+    "summary": "GenAI generates realistic threat scenarios for blue team and tabletop training.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Scenario authoring agents with calibrated realism; outputs versioned alongside detection content.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-ATTACK-PREDICTION",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "AI-powered attack prediction operational",
+    "summary": "Predictive models forecast likely attack sequences and prepare detection content in advance.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "MEASURE 2.5"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Predictive models fed by IOC and TTP intelligence. Detection authoring driven by predicted gaps.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-CROSS-ORG-CORRELATION",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "Cross-organization AI threat correlation in place",
+    "summary": "Threat data is shared with sector peers in a privacy-preserving way for cross-correlation.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#MONITOR USE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "ISAC participation extended with AI-relevant signals. Privacy-preserving aggregation patterns.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-UTILIZE-RND",
+    "stage": 5,
+    "pillar": "Utilize",
+    "title": "AI security research and development program",
+    "summary": "Internal R&D pursues novel detection and response approaches; outputs contribute back to community.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Funded research time, publication path, and external collaboration channel.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-COMPETITIVE-ADVANTAGE",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "AI governance enables a competitive advantage",
+    "summary": "Mature AI governance is a selling point with customers and partners.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Visible posture: public commitments, third-party certifications, transparent published policies.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-PREDICTIVE-COMPLIANCE",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "Predictive regulatory compliance capabilities established",
+    "summary": "Regulatory changes are tracked, modeled, and addressed before effective dates.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CHECK COMPLIANCE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1"
+      ],
+      "iso_42001": [
+        "Cl. 4.2"
+      ],
+      "eu_ai_act": [
+        "Full Act tracking"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Track lead time to compliance as a KPI.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-BOARD-EXPERTISE",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "Board-level AI expertise",
+    "summary": "Board includes members with substantive AI background.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Recruit or advise to fill the gap if internal expertise is missing.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-FRAMEWORK-PUBLICATION",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "AI governance frameworks developed and published",
+    "summary": "Internal governance assets are sufficiently mature to be published externally and used by peers.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 2.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Open-source policy templates and contribute to OWASP / CSA working groups.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-REG-ENGAGEMENT",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "Regulatory body engagement",
+    "summary": "The organization participates in standards bodies and regulatory consultations.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#CHECK COMPLIANCE"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 6.2"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Named participation in NIST, ISO, OWASP, CSA working groups with measured contribution output.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-PROCESS-ANTICIPATION",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "Governance processes anticipate AI evolution",
+    "summary": "Policies and controls evolve ahead of demand rather than in reaction.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Quarterly review of horizon items with policy implications.",
+        "links": []
+      }
+    }
+  },
+  {
+    "id": "AISMM-5-GOVERN-PROACTIVE-ADAPTATION",
+    "stage": 5,
+    "pillar": "Govern",
+    "title": "Proactive policy adaptation",
+    "summary": "Policy is updated as technology and threat landscape change without waiting for incidents.",
+    "source": "SANS AISMM 2026 edition, p.16",
+    "crosswalk": {
+      "owasp_ai_exchange": [
+        "#AI PROGRAM"
+      ],
+      "nist_ai_rmf": [
+        "GOVERN 1.1"
+      ]
+    },
+    "vendor_implementation": {
+      "cloud_agnostic": {
+        "summary": "Quarterly policy refresh with feedback loops from operations and from external research.",
+        "links": []
+      }
+    }
+  }
+]

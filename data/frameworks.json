@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sans_aismm",
+    "name": "SANS AI Security Maturity Model",
+    "version": "2026 edition",
+    "url": "https://www.sans.org/mlp/2026-ai-security-maturity-model-ebook",
+    "short_description": "Five-stage maturity model organized around the Protect, Utilize, Govern pillars. The operational companion to the SANS Secure AI Blueprint. This is the spine of the site."
+  },
+  {
+    "id": "owasp_ai_exchange",
+    "name": "OWASP AI Exchange",
+    "version": "Generated 2026-05-17",
+    "url": "https://owaspai.org/",
+    "short_description": "International open consortium publication. 300+ pages covering threats, controls, risk analysis, and agentic AI. Tagged with #CONTROL-NAME hashtags throughout."
+  },
+  {
+    "id": "nist_ai_rmf",
+    "name": "NIST AI Risk Management Framework (AI RMF 1.0)",
+    "version": "1.0",
+    "url": "https://www.nist.gov/itl/ai-risk-management-framework",
+    "short_description": "Govern, Map, Measure, Manage. The NIST framework for trustworthy AI, with the Generative AI Profile (NIST AI 600-1) as an applied companion."
+  },
+  {
+    "id": "iso_42001",
+    "name": "ISO/IEC 42001",
+    "version": "2023",
+    "url": "https://www.iso.org/standard/81230.html",
+    "short_description": "AI management system standard. ISMS-style controls and certifiable management requirements for AI."
+  },
+  {
+    "id": "aicm",
+    "name": "CSA AI Controls Matrix",
+    "version": "v1.0",
+    "url": "https://cloudsecurityalliance.org/research/working-groups/ai-controls",
+    "short_description": "Cloud Security Alliance controls matrix for AI systems. Domain-grouped controls aligned to CCM and AI-specific risks."
+  },
+  {
+    "id": "aegis",
+    "name": "Forrester AEGIS",
+    "version": "2025",
+    "url": "https://www.forrester.com/technology/aegis-framework/",
+    "short_description": "Forrester's AI governance framework. Used here for executive-friendly mappings; canonical URL points to Forrester's AI research index."
+  },
+  {
+    "id": "eu_ai_act",
+    "name": "EU AI Act",
+    "version": "Regulation (EU) 2024/1689",
+    "url": "https://artificialintelligenceact.eu/",
+    "short_description": "EU regulation classifying AI systems by risk tier with corresponding obligations. Compliance posture rather than a control library."
+  },
+  {
+    "id": "mitre_atlas",
+    "name": "MITRE ATLAS",
+    "version": "Current online edition",
+    "url": "https://atlas.mitre.org/",
+    "short_description": "Adversarial Threat Landscape for AI Systems. Threat technique taxonomy analogous to MITRE ATT&CK, oriented to ML/AI."
+  }
+]

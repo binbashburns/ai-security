@@ -1,0 +1,217 @@
+[
+  {
+    "stage": 1,
+    "title": "Unaware / Ad Hoc",
+    "tagline": "No formal approach. AI usage across the organization is unmanaged.",
+    "source": "SANS AISMM 2026 edition, p.8-9",
+    "description": [
+      "Stage 1 describes an organization with no formal AI security approach. Employees use public AI tools without oversight; developers may pull models from public repositories without verification or consume managed AI services without organizational awareness. No AI governance exists, no AI/ML capabilities are intentionally used in security operations, and internal AI implementations are unprotected.",
+      "At this stage, employee use of personal or unapproved AI tools is BYOAI, not Shadow AI. Shadow AI only applies once a policy exists to be violated."
+    ],
+    "value": "Organizations at Stage 1 face significant unmanaged risk: sensitive data leakage to public AI models, compliance exposure, missed opportunities to leverage AI for security improvement, and exposure to AI-augmented threats that legacy controls were not designed to detect. Recognizing this starting point creates urgency to establish foundational controls.",
+    "people_indicators": [
+      "Employees freely use public AI tools with sensitive data.",
+      "No training exists on AI risks or acceptable use.",
+      "IT and Security are unaware of AI tools present in the environment.",
+      "No individual or team is accountable for AI governance."
+    ],
+    "steps_to_next_level": [
+      "Conduct a BYOAI discovery survey.",
+      "Assign an AI governance owner and define the RACI.",
+      "Draft an initial AI acceptable use policy.",
+      "Communicate the policy and expectations to the workforce.",
+      "Inventory existing AI/ML capabilities in security tools.",
+      "Implement basic access controls (blocklist or allowlist).",
+      "Conduct an initial AI risk assessment.",
+      "Provide basic AI awareness training tailored to organizational risks.",
+      "Establish basic AI supply chain visibility."
+    ],
+    "prerequisites_for_next_stage": "Basic data classification must be in place. An effective AI policy cannot be written without knowing where sensitive data lives. AI maturity depends on data maturity."
+  },
+  {
+    "stage": 2,
+    "title": "Reactive / Policy-Emerging",
+    "tagline": "Basic policies exist. AI tools are selectively blocked or otherwise ungoverned.",
+    "source": "SANS AISMM 2026 edition, p.10-11",
+    "description": [
+      "Stage 2 describes an organization that has recognized AI as a risk area and put basic controls in place. An AI acceptable use policy exists but is often binary (block AI, or allow with caution). Security tools may include AI features but they run at default settings without intentional configuration. Leadership is aware of AI at a high level but has not prioritized strategic investment.",
+      "A block-based AI policy can feel like risk management, but practitioner experience shows it usually drives AI usage underground rather than preventing it. SANS calls this the 'Framework of No.' The goal of the Stage 2 to 3 transition is not to eliminate AI use; it is to bring it into visibility where it can be governed."
+    ],
+    "value": "A Stage 2 program establishes baseline controls and a policy foundation. It reduces the most obvious risks (blatant data leakage to public models) and creates a starting point for more sophisticated governance. The organization can demonstrate basic due diligence on AI risk.",
+    "people_indicators": [
+      "Employees are aware a policy exists but unclear on details.",
+      "Some compliance with policy; workarounds are common.",
+      "Security team is beginning to learn about AI threats.",
+      "No dedicated AI security expertise."
+    ],
+    "metrics_by_pillar": {
+      "Protect": [
+        "Number of known AI tools in use.",
+        "Number of sanctioned AI tools with documented data access and ownership.",
+        "Number of third-party AI integrations identified but not yet assessed."
+      ],
+      "Govern": [
+        "Percentage of employees acknowledging the AI acceptable use policy.",
+        "AI policy violations detected.",
+        "Completion rate of AI awareness training.",
+        "Number of Shadow AI incidents detected (dependent on monitoring capability).",
+        "Number of AI tools added to the enterprise risk register.",
+        "Number of BYOAI discovery findings resolved or remediated."
+      ]
+    },
+    "steps_to_next_level": [
+      "Establish a cross-functional AI governance body or council.",
+      "Conduct technical BYOAI discovery.",
+      "Develop a comprehensive AI policy framework.",
+      "Create AI-specific data classification processes.",
+      "Implement AI-aware DLP controls.",
+      "Deploy sanctioned AI tools and evaluate enterprise AI gateway solutions.",
+      "Add AI risks to the enterprise risk register.",
+      "Develop AI security training for technical staff.",
+      "Evaluate AI capabilities for security operations.",
+      "Create AI vendor assessment criteria.",
+      "Implement AI usage monitoring and logging at the application level.",
+      "Document at least a partial AI asset inventory."
+    ],
+    "prerequisites_for_next_stage": "A governance body must be formed with cross-functional representation, the security team must have completed baseline AI training, and at least a partial AI asset inventory must be documented."
+  },
+  {
+    "stage": 3,
+    "title": "Defined / Risk-Informed",
+    "tagline": "Formal governance and controlled deployment. Security use cases emerging.",
+    "source": "SANS AISMM 2026 edition, p.12-13",
+    "description": [
+      "Stage 3 marks the transition to intentional, risk-informed AI security. The organization has formal AI governance with cross-functional oversight. AI usage is controlled through enterprise tools rather than outright bans. Security teams actively leverage AI capabilities and are building AI-specific skills. AI systems are included in security assessments and AI risks are tracked formally.",
+      "Stage 3 also addresses the shift toward action-taking AI: every deployed AI agent has a documented human owner, and agents are assigned distinct Non-Human Identities (NHIs) with strict access control. The Principle of Least Agency (the agentic analogue to Least Privilege) applies."
+    ],
+    "value": "A Stage 3 program enables controlled AI adoption that balances innovation with security. The organization can demonstrate mature AI governance to regulators, customers, and partners. For organizations with limited AI deployment and a non-critical AI attack surface, Stage 3 is a strong and defensible operating position. Organizations processing regulated data, running customer-facing AI, or operating in sectors actively targeted by nation-state actors should treat Stage 3 as a milestone rather than a destination.",
+    "people_indicators": [
+      "Employees assessed on AI policy nuances and select AI tools based on data sensitivity.",
+      "Security team is competent with AI security tools.",
+      "AI Security Specialist and AI Governance Lead roles are being defined or filled.",
+      "Cross-functional collaboration on AI decisions is established.",
+      "AI risks are discussed during project planning."
+    ],
+    "metrics_by_pillar": {
+      "Protect": [
+        "AI systems with completed security assessments.",
+        "AI vulnerabilities remediated within organization-defined SLAs.",
+        "AI-specific incidents detected.",
+        "Percentage of AI agents mapped to a dedicated NHI."
+      ],
+      "Utilize": [
+        "AI-detected threats vs. manually detected threats.",
+        "Alert volume reduction attributable to AI triage.",
+        "Mean Time to Detect (MTTD), AI-assisted vs. baseline.",
+        "Efficiency gains per security FTE."
+      ],
+      "Govern": [
+        "Approved AI tools vs. Shadow AI instances detected.",
+        "Policy compliance rate.",
+        "AI risk assessment completion rate.",
+        "Training completion rate for AI-specific roles."
+      ]
+    },
+    "steps_to_next_level": [
+      "Implement an AI risk analysis.",
+      "Deploy an AI red teaming program.",
+      "Develop an AI security metrics dashboard.",
+      "Implement continuous AI monitoring.",
+      "Integrate AI security into CI/CD pipelines.",
+      "Build an advanced AI threat hunting capability.",
+      "Develop AI-specific SOAR playbooks.",
+      "Implement model security operations (MLSecOps).",
+      "Establish AI security architecture standards.",
+      "Develop predictive AI risk analytics."
+    ],
+    "prerequisites_for_next_stage": "A formal risk quantification methodology must be adopted, an AI red team capability initiated, an MLSecOps pipeline started, and board-level AI risk reporting established."
+  },
+  {
+    "stage": 4,
+    "title": "Managed / Integrated",
+    "tagline": "AI embedded in security operations. Systems secured by design.",
+    "source": "SANS AISMM 2026 edition, p.14-15",
+    "description": [
+      "Stage 4 represents mature, quantitatively managed AI security. AI is deeply integrated into security operations with measurable outcomes. AI systems are secured by design with comprehensive testing and monitoring. AI governance is embedded in enterprise processes with quantified risk management. Decisions are data-driven and AI security performance is predictable.",
+      "This level is typically required for organizations with significant AI deployment, those in regulated industries, or those facing advanced threats. Stage 3 detection speeds, tuned for human-pace adversaries, are increasingly insufficient against threats that operate at dramatically faster operational tempos."
+    ],
+    "value": "A Stage 4 program demonstrates ROI on AI security investments, enables confident AI adoption at scale, and provides assurance to stakeholders. The organization can handle sophisticated AI-specific threats and leverage advanced AI capabilities for security.",
+    "people_indicators": [
+      "AI security training and development across the security team.",
+      "Specialist roles employed (AI/ML Security Engineers, AI Incident Response Orchestrators, AI SOC Engineers).",
+      "Product managers and IT collaborate with security before AI development begins.",
+      "Business units are required to consult security on AI projects.",
+      "The general workforce can identify common AI failure modes and is trained to escalate AI anomalies."
+    ],
+    "metrics_by_pillar": {
+      "Protect": [
+        "AI red team findings severity trend.",
+        "Adversarial test pass/fail rate.",
+        "AI incident MTTD and MTTR."
+      ],
+      "Utilize": [
+        "Custom model detection accuracy.",
+        "Autonomous response success rate.",
+        "AI-enabled MTTR improvement."
+      ],
+      "Govern": [
+        "Quantified AI risk exposure (Annualized Loss Expectancy).",
+        "AI risk treatment ROI.",
+        "Regulatory compliance readiness score.",
+        "AI ethics review completion rate."
+      ]
+    },
+    "steps_to_next_level": [
+      "Develop autonomous AI security capabilities.",
+      "Implement AI-powered chaos engineering.",
+      "Build predictive AI governance.",
+      "Establish an AI security research program.",
+      "Develop industry AI security contributions.",
+      "Implement adaptive AI architecture.",
+      "Build an AI security innovation lab.",
+      "Develop AI threat simulation capability.",
+      "Achieve AI security certifications and mature controls validation.",
+      "Mentor other organizations on AI security."
+    ],
+    "prerequisites_for_next_stage": "An active AI security research program must be established, autonomous response capabilities validated in production, published contributions to AI security standards or community accepted, and Zero Trust architecture fully extended to autonomous AI agents."
+  },
+  {
+    "stage": 5,
+    "title": "Optimizing / Adaptive",
+    "tagline": "AI-native security; autonomous capabilities and industry leadership.",
+    "source": "SANS AISMM 2026 edition, p.16-17",
+    "description": [
+      "Stage 5 represents the frontier of AI security maturity. The organization operates with AI-native security, where AI is fundamental to security operations rather than an enhancement. AI systems are protected by adaptive, self-improving defenses. AI governance anticipates future requirements and drives competitive advantage. The organization contributes to the broader AI security community and shapes industry standards.",
+      "Elements of this stage exist primarily in large technology companies, defense contractors, and AI-native firms at the leading edge. For most organizations, Stage 5 is a multi-year trajectory, not a near-term target."
+    ],
+    "value": "A Stage 5 program positions AI security as a business differentiator. The organization can pursue the most sensitive AI use cases, respond to novel AI threats with agility, and maintain resilience as AI technology evolves rapidly.",
+    "people_indicators": [
+      "AI security expertise is an organizational differentiator.",
+      "The security team includes AI researchers.",
+      "AI governance recognized externally.",
+      "Talent attracted by AI security leadership.",
+      "The organization mentors others on AI security."
+    ],
+    "metrics_by_pillar": {
+      "Protect": [
+        "Frequency and effectiveness of self-improving defense adaptations.",
+        "Chaos engineering exercise outcomes and resilience scores.",
+        "Time to autonomous detection of novel adversarial techniques."
+      ],
+      "Utilize": [
+        "Autonomous remediation success rate and scope coverage.",
+        "Predictive defense accuracy (threats anticipated vs. observed).",
+        "Research output contributing to new detection capabilities."
+      ],
+      "Govern": [
+        "Number of regulatory or standards body engagements.",
+        "External recognition of governance program (publications, citations, peer recognition).",
+        "Lead time on regulatory preparedness (days ahead of effective date)."
+      ]
+    },
+    "steps_to_next_level": [
+      "Maintaining Stage 5 requires continuous evolution: anticipating AI technology changes, maintaining adaptive capacity, contributing to the broader AI security community, continuously challenging practices, and developing the next generation of AI security leaders."
+    ],
+    "prerequisites_for_next_stage": null
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "cloud_agnostic",
+    "label": "Cloud-Agnostic / OSS",
+    "default": true,
+    "summary": "Vendor-neutral guidance using open-source projects and portable patterns: LiteLLM, NeMo Guardrails, LLM Guard, Langfuse, Presidio, Promptfoo, Garak."
+  },
+  {
+    "id": "aws_bedrock",
+    "label": "AWS Bedrock",
+    "default": false,
+    "summary": "AWS Bedrock and AgentCore. IAM-scoped agents, Bedrock Guardrails, KB and Agent traces in CloudWatch."
+  },
+  {
+    "id": "azure_foundry",
+    "label": "Azure AI Foundry",
+    "default": false,
+    "summary": "Azure AI Foundry, Azure OpenAI, Content Safety, Defender for Cloud AI Security Posture Management."
+  },
+  {
+    "id": "google_vertex_ai",
+    "label": "Google Vertex AI",
+    "default": false,
+    "summary": "Vertex AI, Model Garden, Model Armor, Sensitive Data Protection, Agent Engine."
+  },
+  {
+    "id": "anthropic_claude",
+    "label": "Anthropic Claude",
+    "default": false,
+    "summary": "Anthropic API and Claude Enterprise. Usage admin, system prompts, tool use restrictions, audit logs."
+  },
+  {
+    "id": "ms_copilot",
+    "label": "Microsoft 365 Copilot",
+    "default": false,
+    "summary": "M365 Copilot governance via Purview, Entra, restricted SharePoint search, Copilot audit logs."
+  },
+  {
+    "id": "chatgpt_enterprise",
+    "label": "ChatGPT Enterprise",
+    "default": false,
+    "summary": "ChatGPT Enterprise compliance API, SSO, retention controls, workspace audit logs."
+  }
+]

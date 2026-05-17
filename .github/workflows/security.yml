@@ -1,0 +1,40 @@
+name: security
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "**/*.html"
+      - "**/*.css"
+      - "**/*.js"
+      - "**/*.json"
+      - "**/*.md"
+      - ".github/workflows/security.yml"
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 6 * * 1"
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  secrets:
+    uses: binbashburns/security-pipelines/.github/workflows/secrets.yml@main
+
+  link-check:
+    uses: binbashburns/security-pipelines/.github/workflows/link-check.yml@main
+    with:
+      paths: "**/*.html **/*.md **/*.json"
+      create-issue: true
+
+  sast:
+    if: github.event_name == 'pull_request'
+    uses: binbashburns/security-pipelines/.github/workflows/sast.yml@main
+    with:
+      language: javascript
+
+  sbom:
+    uses: binbashburns/security-pipelines/.github/workflows/sbom-vuln.yml@main

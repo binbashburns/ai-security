@@ -1,0 +1,56 @@
+[
+  {
+    "title": "OWASP Top 10 for LLM Applications",
+    "version": "2025",
+    "url": "https://genai.owasp.org/llm-top-10/",
+    "note": "Companion to OWASP AI Exchange focused on application-layer LLM risks. Referenced in several Stage 3 controls."
+  },
+  {
+    "title": "OWASP Agentic AI Threats and Mitigations",
+    "version": "2025",
+    "url": "https://genai.owasp.org/resource/agentic-ai-threats-and-mitigations/",
+    "note": "OWASP working group output specifically on agentic systems. Maps cleanly to AISMM Stage 3 agent-identity work."
+  },
+  {
+    "title": "NIST AI 600-1: Generative AI Profile",
+    "version": "1.0 (2024)",
+    "url": "https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf",
+    "note": "Applied companion to NIST AI RMF 1.0 covering generative AI risks and suggested actions."
+  },
+  {
+    "title": "MITRE ATLAS",
+    "version": "Current online edition",
+    "url": "https://atlas.mitre.org/",
+    "note": "Adversarial Threat Landscape for AI Systems. ATT&CK-style technique taxonomy for AI."
+  },
+  {
+    "title": "MITRE ATLAS Navigator",
+    "version": "Current",
+    "url": "https://mitre-atlas.github.io/atlas-navigator/",
+    "note": "Coverage-tracking tool over the ATLAS matrix. Same workflow as ATT&CK Navigator."
+  },
+  {
+    "title": "OWASP AI Red Teaming Guide",
+    "version": "2024",
+    "url": "https://genai.owasp.org/resource/genai-red-teaming-guide/",
+    "note": "Methodology and test cases for AI red teaming."
+  },
+  {
+    "title": "OpenTelemetry GenAI Semantic Conventions",
+    "version": "Active draft",
+    "url": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+    "note": "Vendor-neutral conventions for logging and tracing GenAI invocations. Cited under Stage 3 structured logging."
+  },
+  {
+    "title": "EU AI Act explorer",
+    "version": "Regulation (EU) 2024/1689",
+    "url": "https://artificialintelligenceact.eu/",
+    "note": "Independent explorer over the EU AI Act text. Used here for article-level citations."
+  },
+  {
+    "title": "FAIR Institute (Factor Analysis of Information Risk)",
+    "version": "Open standard",
+    "url": "https://www.fairinstitute.org/",
+    "note": "Quantitative risk methodology. Stage 4 references FAIR extended for AI scenarios."
+  }
+]
