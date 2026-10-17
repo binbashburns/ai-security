@@ -74,10 +74,10 @@ function renderBaselines(main, state) {
       const l1 = recs.filter((r) => r.level === 1).length;
       const l2 = recs.length - l1;
       return `
-        <a class="card" href="#/baselines/${escapeHtml(t.id)}" style="text-decoration:none;display:block;">
+        <a class="card tool-card" href="#/baselines/${escapeHtml(t.id)}">
           <div class="card-meta">${escapeHtml(t.vendor)}</div>
           <div class="card-title">${escapeHtml(t.label)}</div>
-          <p style="margin:0;">${recs.length} recommendations &middot; ${l1} Level 1 &middot; ${l2} Level 2</p>
+          <p class="tool-card-stats">${recs.length} recommendations &middot; ${l1} Level 1 &middot; ${l2} Level 2</p>
         </a>`;
     })
     .join('');
@@ -123,7 +123,7 @@ function renderBaselines(main, state) {
           <div class="crosswalk-block">
             <span class="block-label">CIS Controls v8.1 Safeguards</span>
             <ul class="plain-list">${cisSafeguardList(state, p.cis)}</ul>
-            <div class="card-meta" style="margin:6px 0 0;">Companion guide: ${guideLinks(state, p.guides)}</div>
+            <div class="card-meta guide-meta">Companion guide: ${guideLinks(state, p.guides)}</div>
           </div>
           <div class="crosswalk-block">
             <span class="block-label">AISMM indicators</span>
@@ -183,7 +183,7 @@ function renderBaselines(main, state) {
       <p>These say what to secure. The tool pages say which setting does it.</p>
       <ul>${resources}</ul>
 
-      <div class="status-banner" style="margin-top:20px;">${inlineCode(meta.mapping_note || '')}</div>
+      <div class="status-banner spaced">${inlineCode(meta.mapping_note || '')}</div>
     </div>
   `;
 }
@@ -300,7 +300,7 @@ function renderBaselineTool(main, state, toolId) {
 
       <div id="baseline-sections">${sections}</div>
 
-      <p style="margin-top:24px;"><a href="#/baselines">All tool baselines</a> &middot; ${others}</p>
+      <p class="page-footnote"><a href="#/baselines">All tool baselines</a> &middot; ${others}</p>
     </div>
   `;
 

@@ -11,7 +11,7 @@ function renderReferences(main, state) {
     )
     .join('');
 
-  // Section 2: extra refs from refs.json (e.g. SANS Critical AI Security Guidelines, EU AI Act version notes, MITRE ATLAS pages).
+  // Section 2: extra refs from refs.json (OWASP LLM Top 10, NIST AI 600-1, MITRE ATLAS pages, and similar).
   const extraItems = (state.refs || [])
     .map(
       (r) => `

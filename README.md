@@ -1,6 +1,6 @@
 # ai-security
 
-A practitioner-level reference site for AI security, anchored on the **SANS AI Security Maturity Model (AISMM)** with cross-framework mappings (OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, Forrester AEGIS, CIS Controls v8.1 AI Companion Guides) and vendor-specific implementation guidance (cloud-agnostic, AWS Bedrock, Azure AI Foundry, Google Vertex AI, Anthropic Claude, Microsoft 365 Copilot, ChatGPT Enterprise).
+A practitioner-level reference site for AI security, anchored on the **SANS AI Security Maturity Model (AISMM)** with cross-framework mappings (OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, CIS Controls v8.1 AI Companion Guides, EU AI Act, MITRE ATLAS) and vendor-specific implementation guidance (cloud-agnostic, AWS Bedrock, Azure AI Foundry, Google Vertex AI, Anthropic Claude, Microsoft 365 Copilot, ChatGPT Enterprise).
 
 A second section, **Tool Baselines**, is the CIS Benchmark that does not exist for enterprise AI tools: per-setting hardening for Claude Code, Claude Enterprise / Team, Cursor, and GitHub Copilot, keyed to eight cross-vendor control primitives.
 
@@ -30,10 +30,13 @@ python3 -m http.server 8000
 .
 ├── CNAME                            # ai.binbashburns.com
 ├── index.html                       # shell: topbar (title + vendor tabs), sidebar, main
+├── 404.html                         # GitHub Pages not-found page
+├── favicon.svg
+├── .lycheeignore                    # link-check exclusions, with the reason for each
 ├── styles.css                       # dark-only dracula, single stylesheet
-├── app.js                           # data loader, vendor-tab state, router dispatch
+├── app.js                           # data loader, vendor-tab state, hash router, sidebar
 ├── js/
-│   ├── render-helpers.js            # shared escaping, links, crosswalk/vendor blocks
+│   ├── render-helpers.js            # escaping, links, lookups. loads first, used by all
 │   ├── render-home.js
 │   ├── render-stage.js              # stage pages (the bulk of the site)
 │   ├── render-frameworks.js
@@ -44,14 +47,22 @@ python3 -m http.server 8000
 ├── data/
 │   ├── stages.json                  # per-stage prose: description, indicators, metrics, steps, prereqs
 │   ├── controls.json                # per-control records: pillar, summary, source, crosswalk, vendor_implementation
-│   ├── frameworks.json              # framework metadata (name, URL, PDF, version)
-│   ├── vendors.json                 # vendor tab metadata (id, label, default)
+│   ├── frameworks.json              # framework metadata (id, name, version, URL, description)
+│   ├── vendors.json                 # vendor tab metadata (id, label, default, summary)
 │   ├── refs.json                    # bibliography entries
 │   └── baselines.json               # tool baselines: primitives, tools, recommendations
-└── .github/workflows/
-    ├── deploy.yml                   # GitHub Pages deploy
-    └── security.yml                 # reusable scanning workflows
+├── scripts/
+│   └── validate-data.py             # schema and link-shape checks over data/, run in CI
+└── .github/
+    ├── dependabot.yml               # GitHub Actions version updates
+    └── workflows/
+        ├── deploy.yml               # GitHub Pages deploy
+        ├── security.yml             # reusable scanning workflows
+        └── validate-data.yml        # runs scripts/validate-data.py
 ```
+
+There is no build step and no bundler. Every function is a global, so the script order in
+`index.html` matters: `js/render-helpers.js` first, the other renderers next, `app.js` last.
 
 ## Adding a control record
 
@@ -70,7 +81,7 @@ A control is one row in `data/controls.json`. Use this shape:
     "nist_ai_rmf": ["GOVERN 1.4", "MANAGE 2.3"],
     "iso_42001": ["A.6.2.3"],
     "aicm": ["AIM-01"],
-    "aegis": ["AE-12"]
+    "mitre_atlas": ["AML.T0051"]
   },
   "vendor_implementation": {
     "cloud_agnostic": {
@@ -95,8 +106,11 @@ Rules of the road:
 - **`id`** uses the pattern `AISMM-<stage>-<PILLAR>-<short-token>`.
 - **`source`** cites the authoritative document, edition, and page where applicable. Use the published name (e.g. `SANS AISMM 2026 edition, p.12`); do not reference local files.
 - **`crosswalk`** keys are framework IDs from `data/frameworks.json`. Omit keys that do not apply rather than setting them to `null` or `[]`.
-- **`vendor_implementation`** keys are vendor IDs from `data/vendors.json`. **Omit a vendor entirely** if there is no real guidance. The site hides any vendor block that has no entry rather than showing a placeholder.
+- **`vendor_implementation`** keys are vendor IDs from `data/vendors.json`. **Omit a vendor entirely** if there is no real guidance. The site states the gap ("No <vendor> guidance recorded for this control yet") rather than inventing filler.
 - Every link opens in a new tab. Use canonical vendor docs, not blog posts.
+- **Verify every URL before you add it.** A 200 response is not sufficient: several vendor doc links here returned 200 while silently redirecting to a service landing page, which means the cited page is gone. Check the effective URL.
+
+Run `python3 scripts/validate-data.py` after editing anything under `data/`. It is stdlib-only and checks ids, stage/pillar consistency, crosswalk and vendor keys, and link shape.
 
 ## Adding a vendor tab
 
@@ -106,7 +120,7 @@ Rules of the road:
    { "id": "new_vendor", "label": "New Vendor", "default": false }
    ```
 
-2. Add a `new_vendor` block to whichever control records have real implementation guidance for that vendor. Skip controls that have no real guidance; the tab will silently hide those.
+2. Add a `new_vendor` block to whichever control records have real implementation guidance for that vendor. Skip controls that have no real guidance; those render an explicit "not recorded yet" note under the new tab.
 
 That is the only change required. The vendor tab bar in the topbar reads from `vendors.json`; the renderer reads from `controls.json`.
 
@@ -123,6 +137,9 @@ That is the only change required. The vendor tab bar in the topbar reads from `v
      "short_description": "One-sentence summary of what this framework covers."
    }
    ```
+
+   A framework no control cites yet gets no column in the Crosswalk Matrix, so add the
+   mappings in the same change.
 
 2. Add the framework ID as a key under `crosswalk` on any control record where it applies.
 
@@ -170,7 +187,9 @@ Rules of the road:
 
 ## Deployment
 
-GitHub Pages, custom domain via `CNAME`. The workflow at `.github/workflows/deploy.yml` stages files into `_site/` and publishes on every push to `main`.
+GitHub Pages, custom domain via `CNAME`. The workflow at `.github/workflows/deploy.yml` stages files into `_site/` and publishes on every push to `main`. A new top-level file has to be added to both the `paths:` trigger and the staging step or it will not ship.
+
+Security scanning runs from `.github/workflows/security.yml`, which calls the reusable workflows in [binbashburns/security-pipelines](https://github.com/binbashburns/security-pipelines): a TruffleHog secrets gate, then Semgrep, lychee link checking, and a ZAP baseline scan.
 
 ## Sibling sites
 

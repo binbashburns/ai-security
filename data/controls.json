@@ -59,6 +59,36 @@
             "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/what-is-access-analyzer.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Build the register from three surfaces: Foundry project and model deployment resources in the subscription, Defender for Cloud AI security posture for deployments nobody declared, and Purview DSPM for AI for Copilot and third-party assistant usage. Turn on diagnostic settings per Foundry resource so invocations land in a Log Analytics workspace.",
+        "links": [
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          },
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Inventory from two sources: the model deployments and endpoints in each project, and Security Command Center asset inventory for resources created outside approved projects. Enable Data Access audit logs so invocation is recorded, not only resource creation.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Platform audit logging",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/audit-logging"
+          }
+        ]
       }
     }
   },
@@ -112,7 +142,33 @@
           },
           {
             "label": "AWS Well-Architected ML Lens",
-            "url": "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/welcome.html"
+            "url": "https://docs.aws.amazon.com/wellarchitected/latest/machine-learning-lens/machine-learning-lens.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Microsoft's AI Red Team guidance and the Foundry risk and safety evaluators name the same threat classes in product terms, which makes them usable as a team reading list without a subscription.",
+        "links": [
+          {
+            "label": "Microsoft AI Red Team guidance",
+            "url": "https://learn.microsoft.com/en-us/security/ai-red-team/"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Google's Secure AI Framework is the vendor-neutral read. Model Armor's documentation names the concrete attack classes it screens for (prompt injection, jailbreak, sensitive data disclosure), which grounds the abstract threats in something testable.",
+        "links": [
+          {
+            "label": "Google Secure AI Framework",
+            "url": "https://cloud.google.com/security/ai"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
           }
         ]
       }
@@ -159,6 +215,40 @@
           {
             "label": "VPC endpoints for SageMaker",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/interface-vpc-endpoint.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Custom models live in Azure ML. Register every model in the workspace registry, enable customer-managed keys on the workspace, and expose inference through a private endpoint rather than a public scoring URI.",
+        "links": [
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          },
+          {
+            "label": "Azure ML data encryption",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-data-encryption"
+          },
+          {
+            "label": "Foundry private link configuration",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Register custom models in Model Registry, encrypt platform resources with CMEK, and put the project inside a VPC Service Controls perimeter so endpoints are unreachable from outside it.",
+        "links": [
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
+          },
+          {
+            "label": "CMEK for the AI platform",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/cmek"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
           }
         ]
       }
@@ -215,11 +305,37 @@
         "links": [
           {
             "label": "Bedrock Marketplace",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-marketplace.html"
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/amazon-bedrock-marketplace.html"
           },
           {
             "label": "SageMaker JumpStart foundation models",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Source models from the Foundry model catalog, which records publisher, license, and version per model. Block egress to public model hubs so an uncatalogued model cannot arrive at run time.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Foundry private link configuration",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Garden is the controlled entry point and carries publisher and license per model. A VPC Service Controls perimeter stops training jobs pulling weights from arbitrary external hosts.",
+        "links": [
+          {
+            "label": "Model Garden",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
           }
         ]
       }
@@ -270,6 +386,36 @@
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models-customize.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Use the Foundry catalog as the canonical source. When a use case needs a model that is not catalogued, mirror it into an Azure ML registry after scanning and pin the deployment to the registered version.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Deploy from Model Garden rather than a notebook download. Anything mirrored in gets scanned, registered with a version, and gated at deploy time with Binary Authorization on the serving container.",
+        "links": [
+          {
+            "label": "Model Garden",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models"
+          },
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
+          },
+          {
+            "label": "Binary Authorization",
+            "url": "https://docs.cloud.google.com/binary-authorization/docs/overview"
+          }
+        ]
       }
     }
   },
@@ -306,7 +452,7 @@
         "links": [
           {
             "label": "OWASP Top 10 for LLM Apps (LLM06: Excessive Agency)",
-            "url": "https://genai.owasp.org/llmrisk/llm06-excessive-agency/"
+            "url": "https://genai.owasp.org/llmrisk/llm062025-excessive-agency/"
           }
         ]
       },
@@ -315,7 +461,37 @@
         "links": [
           {
             "label": "Bedrock IAM actions",
-            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_bedrock.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Entra enterprise applications lists every OAuth-consented third-party app and the Graph scopes it holds; Purview DSPM for AI adds the assistants touching Microsoft 365 data. Revoke any grant with no named owner.",
+        "links": [
+          {
+            "label": "Entra workload identities",
+            "url": "https://learn.microsoft.com/en-us/entra/workload-id/workload-identities-overview"
+          },
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Review service accounts and their role bindings per project, and replace exported keys with workload identity federation for any external agent. Security Command Center flags over-permissioned identities.",
+        "links": [
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "Workload identity federation",
+            "url": "https://docs.cloud.google.com/iam/docs/workload-identity-federation"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -353,6 +529,36 @@
             "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/what-is-securityhub.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Defender for Cloud and Sentinel both ship ML detections that are off or unconfigured by default. Enable the Defender for Cloud AI workload plan and Sentinel's built-in anomaly analytics rules, then reassess in 30 days.",
+        "links": [
+          {
+            "label": "Microsoft Defender for Cloud",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+          },
+          {
+            "label": "Defender for Cloud AI threat protection",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center ships built-in anomaly and threat detectors and Google SecOps carries the analytics layer. Turn both on at defaults first, then measure before tuning.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          }
+        ]
       }
     }
   },
@@ -384,6 +590,28 @@
             "url": "https://skillbuilder.aws/"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "The Well-Architected AI workload guidance and the Cloud Adoption Framework AI strategy content are the platform's own inventory of what is available and what it costs. Use them as the source for the per-tool briefs.",
+        "links": [
+          {
+            "label": "Well-Architected AI workloads",
+            "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/get-started"
+          },
+          {
+            "label": "Cloud Adoption Framework AI strategy",
+            "url": "https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ai/strategy"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The Architecture Framework security pillar covers the AI-relevant platform controls in one place, which is the shortest path to a team that can name what it already has.",
+        "links": [
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
+          }
+        ]
       }
     }
   },
@@ -408,7 +636,7 @@
         "links": [
           {
             "label": "TheHive (OSS SOAR/IR)",
-            "url": "https://thehive-project.org/"
+            "url": "https://docs.strangebee.com/thehive/"
           }
         ]
       },
@@ -416,8 +644,30 @@
         "summary": "Wire EventBridge rules off Security Hub findings into Step Functions or Lambda for automated triage of routine alert classes (e.g., GuardDuty IAM finding categories).",
         "links": [
           {
-            "label": "Security Hub automation with EventBridge",
-            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cwe-integration.html"
+            "label": "Security Hub automated response with EventBridge",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-cloudwatch-events.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Sentinel automation rules and Logic Apps playbooks take the routine alert classes before any model-assisted triage. Start with the highest-volume analytics rule and measure time-to-disposition.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Google SecOps playbooks automate the high-volume detection classes, with Security Command Center findings as the trigger source.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -455,7 +705,7 @@
         "links": [
           {
             "label": "SANS AISMM (source)",
-            "url": "https://www.sans.org/ai"
+            "url": "https://www.sans.org/artificial-intelligence"
           },
           {
             "label": "OWASP AI Exchange #AI PROGRAM",
@@ -469,6 +719,24 @@
           {
             "label": "Service control policies",
             "url": "https://docs.aws.amazon.com/organizations/latest/userguide/orgs_manage_policies_scps.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure Policy assigned at the management group denies creation of Foundry and Azure OpenAI resources outside approved subscriptions. That turns the written policy into something structural rather than advisory.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Organization policy constraints restrict which services and regions can be used, so AI resources can only exist in approved projects.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
           }
         ]
       }
@@ -507,7 +775,7 @@
         "links": [
           {
             "label": "SANS guidance on BYOAI discovery",
-            "url": "https://www.sans.org/ai"
+            "url": "https://www.sans.org/artificial-intelligence"
           }
         ]
       },
@@ -517,6 +785,32 @@
           {
             "label": "Bedrock model-specific IAM conditions",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Purview DSPM for AI reports which users are sending data to Copilot and to third-party AI sites, which is the discovery input. Conditional Access then scopes who can reach the sanctioned apps.",
+        "links": [
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          },
+          {
+            "label": "Entra Conditional Access",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Organization policy plus a curated AI-domain list over Cloud Audit Logs gives the same discovery picture: what is sanctioned, what is in use, and what is neither.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
           }
         ]
       }
@@ -556,6 +850,32 @@
           {
             "label": "VPC Flow Logs",
             "url": "https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Purview DSPM for AI is the first-party view of AI usage across Microsoft 365 and connected assistants; Purview Audit holds the underlying activity records for per-department reporting.",
+        "links": [
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          },
+          {
+            "label": "Purview Audit",
+            "url": "https://learn.microsoft.com/en-us/purview/audit-solutions-overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Cloud Audit Logs with Data Access logs enabled record every model invocation. Route them into Google SecOps for per-department reporting rather than reading them per project.",
+        "links": [
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          },
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
           }
         ]
       }
@@ -600,7 +920,33 @@
         "links": [
           {
             "label": "Audit Manager generative AI framework",
-            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices-framework.html"
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The Well-Architected AI workload guidance gives the control set to assess against, and the Azure OpenAI transparency note gives the documented limitations to assess for.",
+        "links": [
+          {
+            "label": "Well-Architected AI workloads",
+            "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/get-started"
+          },
+          {
+            "label": "Azure OpenAI transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/transparency-note"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The Architecture Framework security pillar and the platform's responsible AI documentation give the control set; Security Command Center posture findings show where the current gaps are.",
+        "links": [
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
+          },
+          {
+            "label": "Responsible AI guidance",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai"
           }
         ]
       }
@@ -636,6 +982,32 @@
           {
             "label": "AWS Cost Explorer",
             "url": "https://docs.aws.amazon.com/cost-management/latest/userguide/ce-what-is.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Cost analysis filtered to the AI services gives the spend trend and Purview DSPM for AI gives the user count. Those two numbers plus a named owner are the brief.",
+        "links": [
+          {
+            "label": "Azure cost analysis",
+            "url": "https://learn.microsoft.com/en-us/azure/cost-management-billing/costs/cost-analysis-common-uses"
+          },
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Billing budgets and reports scoped to the AI services give the spend line; audit logs give distinct callers per month.",
+        "links": [
+          {
+            "label": "Billing budgets and alerts",
+            "url": "https://docs.cloud.google.com/billing/docs/how-to/budgets"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
           }
         ]
       }
@@ -677,7 +1049,33 @@
         "links": [
           {
             "label": "Amazon Bedrock AgentCore",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore.html"
+            "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/what-is-bedrock-agentcore.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Foundry separates model inference from the Agent Service. Treat any identity with a role on the Agent Service, its tools, or its connections as agentic in the policy.",
+        "links": [
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The platform separates model inference from the agent runtime. Any service account attached to an agent deployment is agentic and takes the stricter review path.",
+        "links": [
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
           }
         ]
       }
@@ -722,6 +1120,28 @@
           {
             "label": "AWS Config conformance packs",
             "url": "https://docs.aws.amazon.com/config/latest/developerguide/conformance-packs.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure Policy compliance state over the AI resource types reconciles the declared inventory against what exists. Defender for Cloud AI posture surfaces deployments nobody registered.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center asset inventory is the reconciliation source. Anything present but unregistered is either an addition to the inventory or a removal from the estate.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -790,7 +1210,37 @@
         "links": [
           {
             "label": "Bedrock model evaluation",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The AI Red Teaming agent runs automated adversarial scans against a deployed endpoint, and the risk and safety evaluators score the results across a fixed set of harm categories, so results are comparable run to run.",
+        "links": [
+          {
+            "label": "AI Red Teaming agent",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent"
+          },
+          {
+            "label": "Run AI red teaming scans",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/run-scans-ai-red-teaming-agent"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The gen AI evaluation service runs curated and custom adversarial sets against a deployed model. Model Armor's screening results give a second signal on prompt injection and jailbreak attempts in production traffic.",
+        "links": [
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
           }
         ]
       }
@@ -820,7 +1270,7 @@
         "links": [
           {
             "label": "MLflow Model Registry",
-            "url": "https://mlflow.org/docs/latest/model-registry.html"
+            "url": "https://mlflow.org/docs/latest/model-registry/"
           }
         ]
       },
@@ -830,6 +1280,32 @@
           {
             "label": "SageMaker JumpStart model cards",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/jumpstart-foundation-models.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The Foundry catalog records publisher, license, and version; the Azure ML registry does the same for anything you build. Pin deployments to a registered version rather than a floating alias.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Registry versions every model with its source and lineage. Reference the version resource name in code, not the display name.",
+        "links": [
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
+          },
+          {
+            "label": "ML metadata and lineage",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction"
           }
         ]
       }
@@ -864,6 +1340,32 @@
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-access-training-data.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Managed Foundry models do not load customer-supplied pickle artifacts. For Azure ML custom training, restrict inputs to workspace-owned datastores and scan artifacts in the pipeline before registration.",
+        "links": [
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Managed endpoints do not load customer pickle files. For custom training, keep inputs in project-owned buckets inside the VPC Service Controls perimeter and make the scan a pipeline step.",
+        "links": [
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
+          }
+        ]
       }
     }
   },
@@ -894,7 +1396,37 @@
         "links": [
           {
             "label": "Bedrock IAM service authorization reference",
-            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_bedrock.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Any managed identity granted an Agent Service role, or any connection to an external tool, is an agentic integration. Review the role assignment before the connection is created, not after.",
+        "links": [
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Any service account bound to an agent deployment or a tool connector is an agentic integration. Review the IAM binding, not just the application design.",
+        "links": [
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
           }
         ]
       }
@@ -926,6 +1458,32 @@
           {
             "label": "AWS Security Hub controls reference",
             "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-controls-reference.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Defender for Cloud AI threat protection and Sentinel analytics both expose per-rule tuning. Baseline for a month, tune, and record what changed and why.",
+        "links": [
+          {
+            "label": "Defender for Cloud AI threat protection",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center detectors and SecOps rules both support per-rule tuning and muting. Measure the false-positive rate before and after each change.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
           }
         ]
       }
@@ -981,6 +1539,19 @@
             "url": "https://docs.aws.amazon.com/guardduty/latest/ug/malware-protection.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "The Defender products report their own detection rates per workload. Surface them in one Sentinel workbook rather than reading three vendor consoles separately.",
+        "links": [
+          {
+            "label": "Microsoft Defender for Cloud",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
       }
     }
   },
@@ -1007,6 +1578,32 @@
       "aws_bedrock": {
         "summary": "Security Hub's posture management gives a coverage map to plan against. Pick one workflow and target a Bedrock-backed automation (alert summarization or playbook explanation) as the first integration.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Pick one workflow and target Foundry-backed automation for it. Sentinel automation rules are the integration point; Foundry observability supplies the evaluation data to judge whether it worked.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Pick one workflow and drive it from a SecOps playbook that calls a model. The gen AI evaluation service gives the before-and-after measure.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          },
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          }
+        ]
       }
     }
   },
@@ -1030,8 +1627,8 @@
         "summary": "Send at least one engineer through SANS SEC545 or equivalent. Cross-train so AI security knowledge does not concentrate in a single person.",
         "links": [
           {
-            "label": "SANS SEC545",
-            "url": "https://www.sans.org/cyber-security-courses/securing-ai-powered-applications-llm-workflows/"
+            "label": "SANS SEC545: GenAI and LLM Application Security",
+            "url": "https://www.sans.org/cyber-security-courses/genai-llm-application-security"
           }
         ]
       }
@@ -1062,7 +1659,33 @@
         "links": [
           {
             "label": "Bedrock Marketplace listings",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-marketplace.html"
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/amazon-bedrock-marketplace.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Foundry catalog entries carry the model card, license, and evaluation metadata. Treat that as the minimum any procured AI feature must be able to answer.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Azure OpenAI transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/transparency-note"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Garden listings carry the model card and license. Ask a vendor the same three questions: which model, trained on whose data, evaluated how.",
+        "links": [
+          {
+            "label": "Model Garden",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models"
+          },
+          {
+            "label": "Responsible AI guidance",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai"
           }
         ]
       }
@@ -1105,6 +1728,28 @@
           {
             "label": "Tag-based authorization for Bedrock",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure Policy definitions assigned at the management group are the enforcement layer beneath the policy text: allowed regions, allowed model deployments, required diagnostic settings.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Foundry resource templates",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/create-resource-template"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Organization policy constraints are the enforcement layer: which services, which regions, which projects. The policy document is the readable version of the same rules.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
           }
         ]
       }
@@ -1153,6 +1798,36 @@
           {
             "label": "Macie managed data identifiers",
             "url": "https://docs.aws.amazon.com/macie/latest/user/managed-data-identifiers.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Purview classifies and labels the data estate; DSPM for AI then reports which classified data is actually reaching AI tools, which is the number the policy needs.",
+        "links": [
+          {
+            "label": "Microsoft Purview for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/ai-microsoft-purview"
+          },
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          },
+          {
+            "label": "Purview Data Loss Prevention",
+            "url": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Sensitive Data Protection scans and classifies the estate, and Dataplex carries the catalog and governance metadata that the AI data rules reference.",
+        "links": [
+          {
+            "label": "Sensitive Data Protection",
+            "url": "https://docs.cloud.google.com/sensitive-data-protection/docs/sensitive-data-protection-overview"
+          },
+          {
+            "label": "Dataplex data governance",
+            "url": "https://docs.cloud.google.com/dataplex/docs/introduction"
           }
         ]
       }
@@ -1214,7 +1889,29 @@
         "links": [
           {
             "label": "Audit Manager generative AI framework",
-            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices-framework.html"
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/aws-generative-ai-best-practices.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Run the Well-Architected AI workload assessment and seed the register from its gap list, so the first entries are specific rather than generic.",
+        "links": [
+          {
+            "label": "Well-Architected AI workloads",
+            "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/get-started"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The Architecture Framework security pillar plus current Security Command Center posture findings seed the register with gaps that are already true in the estate.",
+        "links": [
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -1275,7 +1972,33 @@
         "links": [
           {
             "label": "Bedrock agent IAM actions",
-            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_amazonbedrock.html"
+            "url": "https://docs.aws.amazon.com/service-authorization/latest/reference/list_bedrock.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Draw the line at the Agent Service: inference role assignments are conversational, Agent Service and connection roles are agentic. The role assignment is then the auditable boundary.",
+        "links": [
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Draw the line at the agent runtime: model inference permissions are conversational, agent deployment and tool bindings are agentic.",
+        "links": [
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
           }
         ]
       }
@@ -1314,6 +2037,36 @@
           {
             "label": "AWS Config supported resource types",
             "url": "https://docs.aws.amazon.com/config/latest/developerguide/resource-config-reference.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure Policy compliance state over the AI resource types is the automated reconciliation, and Defender for Cloud AI posture surfaces deployments that exist but were never registered. Export both on a schedule instead of hand-maintaining the register.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center asset inventory is the authoritative resource list and organization policy bounds where resources can appear at all. Export assets and findings on a schedule into the register.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
           }
         ]
       }
@@ -1366,6 +2119,40 @@
             "url": "https://docs.aws.amazon.com/datazone/latest/userguide/what-is-datazone.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Purview holds the upstream data map. On the Foundry side, the project's connections and the index behind a retrieval flow define what the model can read, and DSPM for AI reports which classified data actually reaches a prompt.",
+        "links": [
+          {
+            "label": "Microsoft Purview for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/ai-microsoft-purview"
+          },
+          {
+            "label": "Purview DSPM for AI",
+            "url": "https://learn.microsoft.com/en-us/purview/dspm-for-ai"
+          },
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Dataplex carries the upstream catalog and lineage, ML metadata records dataset-to-model lineage inside the platform, and the grounding configuration documents what a model can retrieve at inference time.",
+        "links": [
+          {
+            "label": "Dataplex data governance",
+            "url": "https://docs.cloud.google.com/dataplex/docs/introduction"
+          },
+          {
+            "label": "ML metadata and lineage",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction"
+          },
+          {
+            "label": "Grounding",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/grounding/overview"
+          }
+        ]
       }
     }
   },
@@ -1410,12 +2197,46 @@
         "summary": "AgentCore Identity issues per-agent IAM roles scoped to `bedrock:InvokeModel` on specific model ARNs and to the exact tool ARNs each agent needs. Tie the role tag to a human-owner attribute enforced by SCP.",
         "links": [
           {
-            "label": "AgentCore Identity",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-identity.html"
+            "label": "Bedrock AgentCore Identity",
+            "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html"
           },
           {
             "label": "IAM Roles Anywhere",
             "url": "https://docs.aws.amazon.com/rolesanywhere/latest/userguide/introduction.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Give every agent its own user-assigned managed identity rather than sharing one. Scope the Foundry role assignment to the specific project and connections that agent needs, and keep any non-Entra secret in Key Vault with that identity as the only reader.",
+        "links": [
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Azure Key Vault",
+            "url": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "One service account per agent, bound only to the model and tool resources it needs. Use workload identity federation for anything running outside the project so no service account key is ever exported.",
+        "links": [
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "Workload identity federation",
+            "url": "https://docs.cloud.google.com/iam/docs/workload-identity-federation"
           }
         ]
       }
@@ -1453,7 +2274,7 @@
           },
           {
             "label": "AWS Cedar policy language",
-            "url": "https://www.cedarpolicy.com/"
+            "url": "https://cedarpolicy.com/"
           }
         ]
       },
@@ -1463,6 +2284,40 @@
           {
             "label": "Bedrock IAM condition keys",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/security-iam.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Scope role assignments to the individual project and deployment rather than the subscription, and put Conditional Access on the calling identity. Access is then bounded by resource, caller, and network location at once.",
+        "links": [
+          {
+            "label": "Azure RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Entra Conditional Access",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "IAM conditions on the model and endpoint resources bound access per caller; a VPC Service Controls perimeter bounds it per network path. Deny by default at the project level with organization policy.",
+        "links": [
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
+          },
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
           }
         ]
       }
@@ -1503,7 +2358,7 @@
           },
           {
             "label": "NeMo Guardrails",
-            "url": "https://github.com/NVIDIA/NeMo-Guardrails"
+            "url": "https://github.com/NVIDIA-NeMo/Guardrails"
           },
           {
             "label": "OWASP Top 10 LLM01 Prompt Injection",
@@ -1517,6 +2372,40 @@
           {
             "label": "Amazon Bedrock Guardrails",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Prompt Shields screens for direct jailbreak and for indirect injection embedded in retrieved documents, and the content filter runs inline on both prompt and completion. Add groundedness detection wherever the application is retrieval-backed.",
+        "links": [
+          {
+            "label": "Prompt Shields (jailbreak detection)",
+            "url": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection"
+          },
+          {
+            "label": "Foundry Models content filtering",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter"
+          },
+          {
+            "label": "Groundedness detection",
+            "url": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/groundedness"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Armor screens prompts and responses for injection and jailbreak independently of the model, so the control does not have to move when the model does. Safety filters cover the harm categories and grounding bounds what retrieval can inject.",
+        "links": [
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Configure safety filters",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/capabilities/configure-safety-filters"
+          },
+          {
+            "label": "Grounding",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/grounding/overview"
           }
         ]
       }
@@ -1560,6 +2449,36 @@
             "url": "https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "The content filter runs on input and output with per-category severity thresholds, and custom categories cover organization-specific terms the stock categories miss. Purview DLP catches classified data on the way in.",
+        "links": [
+          {
+            "label": "Foundry Models content filtering",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter"
+          },
+          {
+            "label": "Content Safety custom categories",
+            "url": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/custom-categories"
+          },
+          {
+            "label": "Purview Data Loss Prevention",
+            "url": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Armor sanitizes both prompt and response, using Sensitive Data Protection inspection templates to define which data classes get redacted rather than hand-listing patterns.",
+        "links": [
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Sensitive Data Protection",
+            "url": "https://docs.cloud.google.com/sensitive-data-protection/docs/sensitive-data-protection-overview"
+          }
+        ]
       }
     }
   },
@@ -1592,6 +2511,36 @@
           {
             "label": "AWS penetration testing policy",
             "url": "https://aws.amazon.com/security/penetration-testing/"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Run the AI Red Teaming agent as part of the engagement rather than only ad hoc. It produces a scored, repeatable report per harm category that the pentest can build on and that later runs can be compared against.",
+        "links": [
+          {
+            "label": "Run AI red teaming scans",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/run-scans-ai-red-teaming-agent"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          },
+          {
+            "label": "Microsoft AI Red Team guidance",
+            "url": "https://learn.microsoft.com/en-us/security/ai-red-team/"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Use the gen AI evaluation service against adversarial sets as the repeatable baseline, and treat Model Armor's blocked-request telemetry as the efficacy measure for the defense rather than a finding count.",
+        "links": [
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
           }
         ]
       }
@@ -1631,6 +2580,36 @@
           {
             "label": "SageMaker model lineage tracking",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/lineage-tracking.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Catalogued models are published by Microsoft or by the model publisher and are pinned by deployment. For self-built models, register in the Azure ML registry so version, lineage, and approval state exist before anything is deployed.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Garden entries carry publisher and license; Model Registry records version and lineage for anything you build. Binary Authorization enforces that only attested container images can serve.",
+        "links": [
+          {
+            "label": "Model Garden",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models"
+          },
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
+          },
+          {
+            "label": "Binary Authorization",
+            "url": "https://docs.cloud.google.com/binary-authorization/docs/overview"
           }
         ]
       }
@@ -1689,6 +2668,36 @@
       "cloud_agnostic": {
         "summary": "Hash each registered tool definition. Refuse to load a tool whose signature has changed since approval. Audit changes through code review, not at run time.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Agent Service tools and connections are declared resources, so a change to one is an ARM operation in the activity log. Deploy them from templates and treat any out-of-band change as drift to investigate.",
+        "links": [
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Foundry resource templates",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/create-resource-template"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Agent tool bindings are resource and IAM changes, which land in audit logs. Deploy them declaratively and alert on any tool binding that changes outside the pipeline.",
+        "links": [
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          }
+        ]
       }
     }
   },
@@ -1725,6 +2734,40 @@
             "url": "https://docs.aws.amazon.com/vpc-lattice/latest/ug/what-is-vpc-lattice.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Put the Agent Service in a managed virtual network with private endpoints so inter-agent traffic never leaves the perimeter, and authenticate with managed identities rather than shared keys.",
+        "links": [
+          {
+            "label": "Agent Service network isolation",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/virtual-networks"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          },
+          {
+            "label": "Foundry private link configuration",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/configure-private-link"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Bind each agent to its own service account and keep calls inside a VPC Service Controls perimeter, so identity comes from IAM rather than from network position.",
+        "links": [
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
+          },
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
+          }
+        ]
       }
     }
   },
@@ -1755,6 +2798,32 @@
           {
             "label": "GuardDuty findings",
             "url": "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_findings.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Sentinel analytics rules and Defender for Cloud AI alerts are the tunable surface. Score each against historical incident data and record the precision measure with the rule before promoting it.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Defender for Cloud AI threat protection",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Tune Security Command Center detectors and SecOps rules against historical incident data, and keep the measured precision alongside the rule so later changes are comparable.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
           }
         ]
       }
@@ -1788,6 +2857,40 @@
             "url": "https://docs.aws.amazon.com/securityhub/1.0/APIReference/API_BatchUpdateFindings.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "A Logic App calling a Foundry deployment does the summarization, with the content filter inline and a Purview DLP redaction step ahead of the call. Sentinel holds the result as an incident comment.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Foundry Models content filtering",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter"
+          },
+          {
+            "label": "Purview Data Loss Prevention",
+            "url": "https://learn.microsoft.com/en-us/purview/dlp-learn-about-dlp"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "A SecOps playbook calls the model with Model Armor in front of it. Run Sensitive Data Protection over the alert payload before the call rather than trusting the prompt to withhold it.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Sensitive Data Protection",
+            "url": "https://docs.cloud.google.com/sensitive-data-protection/docs/sensitive-data-protection-overview"
+          }
+        ]
       }
     }
   },
@@ -1817,6 +2920,32 @@
           {
             "label": "GuardDuty IAM-related findings",
             "url": "https://docs.aws.amazon.com/guardduty/latest/ug/guardduty_finding-types-iam.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Sentinel UEBA baselines users and service principals. Add the agent managed identities as their own entity class so agent behavior is not averaged into the human baseline.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "SecOps behavioral analytics covers principals. Add agent service accounts as a distinct entity class and baseline invocation patterns per model and per region.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          },
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
           }
         ]
       }
@@ -1855,6 +2984,28 @@
             "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Sentinel automation rules trigger Logic Apps for the deterministic steps and call a Foundry deployment only for the language work. Containment stays on a deterministic branch.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Azure AI Foundry overview",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "SecOps playbooks run the deterministic steps and call a model only for summarization and classification. Containment stays on a deterministic branch.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          }
+        ]
       }
     }
   },
@@ -1883,7 +3034,29 @@
         "links": [
           {
             "label": "AWS Inferentia",
-            "url": "https://aws.amazon.com/machine-learning/inferentia/"
+            "url": "https://aws.amazon.com/ai/machine-learning/inferentia/"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "A Foundry deployment with structured-output prompting handles entity, TTP, and IOC extraction; Sentinel's threat intelligence tables are the sink. Batch the calls rather than invoking per indicator.",
+        "links": [
+          {
+            "label": "Azure AI Foundry overview",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "A batched model call with structured output handles extraction, and SecOps holds the enriched intel. Batching matters here: per-indicator invocation is the usual cost surprise.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
           }
         ]
       }
@@ -1917,6 +3090,32 @@
             "url": "https://skillbuilder.aws/"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Microsoft's AI Red Team guidance and the Well-Architected AI workload content make a usable internal reference set for the engineer tier of the training matrix.",
+        "links": [
+          {
+            "label": "Microsoft AI Red Team guidance",
+            "url": "https://learn.microsoft.com/en-us/security/ai-red-team/"
+          },
+          {
+            "label": "Well-Architected AI workloads",
+            "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/get-started"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Google's Secure AI Framework and the Architecture Framework security pillar make the equivalent internal reference set for the engineer tier.",
+        "links": [
+          {
+            "label": "Google Secure AI Framework",
+            "url": "https://cloud.google.com/security/ai"
+          },
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
+          }
+        ]
       }
     }
   },
@@ -1940,14 +3139,40 @@
         "summary": "Require model cards, adversarial test results, and a defined evaluation set from any AI vendor. No proof, no procurement.",
         "links": [
           {
-            "label": "Model Cards guidance",
-            "url": "https://modelcards.withgoogle.com/about"
+            "label": "Google model cards",
+            "url": "https://deepmind.google/models/model-cards/"
           }
         ]
       },
       "aws_bedrock": {
         "summary": "Marketplace and JumpStart listings include model cards; treat their structure as the bar for non-AWS vendors. No model card, no procurement.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Catalogued models publish a model card and the safety evaluation methodology is documented. A vendor that cannot produce the equivalent has not demonstrated capability.",
+        "links": [
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          },
+          {
+            "label": "Safety evaluations transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/safety-evaluations-transparency-note"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Garden listings publish the model card, and the evaluation service defines what a defensible evaluation looks like. Ask vendors for both artifacts.",
+        "links": [
+          {
+            "label": "Model Garden",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/model-garden/explore-models"
+          },
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          }
+        ]
       }
     }
   },
@@ -2015,6 +3240,32 @@
             "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_boundaries.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Reconcile the policy table against Azure Policy assignments and role definitions monthly. The readable table and the enforced rules drift apart quietly otherwise.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Azure RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Reconcile the policy table against organization policy constraints and IAM role bindings monthly, in the same review.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          }
+        ]
       }
     }
   },
@@ -2048,7 +3299,29 @@
         "links": [
           {
             "label": "NIST AI RMF Playbook",
-            "url": "https://airc.nist.gov/AI_RMF_Knowledge_Base/Playbook"
+            "url": "https://airc.nist.gov/airmf-resources/playbook/"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The Azure OpenAI transparency note documents intended uses, limitations, and known failure modes per model, which is the concrete input the ethics guidelines need. The Responsible AI dashboard covers fairness and error analysis for models you train.",
+        "links": [
+          {
+            "label": "Azure OpenAI transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/transparency-note"
+          },
+          {
+            "label": "Responsible AI dashboard",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai-dashboard"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "The platform's responsible AI documentation covers the same ground: intended use, limitations, and the safety attributes the models are filtered against.",
+        "links": [
+          {
+            "label": "Responsible AI guidance",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai"
           }
         ]
       }
@@ -2087,6 +3360,32 @@
       "aws_bedrock": {
         "summary": "Marketplace vendor profiles publish model cards, eval results, and provenance. Build the in-house questionnaire to mirror Marketplace metadata so internal evaluation aligns with the canonical source.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "The transparency note and catalog metadata define what a complete vendor answer looks like on capability, limitation, and data handling. Build the questionnaire to ask for the same fields.",
+        "links": [
+          {
+            "label": "Azure OpenAI transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/transparency-note"
+          },
+          {
+            "label": "Foundry Models catalog",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/concepts/foundry-models-overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Ask vendors the retention question explicitly: the platform documents zero data retention terms per model, which gives you a concrete standard to hold third parties to.",
+        "links": [
+          {
+            "label": "Responsible AI guidance",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai"
+          },
+          {
+            "label": "Zero data retention",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/resources/zero-data-retention"
+          }
+        ]
       }
     }
   },
@@ -2128,8 +3427,34 @@
         "summary": "Audit Manager assessments emit structured evidence that feeds a FAIR-extended methodology cleanly. Use the Generative AI framework as the starting assessment set and add custom controls per AI scenario.",
         "links": [
           {
-            "label": "Audit Manager controls",
-            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/controls.html"
+            "label": "Audit Manager control library",
+            "url": "https://docs.aws.amazon.com/audit-manager/latest/userguide/control-library.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Defender for Cloud AI posture findings supply the exposure side of the likelihood estimate with current data, so the register is scored against the estate as it is rather than as documented.",
+        "links": [
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          },
+          {
+            "label": "Well-Architected AI workloads",
+            "url": "https://learn.microsoft.com/en-us/azure/well-architected/ai/get-started"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center posture and vulnerability findings supply the current exposure data behind the likelihood estimate.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          },
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
           }
         ]
       }
@@ -2161,6 +3486,40 @@
       "aws_bedrock": {
         "summary": "Add Bedrock-specific runbooks: prompt-injection containment (rotate the guardrail and the agent role), data exfiltration via output (revoke Bedrock invoke for the offending role, capture invocation logs for the window), agent misuse (decommission the AgentCore identity).",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Write Foundry-specific runbooks: on injection, tighten the content filter policy and rotate the agent identity; on output-based exfiltration, remove the role assignment and pull invocation logs for the window; on agent misuse, delete the managed identity. Sentinel holds the case.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Write platform-specific runbooks: on injection, update the Model Armor template and rotate the agent service account; on exfiltration, remove the IAM binding and pull Data Access logs for the window; on agent misuse, delete the service account.",
+        "links": [
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          }
+        ]
       }
     }
   },
@@ -2199,6 +3558,32 @@
             "url": "https://docs.aws.amazon.com/step-functions/latest/dg/connect-to-resource.html#connect-wait-token"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Keep the consequence ladder in one document and reference it from both the agent's tool configuration and the Logic App that carries the approval step, so the two cannot disagree.",
+        "links": [
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Keep the consequence ladder in one document and enforce it in both the agent's tool configuration and the workflow that carries the approval step.",
+        "links": [
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          }
+        ]
       }
     }
   },
@@ -2231,6 +3616,32 @@
           {
             "label": "AWS Config tag-rule examples",
             "url": "https://docs.aws.amazon.com/config/latest/developerguide/required-tags.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Require an Owner tag on every agent identity and Foundry project and enforce it with an Azure Policy deny effect, so an untagged resource cannot be created in the first place.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Require an owner label on every agent service account and deployment, enforced with organization policy and checked by a Security Command Center posture rule.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -2285,6 +3696,32 @@
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-invocation-logging.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Foundry observability emits OpenTelemetry traces per agent run including each tool step. Route them to a Log Analytics workspace and carry a correlation ID so a single request can be reconstructed end to end.",
+        "links": [
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Cloud Audit Logs record each invocation and the agent runtime emits per-step traces. Carry one correlation ID across both and export to a long-retention sink.",
+        "links": [
+          {
+            "label": "Platform audit logging",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/audit-logging"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          }
+        ]
       }
     }
   },
@@ -2320,6 +3757,40 @@
           {
             "label": "SageMaker Pipelines",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/pipelines.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure ML pipelines carry the gates: data validation, evaluation, and registration are pipeline steps with recorded outputs, and registration is what deployment reads from. Foundry evaluations run as a gate before a deployment is promoted.",
+        "links": [
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          },
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "ML pipelines carry the gate steps and write lineage into ML metadata, so gate evidence is attached to the model version rather than living in a build log.",
+        "links": [
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
+          },
+          {
+            "label": "ML metadata and lineage",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction"
+          },
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
           }
         ]
       }
@@ -2380,8 +3851,38 @@
         "summary": "Add a Lambda authorizer to the AgentCore tool path that re-evaluates the request principal, not just the agent role. AgentCore action policies can carry the consequence ladder as policy attributes.",
         "links": [
           {
-            "label": "AgentCore action groups",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-groups.html"
+            "label": "Bedrock agent action groups",
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agents-action-create.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Put an authorization step in front of the tool that evaluates the calling user's identity, not just the agent's managed identity. Foundry role assignments bound what the agent could ever do; the request-time check bounds what it may do now.",
+        "links": [
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Evaluate the end user's identity at the tool boundary rather than relying on the agent's service account. IAM conditions bound the agent's ceiling; the request-time check binds authority to the request.",
+        "links": [
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "Agent deployment and scaling",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/scale"
           }
         ]
       }
@@ -2421,8 +3922,38 @@
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails.html"
           },
           {
-            "label": "AgentCore policies",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore.html"
+            "label": "Bedrock AgentCore security",
+            "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/security.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The content filter and Prompt Shields evaluate every call inline, and Foundry observability records the decision per run so denies are tunable rather than invisible.",
+        "links": [
+          {
+            "label": "Foundry Models content filtering",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter"
+          },
+          {
+            "label": "Prompt Shields (jailbreak detection)",
+            "url": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection"
+          },
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Armor evaluates every prompt and response against the template, and its findings are the tuning signal. Keep the authorization decision separate from the content decision.",
+        "links": [
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
           }
         ]
       }
@@ -2461,7 +3992,37 @@
         "links": [
           {
             "label": "Bedrock model evaluation",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The AI Red Teaming agent supports scheduled scans with custom attack objectives, so the red-team cadence produces comparable scores instead of one-off reports.",
+        "links": [
+          {
+            "label": "Run AI red teaming scans",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/run-scans-ai-red-teaming-agent"
+          },
+          {
+            "label": "AI Red Teaming agent",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/ai-red-teaming-agent"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Run the evaluation service against maintained adversarial sets on a cadence, and version the sets alongside the model so a regression is attributable.",
+        "links": [
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
           }
         ]
       }
@@ -2496,6 +4057,40 @@
             "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-dead-letter-queues.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Give each agent its own identity and its own connections so a compromise cannot borrow another agent's reach, and keep agent-to-agent traffic inside the managed virtual network where it can be observed.",
+        "links": [
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          },
+          {
+            "label": "Agent Service network isolation",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/virtual-networks"
+          },
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "One service account and one perimeter-scoped set of resources per agent. Treat inter-agent messages as untrusted input and run them through the same screening as external input.",
+        "links": [
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          }
+        ]
       }
     }
   },
@@ -2525,6 +4120,36 @@
           {
             "label": "AWS CodePipeline",
             "url": "https://docs.aws.amazon.com/codepipeline/latest/userguide/welcome.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Run the red teaming agent and the risk and safety evaluators as a pipeline step against the build candidate, and fail the build on regression beyond a defined tolerance.",
+        "links": [
+          {
+            "label": "Run AI red teaming scans",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/run-scans-ai-red-teaming-agent"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          },
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Run the evaluation service as a pipeline step against the build candidate; the pipeline records the score against the model version so regressions are traceable.",
+        "links": [
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
           }
         ]
       }
@@ -2577,6 +4202,36 @@
             "url": "https://docs.aws.amazon.com/inspector/latest/user/scanning-ecr.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Scan the serving container images and register only scanned artifacts. Deployment reads from the registry, so an unscanned artifact has no path to production.",
+        "links": [
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          },
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Artifact Analysis scans the serving images and Binary Authorization refuses to deploy anything without a passing attestation, which makes the scan a gate rather than a report.",
+        "links": [
+          {
+            "label": "Artifact Analysis",
+            "url": "https://docs.cloud.google.com/artifact-analysis/docs/artifact-analysis"
+          },
+          {
+            "label": "Binary Authorization",
+            "url": "https://docs.cloud.google.com/binary-authorization/docs/overview"
+          },
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
+          }
+        ]
       }
     }
   },
@@ -2606,6 +4261,36 @@
           {
             "label": "Bedrock Guardrails content filters",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/guardrails-content-filters.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Prompt Shields runs inline on every call, covering direct jailbreak and indirect injection in retrieved content. Alert on the blocked-request rate rather than reading the log.",
+        "links": [
+          {
+            "label": "Prompt Shields (jailbreak detection)",
+            "url": "https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection"
+          },
+          {
+            "label": "Foundry Models content filtering",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry-classic/foundry-models/concepts/content-filter"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model Armor screens each prompt and response inline. Send its findings to Security Command Center so blocked-request trends surface with the rest of the security signal.",
+        "links": [
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -2638,8 +4323,8 @@
         "summary": "Treat ML pipelines as software supply-chain risks: signed artifacts, dataset provenance, reproducible training, evaluation gates.",
         "links": [
           {
-            "label": "MLSecOps Top 10",
-            "url": "https://mlsecops.com/"
+            "label": "OWASP Machine Learning Security Top 10",
+            "url": "https://owasp.org/www-project-machine-learning-security-top-10/"
           }
         ]
       },
@@ -2653,6 +4338,40 @@
           {
             "label": "SageMaker Model Cards",
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-cards.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure ML pipelines cover data, training, evaluation, and registration with model monitoring after deployment. The Responsible AI dashboard supplies the evaluation artifacts the gates check.",
+        "links": [
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          },
+          {
+            "label": "Azure ML model monitoring",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+          },
+          {
+            "label": "Responsible AI dashboard",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai-dashboard"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Pipelines cover the lifecycle, ML metadata records the lineage, and model monitoring closes the loop after deployment. Binary Authorization gates what can actually serve.",
+        "links": [
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
+          },
+          {
+            "label": "ML metadata and lineage",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction"
+          },
+          {
+            "label": "Model monitoring",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview"
           }
         ]
       }
@@ -2684,6 +4403,40 @@
           {
             "label": "Bedrock Custom Models",
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/custom-models.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Azure ML handles training with experiment tracking; the registry records lineage and approval state. Evaluate against the same held-out set each time so 'outperforms the generic model' is a measured claim.",
+        "links": [
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          },
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          },
+          {
+            "label": "Foundry model benchmarks",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/model-benchmarks"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Train through pipelines with experiment tracking, register versions in Model Registry, and keep the evaluation set versioned alongside so improvement is measurable rather than asserted.",
+        "links": [
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
+          },
+          {
+            "label": "Experiments and run tracking",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/experiments/intro-vertex-ai-experiments"
+          },
+          {
+            "label": "Model Registry",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-registry/introduction"
           }
         ]
       }
@@ -2739,6 +4492,32 @@
             "url": "https://docs.aws.amazon.com/step-functions/latest/dg/welcome.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Keep the autonomous action list in the Sentinel automation rule itself, so the whitelist and the enforcement are the same object. Measure the false-positive rate of the triggering rule before expanding it.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Defender for Cloud AI threat protection",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Keep the autonomous action list in the SecOps playbook, and measure the triggering detector's false-positive rate before adding an action to it.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          }
+        ]
       }
     }
   },
@@ -2765,6 +4544,28 @@
       "aws_bedrock": {
         "summary": "Step Functions and Lambda for orchestration; Bedrock for recommendation generation; Security Hub for routing and metric capture. Capture human override vs. AI recommendation as a tuning signal.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Sentinel automation rules carry the playbook and a Foundry deployment supplies the recommendation at branch points. Record the recommendation and the human decision on the incident so divergence is measurable.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Azure AI Foundry overview",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "SecOps playbooks carry the branch logic and a model call supplies the recommendation. Record recommendation and human decision together so divergence can be tuned against.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
+          }
+        ]
       }
     }
   },
@@ -2794,6 +4595,28 @@
           {
             "label": "Amazon Security Lake",
             "url": "https://docs.aws.amazon.com/security-lake/latest/userguide/what-is-security-lake.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Sentinel hunting queries over the workspace are the data surface; a Foundry deployment generates hypotheses against summarized results rather than raw logs. Promote validated hunts to analytics rules.",
+        "links": [
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          },
+          {
+            "label": "Azure AI Foundry overview",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "SecOps search over the unified telemetry is the data surface; promote a validated hunt into a detection rule so the outcome persists.",
+        "links": [
+          {
+            "label": "Google Security Operations",
+            "url": "https://docs.cloud.google.com/chronicle/docs/secops/secops-overview"
           }
         ]
       }
@@ -2851,6 +4674,40 @@
             "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/model-monitor.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Azure ML model monitoring detects data and prediction drift and can trigger the retraining pipeline; the registry holds the versions that A/B traffic splits between.",
+        "links": [
+          {
+            "label": "Azure ML model monitoring",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+          },
+          {
+            "label": "Azure ML pipelines",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-ml-pipelines"
+          },
+          {
+            "label": "Azure ML model management",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-management-and-deployment"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model monitoring detects drift and triggers the retraining pipeline; Model Registry holds the versions, and traffic splitting across endpoint versions carries the A/B.",
+        "links": [
+          {
+            "label": "Model monitoring",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview"
+          },
+          {
+            "label": "ML pipelines",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/pipelines/introduction"
+          },
+          {
+            "label": "Model deployment",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/deployment"
+          }
+        ]
       }
     }
   },
@@ -2904,8 +4761,30 @@
         "summary": "Security Hub dashboards exported to QuickSight feed the quarterly board pack. Snapshot the same metrics each quarter for trend comparability.",
         "links": [
           {
-            "label": "Security Hub findings export to QuickSight",
-            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-customizations.html"
+            "label": "Security Hub insights",
+            "url": "https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-insights.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Defender for Cloud secure score and the AI posture findings give the quantitative trend line; snapshot the same query each quarter so the board sees change rather than a new metric each time.",
+        "links": [
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          },
+          {
+            "label": "Microsoft Defender for Cloud",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Security Command Center posture scores and finding counts give the trend line; snapshot the same query each quarter for comparability.",
+        "links": [
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -3002,6 +4881,32 @@
             "url": "https://docs.aws.amazon.com/artifact/latest/ug/what-is-aws-artifact.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Compliance Manager tracks the regulatory frameworks with per-control improvement actions, which is the enforcement side of the horizon review rather than a reading list.",
+        "links": [
+          {
+            "label": "Purview Compliance Manager",
+            "url": "https://learn.microsoft.com/en-us/purview/compliance-manager"
+          },
+          {
+            "label": "Azure OpenAI transparency note",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/responsible-ai/openai/transparency-note"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Assured Workloads enforces the data residency and personnel controls that regulated regimes require, so a regulatory decision becomes a project configuration rather than a policy memo.",
+        "links": [
+          {
+            "label": "Assured Workloads",
+            "url": "https://docs.cloud.google.com/assured-workloads/docs/overview"
+          },
+          {
+            "label": "Architecture Framework security pillar",
+            "url": "https://docs.cloud.google.com/architecture/framework/security"
+          }
+        ]
       }
     }
   },
@@ -3065,8 +4970,42 @@
         "summary": "SageMaker Clarify for both pre-training data bias and post-training prediction bias, with Model Monitor for drift over time. Findings to Security Hub.",
         "links": [
           {
-            "label": "SageMaker Clarify",
-            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-fairness-and-explainability.html"
+            "label": "SageMaker Clarify bias detection",
+            "url": "https://docs.aws.amazon.com/sagemaker/latest/dg/clarify-detect-data-bias.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "The Responsible AI dashboard covers fairness assessment and error analysis, and the scorecard turns a run into a shareable artifact for the review body. Model monitoring tracks drift between runs.",
+        "links": [
+          {
+            "label": "Responsible AI dashboard",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-responsible-ai-dashboard"
+          },
+          {
+            "label": "Responsible AI scorecard",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/how-to-responsible-ai-scorecard"
+          },
+          {
+            "label": "Azure ML model monitoring",
+            "url": "https://learn.microsoft.com/en-us/azure/machine-learning/concept-model-monitoring"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Model monitoring tracks feature and prediction skew over time, and the evaluation service scores against the fairness criteria you define. Both attach to the model version.",
+        "links": [
+          {
+            "label": "Model monitoring",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/model-monitoring/overview"
+          },
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "Responsible AI guidance",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/responsible-ai"
           }
         ]
       }
@@ -3111,6 +5050,40 @@
             "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/logging-using-cloudtrail.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Foundry observability retains per-run traces including retrieval context and tool steps; pair with the resource activity log for who invoked what, and set retention on the workspace to the regulatory requirement.",
+        "links": [
+          {
+            "label": "Foundry observability",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          },
+          {
+            "label": "Purview Audit",
+            "url": "https://learn.microsoft.com/en-us/purview/audit-solutions-overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Data Access audit logs record who invoked which model when, the agent runtime retains per-step traces, and ML metadata links the run back to the model version. Set sink retention to the regulatory requirement.",
+        "links": [
+          {
+            "label": "Platform audit logging",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/audit-logging"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          },
+          {
+            "label": "ML metadata and lineage",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/ml-metadata/introduction"
+          }
+        ]
       }
     }
   },
@@ -3144,6 +5117,40 @@
           {
             "label": "IAM Identity Center",
             "url": "https://docs.aws.amazon.com/singlesignon/latest/userguide/what-is.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Managed identities remove the rotation problem for anything Entra can authenticate; for the rest, Key Vault with a rotation policy. Decommissioning is a role-assignment removal, so tie it to the asset register's owner column.",
+        "links": [
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          },
+          {
+            "label": "Azure Key Vault",
+            "url": "https://learn.microsoft.com/en-us/azure/key-vault/general/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Workload identity federation removes exported keys entirely, which removes most of the rotation problem. Decommissioning is a service account deletion plus binding removal, driven from the register.",
+        "links": [
+          {
+            "label": "Workload identity federation",
+            "url": "https://docs.cloud.google.com/iam/docs/workload-identity-federation"
+          },
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
           }
         ]
       }
@@ -3246,12 +5253,46 @@
         "summary": "AgentCore Identity with per-request session policies and IAM Roles Anywhere for cross-environment workload identity. Cedar evaluates the consequence ladder per action.",
         "links": [
           {
-            "label": "AgentCore Identity",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/agentcore-identity.html"
+            "label": "Bedrock AgentCore Identity",
+            "url": "https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/identity.html"
           },
           {
             "label": "AWS Cedar policy language",
-            "url": "https://www.cedarpolicy.com/"
+            "url": "https://cedarpolicy.com/"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Compute authorization per request rather than per agent: Conditional Access on the calling identity, a narrowly scoped role assignment for the ceiling, and a check in the tool path that carries the consequence rating for the specific action.",
+        "links": [
+          {
+            "label": "Entra Conditional Access",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/conditional-access/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Foundry Agent Service",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/agents/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "IAM conditions and the service perimeter set the ceiling; a request-time check in the tool path carries the consequence rating. Workload identity federation keeps cross-environment agents keyless.",
+        "links": [
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "VPC Service Controls",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/vpc-service-controls"
+          },
+          {
+            "label": "Workload identity federation",
+            "url": "https://docs.cloud.google.com/iam/docs/workload-identity-federation"
           }
         ]
       }
@@ -3304,7 +5345,41 @@
         "links": [
           {
             "label": "Bedrock model evaluation",
-            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/model-evaluation.html"
+            "url": "https://docs.aws.amazon.com/bedrock/latest/userguide/evaluation.html"
+          }
+        ]
+      },
+      "azure_foundry": {
+        "summary": "Schedule the red teaming agent against every deployed endpoint and keep the scores in one workspace, so novel-technique discovery reads as a trend rather than a set of one-off reports.",
+        "links": [
+          {
+            "label": "Run AI red teaming scans",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/run-scans-ai-red-teaming-agent"
+          },
+          {
+            "label": "Risk and safety evaluators",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/risk-safety-evaluators"
+          },
+          {
+            "label": "Azure Monitor",
+            "url": "https://learn.microsoft.com/en-us/azure/azure-monitor/fundamentals/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Schedule evaluation runs against every deployed model and route the scores and Model Armor findings into Security Command Center, so validation lands beside the rest of the security signal.",
+        "links": [
+          {
+            "label": "Gen AI evaluation service",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/evaluation-overview"
+          },
+          {
+            "label": "Model Armor",
+            "url": "https://docs.cloud.google.com/model-armor/overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
           }
         ]
       }
@@ -3338,6 +5413,40 @@
             "url": "https://docs.aws.amazon.com/chatbot/latest/adminguide/what-is.html"
           }
         ]
+      },
+      "azure_foundry": {
+        "summary": "Scope the agent's managed identity to the Level 1 action set only and let the deny be the escalation path: an out-of-scope call fails at the role assignment and raises a Sentinel incident rather than silently succeeding.",
+        "links": [
+          {
+            "label": "Azure managed identities",
+            "url": "https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/overview"
+          },
+          {
+            "label": "Azure AI Foundry RBAC",
+            "url": "https://learn.microsoft.com/en-us/azure/foundry/concepts/rbac-foundry"
+          },
+          {
+            "label": "Microsoft Sentinel",
+            "url": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Scope the agent's service account to the Level 1 action set only. An out-of-scope call fails at IAM and surfaces in audit logs, which is the escalation trigger.",
+        "links": [
+          {
+            "label": "Service accounts",
+            "url": "https://docs.cloud.google.com/iam/docs/service-account-overview"
+          },
+          {
+            "label": "Access control and IAM",
+            "url": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/machine-learning/general/access-control"
+          },
+          {
+            "label": "Cloud Audit Logs",
+            "url": "https://docs.cloud.google.com/logging/docs/audit"
+          }
+        ]
       }
     }
   },
@@ -3360,6 +5469,32 @@
       "cloud_agnostic": {
         "summary": "GitOps + policy-as-code with automated remediation tied to known-good baselines.",
         "links": []
+      },
+      "azure_foundry": {
+        "summary": "Azure Policy remediation tasks return drifted resources to the baseline automatically, with compliance state as the notification surface and Defender for Cloud posture as the check that it worked.",
+        "links": [
+          {
+            "label": "Azure Policy",
+            "url": "https://learn.microsoft.com/en-us/azure/governance/policy/overview"
+          },
+          {
+            "label": "Defender for Cloud AI security posture",
+            "url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-security-posture"
+          }
+        ]
+      },
+      "google_vertex_ai": {
+        "summary": "Organization policy constraints prevent most drift outright; Security Command Center posture findings drive remediation for whatever gets through.",
+        "links": [
+          {
+            "label": "Organization policy constraints",
+            "url": "https://docs.cloud.google.com/organization-policy/overview"
+          },
+          {
+            "label": "Security Command Center",
+            "url": "https://docs.cloud.google.com/security-command-center/docs/security-command-center-overview"
+          }
+        ]
       }
     }
   },

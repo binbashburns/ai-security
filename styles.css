@@ -518,7 +518,8 @@ a.card:hover {
   letter-spacing: 0.6px;
   text-transform: uppercase;
   position: sticky;
-  top: 0;
+  /* Clear the sticky topbar (56px) rather than sliding underneath it. */
+  top: 56px;
   z-index: 2;
 }
 .matrix tr:last-child td { border-bottom: none; }
@@ -748,3 +749,55 @@ a.card:hover {
   .tool-facts, .rec-fields { grid-template-columns: 1fr; gap: 2px 0; }
   .tool-facts dd, .rec-fields dd { margin-bottom: 8px; }
 }
+
+/* ---------------------------------------------------------------------------
+   Classes replacing former inline style attributes. The page ships a strict
+   Content-Security-Policy with style-src 'self', which blocks style="...",
+   so anything visual has to live here.
+   --------------------------------------------------------------------------- */
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  display: block;
+}
+.icon-lg { width: 22px; height: 22px; }
+
+.nav-link .nav-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.stage-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+.stage-card { display: block; text-decoration: none; }
+.stage-card-tagline { margin: 0; }
+
+.group-heading {
+  margin: 0;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+}
+
+.page-footnote { margin-top: 24px; }
+.page-wide { max-width: none; }
+
+/* Vendor block for a control with no guidance recorded for the active vendor.
+   Stated rather than hidden, so a vendor tab never looks broken. */
+.vendor-block.empty { opacity: 0.75; }
+.vendor-empty {
+  color: var(--text-subtle);
+  font-style: italic;
+  margin-bottom: 0;
+}
+
+/* Tool baselines: replacements for inline styles under the CSP. */
+.tool-card { display: block; text-decoration: none; }
+.tool-card-stats { margin: 0; }
+.guide-meta { margin: 6px 0 0; }
+.status-banner.spaced { margin-top: 20px; }
