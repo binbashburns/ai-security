@@ -37,7 +37,7 @@ function renderStage(main, state, stageNum, activeVendor) {
         <section class="indicator-group">
           <div class="indicator-group-header">
             <span class="pillar-badge ${pillarClass(pillar)}">${escapeHtml(pillar)}</span>
-            <h3 style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;">Program indicators</h3>
+            <h3 class="group-heading">Program indicators</h3>
           </div>
           ${items}
         </section>
@@ -59,7 +59,7 @@ function renderStage(main, state, stageNum, activeVendor) {
       <section class="indicator-group">
         <div class="indicator-group-header">
           <span class="pillar-badge ${pillarClass(pillar)}">${escapeHtml(pillar)}</span>
-          <h3 style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;">Potential metrics</h3>
+          <h3 class="group-heading">Potential metrics</h3>
         </div>
         <ul>${items.map((m) => `<li>${escapeHtml(m)}</li>`).join('')}</ul>
       </section>
@@ -100,7 +100,7 @@ function renderStage(main, state, stageNum, activeVendor) {
       ${stepsList ? `<h2>Steps to the next level</h2><ol>${stepsList}</ol>` : ''}
       ${prereqText ? `<h2>Prerequisites for stage ${escapeHtml(stage.stage + 1)}</h2>${prereqText}` : ''}
 
-      <p style="margin-top:24px;">
+      <p class="page-footnote">
         ${stage.source ? `<span class="card-meta">Source: ${escapeHtml(stage.source)}</span>` : ''}
       </p>
     </div>

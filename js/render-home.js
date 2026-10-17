@@ -4,16 +4,16 @@ function renderHome(main, state) {
     .sort((a, b) => a.stage - b.stage)
     .map(
       (s) => `
-      <a class="card" href="#/stages/${s.stage}" style="text-decoration:none;display:block;">
+      <a class="card stage-card" href="#/stages/${s.stage}">
         <div class="card-meta">Stage ${s.stage}</div>
         <div class="card-title">${escapeHtml(s.title)}</div>
-        <p style="margin:0;">${escapeHtml(s.tagline || '')}</p>
+        <p class="stage-card-tagline">${escapeHtml(s.tagline || '')}</p>
       </a>`
     )
     .join('');
 
   const stageGrid = stageCards
-    ? `<div style="display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">${stageCards}</div>`
+    ? `<div class="stage-grid">${stageCards}</div>`
     : '<p>No stage data loaded yet.</p>';
 
   main.innerHTML = `
@@ -23,7 +23,7 @@ function renderHome(main, state) {
         <h1 class="page-title">AI Security: a practitioner reference</h1>
         <p class="page-lead">
           A working reference for AI security, organized around the SANS AI Security Maturity Model (AISMM).
-          Each stage's indicators are mapped to the OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, and Forrester AEGIS.
+          Each stage's indicators are mapped to the OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, EU AI Act, MITRE ATLAS.
           The vendor tabs at the top change which implementation guidance is surfaced alongside the controls.
         </p>
       </header>

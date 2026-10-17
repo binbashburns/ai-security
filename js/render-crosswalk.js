@@ -1,5 +1,11 @@
 function renderCrosswalk(main, state) {
-  const fwOrder = state.frameworks.map((f) => f.id);
+  const cited = new Set();
+  state.controls.forEach((c) => {
+    Object.entries(c.crosswalk || {}).forEach(([id, entries]) => {
+      if (entries && (!Array.isArray(entries) || entries.length)) cited.add(id);
+    });
+  });
+  const fwOrder = state.frameworks.map((f) => f.id).filter((id) => cited.has(id));
   const fwNameById = Object.fromEntries(state.frameworks.map((f) => [f.id, f.name]));
 
   const headerCells = fwOrder
@@ -48,7 +54,7 @@ function renderCrosswalk(main, state) {
     : '<p>No controls loaded.</p>';
 
   main.innerHTML = `
-    <div class="page" style="max-width:none;">
+    <div class="page page-wide">
       <header class="page-header">
         <span class="page-eyebrow">Reference</span>
         <h1 class="page-title">Crosswalk Matrix</h1>

@@ -1,6 +1,7 @@
 [
   {
     "id": "sans_aismm",
+    "spine": true,
     "name": "SANS AI Security Maturity Model",
     "version": "2026 edition",
     "url": "https://www.sans.org/mlp/2026-ai-security-maturity-model-ebook",
@@ -40,13 +41,6 @@
     "version": "v8.1; AI LLM, AI Agents, and MCP Companion Guides (April 2026)",
     "url": "https://www.cisecurity.org/insights/blog/applying-controls-real-world-ai-environments",
     "short_description": "The 18 CIS Critical Security Controls interpreted for LLMs, AI agents, and MCP, one Companion Guide per layer. Cited here by Safeguard number. Drives the Tool Baselines section, which supplies the per-setting layer CIS does not publish for AI tools."
-  },
-  {
-    "id": "aegis",
-    "name": "Forrester AEGIS",
-    "version": "2025",
-    "url": "https://www.forrester.com/technology/aegis-framework/",
-    "short_description": "Forrester's AI governance framework. Used here for executive-friendly mappings; canonical URL points to Forrester's AI research index."
   },
   {
     "id": "eu_ai_act",

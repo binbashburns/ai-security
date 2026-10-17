@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'none'; base-uri 'none'; object-src 'none'">
 <meta name="theme-color" content="#282a36">
 <title>AI Security</title>
 <meta name="description" content="A practitioner-level reference for AI security, anchored on the SANS AI Security Maturity Model with cross-framework mappings and vendor implementation guidance.">
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="app">
   <header class="topbar">
-    <button class="icon-btn menu-btn" id="menu-btn" aria-label="Toggle navigation" type="button"><i class="ph ph-list"></i></button>
-    <span class="brand-mark" aria-hidden="true"><i class="ph ph-shield-check"></i></span>
+    <button class="icon-btn menu-btn" id="menu-btn" aria-label="Toggle navigation" aria-expanded="false" aria-controls="sidebar" type="button">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <span class="brand-mark" aria-hidden="true">
+      <svg class="icon icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 19 6v5.4c0 4.2-2.9 7.7-7 8.6-4.1-.9-7-4.4-7-8.6V6l7-2.8z"/><path d="M9 12.1l2.1 2.1L15.2 10"/></svg>
+    </span>
     <a class="brand-title" href="#/">AI Security</a>
     <nav class="vendor-tabs" id="vendor-tabs" aria-label="Vendor implementation"></nav>
     <a class="repo-link" href="https://github.com/binbashburns/ai-security" target="_blank" rel="noopener noreferrer" title="Source on GitHub" aria-label="Source on GitHub">
@@ -29,7 +34,7 @@
   <main class="main" id="main" tabindex="-1"></main>
 
   <footer class="footer">
-    <p class="footer-credit">Frameworks: SANS AISMM, OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, Forrester AEGIS, CIS Controls v8.1 AI Companion Guides</p>
+    <p class="footer-credit">Frameworks: SANS AISMM, OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, EU AI Act, MITRE ATLAS, CIS Controls v8.1 AI Companion Guides</p>
   </footer>
 </div>
 

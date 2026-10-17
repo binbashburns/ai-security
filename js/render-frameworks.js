@@ -19,7 +19,11 @@ function renderFrameworks(main, state) {
           <p class="framework-card-desc">${escapeHtml(f.short_description || '')}</p>
           <div class="framework-card-foot">
             <span class="framework-source" title="${escapeHtml(f.url || '')}">${escapeHtml(host)}</span>
-            <span class="framework-count">${controlCount} control${controlCount === 1 ? '' : 's'}</span>
+            <span class="framework-count">${
+              f.spine
+                ? `spine &middot; ${state.controls.length} controls`
+                : `${controlCount} control${controlCount === 1 ? '' : 's'}`
+            }</span>
           </div>
         </a>
       `;
@@ -32,7 +36,7 @@ function renderFrameworks(main, state) {
         <span class="page-eyebrow">Reference</span>
         <h1 class="page-title">Frameworks</h1>
         <p class="page-lead">
-          The frameworks crosswalked across this site. SANS AISMM is the spine. Every other framework cites controls into the same AISMM stage tree, so a single indicator can surface what NIST, ISO, OWASP, CSA, Forrester, or the EU AI Act calls the same thing.
+          The frameworks crosswalked across this site. SANS AISMM is the spine. Every other framework cites controls into the same AISMM stage tree, so a single indicator can surface what NIST, ISO, OWASP, CSA, MITRE, or the EU AI Act calls the same thing.
         </p>
       </header>
       <div class="framework-grid">${cards}</div>

@@ -15,26 +15,53 @@ on:
   schedule:
     - cron: "0 6 * * 1"
 
+# Read-only by default. Each job below grants only the write scope its
+# reusable workflow declares, so no called workflow gets more than it needs.
 permissions:
   contents: read
-  pull-requests: write
-  issues: write
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
+  # Stage 1 - gate: fail fast on credentials before anything else runs.
   secrets:
+    permissions:
+      contents: read
+      pull-requests: write
     uses: binbashburns/security-pipelines/.github/workflows/secrets.yml@main
 
-  link-check:
-    uses: binbashburns/security-pipelines/.github/workflows/link-check.yml@main
-    with:
-      paths: "**/*.html **/*.md **/*.json"
-      create-issue: true
-
+  # Stage 2 - static analysis and link audit, in parallel once the gate passes.
   sast:
+    needs: secrets
     if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
     uses: binbashburns/security-pipelines/.github/workflows/sast.yml@main
     with:
       language: javascript
 
-  sbom:
-    uses: binbashburns/security-pipelines/.github/workflows/sbom-vuln.yml@main
+  link-check:
+    needs: secrets
+    permissions:
+      contents: read
+      issues: write
+    uses: binbashburns/security-pipelines/.github/workflows/link-check.yml@main
+    with:
+      # .lycheeignore in the repo root carries the exclusions and the reason for each.
+      paths: "**/*.html **/*.md **/*.json"
+      create-issue: true
+
+  # Stage 3 - dynamic scan against the site as it is actually served.
+  dast:
+    needs: secrets
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: binbashburns/security-pipelines/.github/workflows/dast.yml@main
+
+# The sbom-vuln workflow is deliberately not called: this repo has no dependency
+# manifest, so Syft finds nothing to scan and Grype is skipped. Add it back if a
+# package.json or requirements.txt ever lands here.

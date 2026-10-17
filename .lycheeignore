@@ -1,0 +1,10 @@
+# URLs the link checker cannot evaluate correctly. Each line is a regex.
+# Keep the reason with the entry: an unexplained exclusion becomes permanent.
+
+# MITRE ATLAS is a client-rendered single-page app. Deep links render correctly
+# in a browser but the server answers 404 for any route below the root.
+^https://atlas\.mitre\.org/(matrices|techniques)/
+
+# iso.org answers 403 to non-browser user agents. The page is public and loads
+# normally for a human.
+^https://www\.iso\.org/standard/

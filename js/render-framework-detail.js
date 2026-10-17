@@ -37,7 +37,9 @@ function renderFrameworkDetail(main, state, id) {
         </table>
       </div>
     `
-    : '<p>No AISMM controls currently cite this framework. Add a <code>crosswalk</code> entry in <code>data/controls.json</code> to surface mappings here.</p>';
+    : fw.spine
+      ? '<p>This is the spine of the site. Every control is an AISMM control, so there is no crosswalk column pointing back at it. Browse the stages in the sidebar instead.</p>'
+      : '<p>No AISMM controls currently cite this framework. Add a <code>crosswalk</code> entry in <code>data/controls.json</code> to surface mappings here.</p>';
 
   main.innerHTML = `
     <div class="page">
@@ -57,7 +59,7 @@ function renderFrameworkDetail(main, state, id) {
       <h2>AISMM controls citing this framework</h2>
       ${citingTable}
 
-      <p style="margin-top:18px;"><a href="#/frameworks">All frameworks</a> &middot; <a href="#/crosswalk">Crosswalk Matrix</a></p>
+      <p class="page-footnote"><a href="#/frameworks">All frameworks</a> &middot; <a href="#/crosswalk">Crosswalk Matrix</a></p>
     </div>
   `;
 }

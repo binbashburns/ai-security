@@ -14,6 +14,8 @@ const state = {
 
 const VENDOR_STORAGE_KEY = 'ai-security:active-vendor';
 const LAST_STAGE_KEY = 'ai-security:last-stage';
+// Matched against the route after splitRoute() has removed any in-page anchor.
+const STAGE_ROUTE = /^#\/stages\/(\d+)$/;
 
 // Routes can carry an in-page anchor after a second '#', e.g.
 // #/stages/3#AISMM-3-PROTECT-NHI or #/baselines/cursor#CU-5.1.
@@ -21,17 +23,23 @@ function splitRoute(hash) {
   const raw = hash || '#/';
   const idx = raw.indexOf('#', 1);
   if (idx === -1) return { route: raw, anchor: null };
-  return { route: raw.slice(0, idx), anchor: decodeURIComponent(raw.slice(idx + 1)) };
+  const rawAnchor = raw.slice(idx + 1);
+  let anchor = rawAnchor;
+  try {
+    anchor = decodeURIComponent(rawAnchor);
+  } catch (e) {
+    /* malformed escape such as %E0: use the anchor as typed */
+  }
+  return { route: raw.slice(0, idx), anchor };
 }
 
 function scrollToAnchor(anchor) {
   if (!anchor) return false;
   const el = document.getElementById(anchor);
   if (!el) return false;
-  // A level filter on baseline pages can hide the target; show everything first.
-  if (el.hidden) {
-    document.querySelector('.level-filter-btn[data-filter="all"]')?.click();
-  }
+  // A Level 1 filter on baseline pages can hide the target. Reveal just this one
+  // without changing the saved filter.
+  if (el.hidden) el.hidden = false;
   el.scrollIntoView({ block: 'start' });
   el.classList.add('anchor-flash');
   setTimeout(() => el.classList.remove('anchor-flash'), 1600);
@@ -39,11 +47,11 @@ function scrollToAnchor(anchor) {
 }
 
 function isStageRoute(route) {
-  return /^#\/stages\/\d+$/.test(route || '');
+  return STAGE_ROUTE.test(route || '');
 }
 
 function trackLastStage(route) {
-  const m = (route || '').match(/^#\/stages\/(\d+)$/);
+  const m = (route || '').match(STAGE_ROUTE);
   if (m) sessionStorage.setItem(LAST_STAGE_KEY, m[1]);
 }
 
@@ -107,7 +115,7 @@ function renderVendorTabs() {
   host.innerHTML = state.vendors
     .map(
       (v) =>
-        `<button type="button" class="vendor-tab${v.id === active ? ' active' : ''}" data-vendor="${v.id}" title="${escapeAttr(v.summary || v.label)}">${v.label}</button>`
+        `<button type="button" class="vendor-tab${v.id === active ? ' active' : ''}" data-vendor="${escapeHtml(v.id)}" title="${escapeHtml(v.summary || v.label)}">${escapeHtml(v.label)}</button>`
     )
     .join('');
   host.querySelectorAll('.vendor-tab').forEach((btn) => {
@@ -115,25 +123,22 @@ function renderVendorTabs() {
   });
 }
 
-function escapeAttr(str) {
-  return String(str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-}
-
 function renderSidebar(route) {
   const sidebar = document.getElementById('sidebar');
   if (!sidebar) return;
 
   const isActive = (path) => (route === path ? ' active' : '');
-  const isStageActive = (n) => (route === `#/stages/${n}` ? ' active' : '');
+  const activeStage = (route.match(STAGE_ROUTE) || [])[1];
+  const isStageActive = (n) => (activeStage === String(n) ? ' active' : '');
 
   const stageLinks = state.stages
     .slice()
     .sort((a, b) => a.stage - b.stage)
     .map(
       (s) => `
-      <a class="nav-link${isStageActive(s.stage)}" href="#/stages/${s.stage}">
-        <span class="nav-num">${s.stage}</span>
-        <span>${s.title}</span>
+      <a class="nav-link${isStageActive(s.stage)}" href="#/stages/${escapeHtml(s.stage)}">
+        <span class="nav-num">${escapeHtml(s.stage)}</span>
+        <span>${escapeHtml(s.title)}</span>
       </a>`
     )
     .join('');
@@ -141,7 +146,7 @@ function renderSidebar(route) {
   sidebar.innerHTML = `
     <div class="sidebar-section">Overview</div>
     <a class="nav-link${isActive('#/') || isActive('') ? ' active' : ''}" href="#/">
-      <span class="nav-icon"><i class="ph ph-house"></i></span>
+      <span class="nav-icon">${icon('house')}</span>
       <span>Home</span>
     </a>
 
@@ -152,15 +157,15 @@ function renderSidebar(route) {
 
     <div class="sidebar-section">Reference</div>
     <a class="nav-link${isActive('#/frameworks')}" href="#/frameworks">
-      <span class="nav-icon"><i class="ph ph-stack"></i></span>
+      <span class="nav-icon">${icon('stack')}</span>
       <span>Frameworks</span>
     </a>
     <a class="nav-link${isActive('#/crosswalk')}" href="#/crosswalk">
-      <span class="nav-icon"><i class="ph ph-grid-four"></i></span>
+      <span class="nav-icon">${icon('grid')}</span>
       <span>Crosswalk Matrix</span>
     </a>
     <a class="nav-link${isActive('#/refs')}" href="#/refs">
-      <span class="nav-icon"><i class="ph ph-book-open"></i></span>
+      <span class="nav-icon">${icon('book')}</span>
       <span>References</span>
     </a>
   `;
@@ -172,15 +177,15 @@ function renderBaselineNav(route) {
   const toolLinks = data.tools
     .map(
       (t) => `
-      <a class="nav-link nav-sub${route === `#/baselines/${t.id}` ? ' active' : ''}" href="#/baselines/${t.id}">
-        <span>${t.label}</span>
+      <a class="nav-link nav-sub${route === `#/baselines/${t.id}` ? ' active' : ''}" href="#/baselines/${escapeHtml(t.id)}">
+        <span>${escapeHtml(t.label)}</span>
       </a>`
     )
     .join('');
   return `
     <div class="sidebar-section">Tool Baselines</div>
     <a class="nav-link${route === '#/baselines' ? ' active' : ''}" href="#/baselines">
-      <span class="nav-icon"><i class="ph ph-sliders-horizontal"></i></span>
+      <span class="nav-icon">${icon('sliders')}</span>
       <span>Overview</span>
     </a>
     ${toolLinks}
@@ -197,7 +202,7 @@ function dispatchRoute() {
   if (!main) return;
 
   // #/stages/N
-  const stageMatch = route.match(/^#\/stages\/(\d+)$/);
+  const stageMatch = route.match(STAGE_ROUTE);
   if (stageMatch) {
     const stageNum = Number(stageMatch[1]);
     renderStage(main, state, stageNum, getActiveVendor());
@@ -250,6 +255,7 @@ function finishRender(main, anchor) {
 
 function openSidebar() {
   document.getElementById('sidebar')?.classList.add('open');
+  document.getElementById('menu-btn')?.setAttribute('aria-expanded', 'true');
   const backdrop = document.getElementById('sidebar-backdrop');
   if (backdrop) {
     backdrop.hidden = false;
@@ -259,6 +265,7 @@ function openSidebar() {
 
 function closeSidebar() {
   document.getElementById('sidebar')?.classList.remove('open');
+  document.getElementById('menu-btn')?.setAttribute('aria-expanded', 'false');
   const backdrop = document.getElementById('sidebar-backdrop');
   if (backdrop) {
     backdrop.classList.remove('show');
@@ -271,6 +278,9 @@ async function init() {
     const sidebar = document.getElementById('sidebar');
     if (sidebar?.classList.contains('open')) closeSidebar();
     else openSidebar();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSidebar();
   });
   document.getElementById('sidebar-backdrop')?.addEventListener('click', closeSidebar);
 

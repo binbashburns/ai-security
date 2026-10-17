@@ -1,0 +1,29 @@
+name: validate-data
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "scripts/validate-data.py"
+      - ".github/workflows/validate-data.yml"
+  push:
+    branches: [main]
+    paths:
+      - "data/**"
+      - "scripts/validate-data.py"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Validate data files
+        run: python3 scripts/validate-data.py
