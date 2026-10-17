@@ -36,6 +36,12 @@ function renderHome(main, state) {
         <li>Use the <a href="#/crosswalk">Crosswalk Matrix</a> to see how every control maps across frameworks at once.</li>
       </ol>
 
+      <h2>Tool baselines</h2>
+      <p>
+        CIS has no Benchmark for enterprise AI tools. The <a href="#/baselines">Tool Baselines</a> section fills that gap for Claude Code, Claude Enterprise / Team, Cursor, and GitHub Copilot:
+        exact settings, values, and audit steps in a CIS Benchmark layout, keyed to eight cross-vendor primitives and mapped to CIS Controls v8.1 Safeguards and AISMM indicators.
+      </p>
+
       <h2>Who this is for</h2>
       <p>
         Security engineers, AI platform owners, GRC and compliance teams trying to operationalize a maturity model rather than read another vendor whitepaper.

@@ -52,5 +52,29 @@
     "version": "Open standard",
     "url": "https://www.fairinstitute.org/",
     "note": "Quantitative risk methodology. Stage 4 references FAIR extended for AI scenarios."
+  },
+  {
+    "title": "CIS AI Large Language Models Companion Guide",
+    "version": "CIS Controls v8.1, April 2026",
+    "url": "https://www.cisecurity.org/insights/white-papers/controls-v8-1-ai-llm-companion-guide",
+    "note": "Model layer: prompts, context handling, sensitive data exposure. Source for the data handling and content exclusion primitives in Tool Baselines."
+  },
+  {
+    "title": "CIS AI Agents Companion Guide",
+    "version": "CIS Controls v8.1, April 2026",
+    "url": "https://www.cisecurity.org/insights/white-papers/controls-v8-1-ai-agents-companion-guide",
+    "note": "Agent layer: tool execution, governed autonomy, access to enterprise systems. Source for the autonomy, sandbox, and policy primitives in Tool Baselines."
+  },
+  {
+    "title": "OWASP Secure Coding with AI Cheat Sheet",
+    "version": "Current",
+    "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+    "note": "Coding-agent trust boundaries, hallucinated packages, repository content as untrusted input, MCP least privilege."
+  },
+  {
+    "title": "SANS Critical AI Security Guidelines",
+    "version": "v1.2",
+    "url": "https://www.sans.org/mlp/critical-ai-security-guidelines",
+    "note": "Six control categories: access controls, data protection, deployment strategies, inference security, monitoring, GRC."
   }
 ]

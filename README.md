@@ -1,6 +1,8 @@
 # ai-security
 
-A practitioner-level reference site for AI security, anchored on the **SANS AI Security Maturity Model (AISMM)** with cross-framework mappings (OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, Forrester AEGIS) and vendor-specific implementation guidance (cloud-agnostic, AWS Bedrock, Azure AI Foundry, Google Vertex AI, Anthropic Claude, Microsoft 365 Copilot, ChatGPT Enterprise).
+A practitioner-level reference site for AI security, anchored on the **SANS AI Security Maturity Model (AISMM)** with cross-framework mappings (OWASP AI Exchange, NIST AI RMF, ISO/IEC 42001, CSA AICM, Forrester AEGIS, CIS Controls v8.1 AI Companion Guides) and vendor-specific implementation guidance (cloud-agnostic, AWS Bedrock, Azure AI Foundry, Google Vertex AI, Anthropic Claude, Microsoft 365 Copilot, ChatGPT Enterprise).
+
+A second section, **Tool Baselines**, is the CIS Benchmark that does not exist for enterprise AI tools: per-setting hardening for Claude Code, Claude Enterprise / Team, Cursor, and GitHub Copilot, keyed to eight cross-vendor control primitives.
 
 Live: https://ai.binbashburns.com
 
@@ -31,19 +33,21 @@ python3 -m http.server 8000
 ├── styles.css                       # dark-only dracula, single stylesheet
 ├── app.js                           # data loader, vendor-tab state, router dispatch
 ├── js/
-│   ├── router.js
+│   ├── render-helpers.js            # shared escaping, links, crosswalk/vendor blocks
 │   ├── render-home.js
 │   ├── render-stage.js              # stage pages (the bulk of the site)
 │   ├── render-frameworks.js
 │   ├── render-framework-detail.js
 │   ├── render-crosswalk.js
-│   └── render-references.js
+│   ├── render-references.js
+│   └── render-baselines.js          # tool baseline overview, coverage matrix, per-tool pages
 ├── data/
 │   ├── stages.json                  # per-stage prose: description, indicators, metrics, steps, prereqs
 │   ├── controls.json                # per-control records: pillar, summary, source, crosswalk, vendor_implementation
 │   ├── frameworks.json              # framework metadata (name, URL, PDF, version)
 │   ├── vendors.json                 # vendor tab metadata (id, label, default)
-│   └── refs.json                    # bibliography entries
+│   ├── refs.json                    # bibliography entries
+│   └── baselines.json               # tool baselines: primitives, tools, recommendations
 └── .github/workflows/
     ├── deploy.yml                   # GitHub Pages deploy
     └── security.yml                 # reusable scanning workflows
@@ -123,6 +127,40 @@ That is the only change required. The vendor tab bar in the topbar reads from `v
 2. Add the framework ID as a key under `crosswalk` on any control record where it applies.
 
 The Frameworks page and the Crosswalk Matrix page both rebuild themselves from these files; no further code change is required.
+
+## Tool baselines
+
+`data/baselines.json` drives `#/baselines` and `#/baselines/<tool>`. The model is core and branch:
+
+- **`primitives`** (core): eight cross-vendor control primitives. Each carries `cis` (CIS Controls v8.1 Safeguard numbers, titles in `cis_safeguards`), `guides` (which CIS AI Companion Guide applies), and `aismm` (AISMM control IDs from `controls.json`). The CIS Safeguards on a primitive are also written into the `cis_controls` crosswalk of each AISMM control it lists, so they show up on stage pages and in the Crosswalk Matrix.
+- **`tools`** (branches): plans, enforcement plane, how to verify, and optional `gaps` (primitive ID to a note explaining why the vendor has no control and what covers it).
+- **`recommendations`**: one CIS-style item each.
+
+```json
+{
+  "id": "CC-5.1",
+  "tool": "claude_code",
+  "primitive": "execution",
+  "level": 1,
+  "assessment": "automated",
+  "title": "Disable bypass permissions mode",
+  "setting": "`permissions.disableBypassPermissionsMode`",
+  "value": "`\"disable\"`",
+  "rationale": "Why this matters, in one or two sentences.",
+  "audit": "How to verify it is in effect.",
+  "default": "Optional: vendor default if documented.",
+  "example": "Optional: JSON snippet as a string.",
+  "links": [{ "label": "Settings reference", "url": "https://..." }]
+}
+```
+
+Rules of the road:
+
+- **`id`** is `<tool prefix>-<primitive num>.<n>`. Prefixes: `CC` Claude Code, `CA` Claude Enterprise / Team, `CU` Cursor, `GH` GitHub Copilot.
+- **`level`**: `1` for low-friction settings every licensee should apply, `2` for defense in depth with workflow cost.
+- **`assessment`**: `automated` if a script, admin API, MDM report, or client status command can verify it; otherwise `manual`.
+- Every setting name and value must come from the vendor's canonical docs. Update `meta.as_of` when re-verifying.
+- No placeholder recommendations. If the vendor has no control for a primitive, add a `gaps` note on the tool instead.
 
 ## Style rules
 

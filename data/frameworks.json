@@ -30,9 +30,16 @@
   {
     "id": "aicm",
     "name": "CSA AI Controls Matrix",
-    "version": "v1.0",
-    "url": "https://cloudsecurityalliance.org/research/working-groups/ai-controls",
-    "short_description": "Cloud Security Alliance controls matrix for AI systems. Domain-grouped controls aligned to CCM and AI-specific risks."
+    "version": "v1.1",
+    "url": "https://cloudsecurityalliance.org/artifacts/ai-controls-matrix-v1-1",
+    "short_description": "Cloud Security Alliance controls matrix for AI systems. v1.1 has 247 control objectives tagged by type, applicability and ownership, architectural relevance, LLM lifecycle, and threat category, plus the AI-CAIQ self-assessment. Builds on CCM."
+  },
+  {
+    "id": "cis_controls",
+    "name": "CIS Controls v8.1 (AI Companion Guides)",
+    "version": "v8.1; AI LLM, AI Agents, and MCP Companion Guides (April 2026)",
+    "url": "https://www.cisecurity.org/insights/blog/applying-controls-real-world-ai-environments",
+    "short_description": "The 18 CIS Critical Security Controls interpreted for LLMs, AI agents, and MCP, one Companion Guide per layer. Cited here by Safeguard number. Drives the Tool Baselines section, which supplies the per-setting layer CIS does not publish for AI tools."
   },
   {
     "id": "aegis",

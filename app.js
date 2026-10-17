@@ -1,6 +1,6 @@
 // Boot, data load, vendor-tab state, sidebar rendering, route dispatch.
 
-const DATA_FILES = ['stages', 'controls', 'frameworks', 'vendors', 'refs'];
+const DATA_FILES = ['stages', 'controls', 'frameworks', 'vendors', 'refs', 'baselines'];
 
 const state = {
   stages: [],
@@ -8,11 +8,35 @@ const state = {
   frameworks: [],
   vendors: [],
   refs: [],
+  baselines: null,
   activeVendor: null,
 };
 
 const VENDOR_STORAGE_KEY = 'ai-security:active-vendor';
 const LAST_STAGE_KEY = 'ai-security:last-stage';
+
+// Routes can carry an in-page anchor after a second '#', e.g.
+// #/stages/3#AISMM-3-PROTECT-NHI or #/baselines/cursor#CU-5.1.
+function splitRoute(hash) {
+  const raw = hash || '#/';
+  const idx = raw.indexOf('#', 1);
+  if (idx === -1) return { route: raw, anchor: null };
+  return { route: raw.slice(0, idx), anchor: decodeURIComponent(raw.slice(idx + 1)) };
+}
+
+function scrollToAnchor(anchor) {
+  if (!anchor) return false;
+  const el = document.getElementById(anchor);
+  if (!el) return false;
+  // A level filter on baseline pages can hide the target; show everything first.
+  if (el.hidden) {
+    document.querySelector('.level-filter-btn[data-filter="all"]')?.click();
+  }
+  el.scrollIntoView({ block: 'start' });
+  el.classList.add('anchor-flash');
+  setTimeout(() => el.classList.remove('anchor-flash'), 1600);
+  return true;
+}
 
 function isStageRoute(route) {
   return /^#\/stages\/\d+$/.test(route || '');
@@ -66,7 +90,7 @@ function setActiveVendor(id) {
   // Vendor tabs only have a visible effect on stage pages (where vendor blocks
   // render). On any other page, navigate to the last-viewed stage (or Stage 1)
   // so the click produces visible feedback.
-  const route = location.hash || '#/';
+  const { route } = splitRoute(location.hash);
   if (!isStageRoute(route)) {
     const lastStage = sessionStorage.getItem(LAST_STAGE_KEY) || '1';
     location.hash = `#/stages/${lastStage}`;
@@ -124,6 +148,8 @@ function renderSidebar(route) {
     <div class="sidebar-section">AISMM Stages</div>
     ${stageLinks}
 
+    ${renderBaselineNav(route)}
+
     <div class="sidebar-section">Reference</div>
     <a class="nav-link${isActive('#/frameworks')}" href="#/frameworks">
       <span class="nav-icon"><i class="ph ph-stack"></i></span>
@@ -140,8 +166,29 @@ function renderSidebar(route) {
   `;
 }
 
+function renderBaselineNav(route) {
+  const data = state.baselines;
+  if (!data || !data.tools || !data.tools.length) return '';
+  const toolLinks = data.tools
+    .map(
+      (t) => `
+      <a class="nav-link nav-sub${route === `#/baselines/${t.id}` ? ' active' : ''}" href="#/baselines/${t.id}">
+        <span>${t.label}</span>
+      </a>`
+    )
+    .join('');
+  return `
+    <div class="sidebar-section">Tool Baselines</div>
+    <a class="nav-link${route === '#/baselines' ? ' active' : ''}" href="#/baselines">
+      <span class="nav-icon"><i class="ph ph-sliders-horizontal"></i></span>
+      <span>Overview</span>
+    </a>
+    ${toolLinks}
+  `;
+}
+
 function dispatchRoute() {
-  const route = location.hash || '#/';
+  const { route, anchor } = splitRoute(location.hash);
   trackLastStage(route);
   renderSidebar(route);
   closeSidebar();
@@ -154,6 +201,15 @@ function dispatchRoute() {
   if (stageMatch) {
     const stageNum = Number(stageMatch[1]);
     renderStage(main, state, stageNum, getActiveVendor());
+    finishRender(main, anchor);
+    return;
+  }
+
+  // #/baselines/TOOL
+  const baselineMatch = route.match(/^#\/baselines\/([a-z0-9_-]+)$/i);
+  if (baselineMatch) {
+    renderBaselineTool(main, state, baselineMatch[1]);
+    finishRender(main, anchor);
     return;
   }
 
@@ -161,6 +217,7 @@ function dispatchRoute() {
   const fwMatch = route.match(/^#\/frameworks\/([a-z0-9_-]+)$/i);
   if (fwMatch) {
     renderFrameworkDetail(main, state, fwMatch[1]);
+    finishRender(main, anchor);
     return;
   }
 
@@ -174,13 +231,21 @@ function dispatchRoute() {
     case '#/refs':
       renderReferences(main, state);
       break;
+    case '#/baselines':
+      renderBaselines(main, state);
+      break;
     case '#/':
     case '':
     default:
       renderHome(main, state);
   }
 
+  finishRender(main, anchor);
+}
+
+function finishRender(main, anchor) {
   main.focus({ preventScroll: true });
+  if (!scrollToAnchor(anchor)) window.scrollTo(0, 0);
 }
 
 function openSidebar() {
