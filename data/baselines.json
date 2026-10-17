@@ -1,0 +1,1474 @@
+{
+  "meta": {
+    "title": "Enterprise AI Tool Baselines",
+    "as_of": "2026-10-17",
+    "intro": [
+      "CIS publishes Benchmarks for operating systems, browsers, Kubernetes, and SaaS platforms, but there is no CIS Benchmark for enterprise AI coding and chat tools. What exists is split across two layers: control-level guidance that says what to secure (CIS Controls v8.1 AI Companion Guides, CSA AICM, OWASP), and vendor hardening docs that say which setting does it.",
+      "This section joins the two. Eight control primitives form the core. Every tool gets a branch: the exact setting, value, and audit step for each primitive, in a CIS Benchmark layout (Level 1 / Level 2, automated or manual assessment). Each primitive maps back to CIS Safeguards and to AISMM indicators on this site, so an auditor gets CIS lineage and an engineer gets exact keys."
+    ],
+    "convergence": "Cursor, Claude Code, and GitHub Copilot have converged on the same control plane: a centrally delivered managed-settings document that users cannot override, MCP allow and deny lists, an execution sandbox with a network allowlist, a permission or run mode that gates autonomy, and hooks or OpenTelemetry for logging. A cross-vendor baseline keyed to those primitives survives vendor churn better than a per-tool checklist.",
+    "levels": {
+      "1": "Level 1: practical, low-friction settings that any organization licensing the tool should apply. Minimal impact on developer workflow.",
+      "2": "Level 2: defense in depth for regulated data, sensitive repositories, or high-autonomy agent use. Expect workflow friction and plan an exception process."
+    },
+    "assessment": {
+      "automated": "Automated: the setting can be verified by script, admin API, MDM compliance report, or a client status command.",
+      "manual": "Manual: verification requires an administrator to review a console page, policy, or log export."
+    },
+    "mapping_note": "CIS Safeguard and AISMM mappings are this site's interpretation of where each primitive lands. The CIS AI Companion Guides interpret every Safeguard for LLMs, agents, and MCP; read the relevant guide before citing a mapping in an audit. Vendor settings change often; the as-of date above is when each key was checked against vendor documentation."
+  },
+  "cis_safeguards": {
+    "2.3": "Address Unauthorized Software",
+    "2.5": "Allowlist Authorized Software",
+    "2.6": "Allowlist Authorized Libraries",
+    "2.7": "Allowlist Authorized Scripts",
+    "3.3": "Configure Data Access Control Lists",
+    "3.4": "Enforce Data Retention",
+    "3.7": "Establish and Maintain a Data Classification Scheme",
+    "3.12": "Segment Data Processing and Storage Based on Sensitivity",
+    "3.13": "Deploy a Data Loss Prevention Solution",
+    "4.1": "Establish and Maintain a Secure Configuration Process",
+    "4.5": "Implement and Manage a Firewall on End-User Devices",
+    "4.6": "Securely Manage Enterprise Assets and Software",
+    "5.6": "Centralize Account Management",
+    "6.2": "Establish an Access Revoking Process",
+    "6.7": "Centralize Access Control",
+    "6.8": "Define and Maintain Role-Based Access Control",
+    "8.2": "Collect Audit Logs",
+    "8.5": "Collect Detailed Audit Logs",
+    "8.9": "Centralize Audit Logs",
+    "8.11": "Conduct Audit Log Reviews",
+    "9.3": "Maintain and Enforce Network-Based URL Filters",
+    "9.4": "Restrict Unnecessary or Unauthorized Browser and Email Client Extensions",
+    "13.10": "Perform Application Layer Filtering",
+    "15.1": "Establish and Maintain an Inventory of Service Providers",
+    "15.4": "Ensure Service Provider Contracts Include Security Requirements"
+  },
+  "companion_guides": {
+    "llm": {
+      "label": "AI LLM Companion Guide",
+      "url": "https://www.cisecurity.org/insights/white-papers/controls-v8-1-ai-llm-companion-guide"
+    },
+    "agent": {
+      "label": "AI Agents Companion Guide",
+      "url": "https://www.cisecurity.org/insights/white-papers/controls-v8-1-ai-agents-companion-guide"
+    },
+    "mcp": {
+      "label": "MCP Companion Guide",
+      "url": "https://www.cisecurity.org/insights/blog/applying-controls-real-world-ai-environments"
+    }
+  },
+  "primitives": [
+    {
+      "id": "tenant",
+      "num": 1,
+      "title": "Identity and tenant lock",
+      "intent": "Every session authenticates through corporate identity and lands in the corporate tenant. Personal accounts on corporate devices are blocked, because tenant controls (retention, privacy, policy) only apply inside the tenant.",
+      "cis": [
+        "5.6",
+        "6.2",
+        "6.7",
+        "2.3"
+      ],
+      "guides": [
+        "agent"
+      ],
+      "aismm": [
+        "AISMM-1-GOVERN-BYOAI",
+        "AISMM-1-GOVERN-NO-VISIBILITY-EMP-TOOLS",
+        "AISMM-2-PROTECT-PARTIAL-INVENTORY"
+      ]
+    },
+    {
+      "id": "policy",
+      "num": 2,
+      "title": "Centrally enforced configuration",
+      "intent": "Security settings are delivered by the organization (MDM, server-managed policy, or a governed repository) and cannot be overridden by user or project files. Clients below a version floor do not start.",
+      "cis": [
+        "4.1",
+        "4.6"
+      ],
+      "guides": [
+        "agent"
+      ],
+      "aismm": [
+        "AISMM-3-GOVERN-COMPREHENSIVE-POLICY",
+        "AISMM-2-GOVERN-AUP-PUBLISHED"
+      ]
+    },
+    {
+      "id": "data",
+      "num": 3,
+      "title": "Data handling and model access",
+      "intent": "Prompts and code are not used for training, retention is bounded, and only approved models and providers are reachable. Personal API keys do not bypass the contractual data terms.",
+      "cis": [
+        "3.4",
+        "3.7",
+        "15.4"
+      ],
+      "guides": [
+        "llm"
+      ],
+      "aismm": [
+        "AISMM-2-GOVERN-DATA-CLASS-GAP",
+        "AISMM-3-GOVERN-THIRD-PARTY-ASSESSMENT"
+      ]
+    },
+    {
+      "id": "context",
+      "num": 4,
+      "title": "Sensitive content exclusion",
+      "intent": "Secrets, regulated data, and designated repositories never enter model context. Exclusion is enforced by the tool, not left to developer discipline, and its known gaps (terminal, MCP, agent modes) are covered by another layer.",
+      "cis": [
+        "3.3",
+        "3.12",
+        "3.13"
+      ],
+      "guides": [
+        "llm"
+      ],
+      "aismm": [
+        "AISMM-3-PROTECT-DATA-FLOWS",
+        "AISMM-2-GOVERN-DATA-CLASS-GAP"
+      ]
+    },
+    {
+      "id": "execution",
+      "num": 5,
+      "title": "Agent autonomy and approval",
+      "intent": "Agents cannot run in a mode that skips all approvals. Destructive or exfiltrating actions require a human or a deterministic policy check, and only organization-defined permission rules apply.",
+      "cis": [
+        "2.7",
+        "6.8"
+      ],
+      "guides": [
+        "agent"
+      ],
+      "aismm": [
+        "AISMM-3-GOVERN-HITL-THRESHOLDS",
+        "AISMM-4-PROTECT-EXECUTION-GUARDRAILS",
+        "AISMM-1-GOVERN-NO-CONVERSATIONAL-AGENTIC-DISTINCTION"
+      ]
+    },
+    {
+      "id": "sandbox",
+      "num": 6,
+      "title": "Sandbox and network egress",
+      "intent": "Agent-run commands execute in an OS-level sandbox with a filesystem boundary and a network allowlist. A blocked command cannot retry outside the sandbox. This is the backstop when prompt injection succeeds.",
+      "cis": [
+        "4.5",
+        "9.3",
+        "13.10"
+      ],
+      "guides": [
+        "agent"
+      ],
+      "aismm": [
+        "AISMM-4-PROTECT-CONFUSED-DEPUTY",
+        "AISMM-3-PROTECT-PROMPT-INJECTION"
+      ]
+    },
+    {
+      "id": "extensions",
+      "num": 7,
+      "title": "MCP, plugin, and extension supply chain",
+      "intent": "Only approved MCP servers, plugins, skills, and editor extensions load. Allowlists match on URL or command, not user-assigned names, and fail closed when malformed.",
+      "cis": [
+        "2.5",
+        "2.6",
+        "9.4",
+        "15.1"
+      ],
+      "guides": [
+        "mcp"
+      ],
+      "aismm": [
+        "AISMM-1-PROTECT-NO-THIRD-PARTY-AGENT-VISIBILITY",
+        "AISMM-3-PROTECT-RUNTIME-TOOL-VALIDATION",
+        "AISMM-3-PROTECT-API-SCOPE",
+        "AISMM-1-PROTECT-NO-SUPPLY-CHAIN-VISIBILITY"
+      ]
+    },
+    {
+      "id": "logging",
+      "num": 8,
+      "title": "Audit, telemetry, and hooks",
+      "intent": "Admin and policy changes land in an audit log streamed to the SIEM. Agent activity (tool calls, commands, MCP use) is exported through OpenTelemetry or hooks, because vendor audit logs generally do not capture local session content.",
+      "cis": [
+        "8.2",
+        "8.5",
+        "8.9",
+        "8.11"
+      ],
+      "guides": [
+        "mcp",
+        "agent"
+      ],
+      "aismm": [
+        "AISMM-3-GOVERN-STRUCTURED-LOGGING",
+        "AISMM-4-GOVERN-REASONING-TRACEABILITY"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "claude_code",
+      "prefix": "CC",
+      "label": "Claude Code",
+      "vendor": "Anthropic",
+      "plans": "Server-managed settings come from a Team or Enterprise organization. Endpoint-managed files and MDM profiles apply to any install on the device, but the tenant controls they pin (for example `forceLoginOrgUUID`) assume a Team or Enterprise organization.",
+      "enforcement_plane": "`managed-settings.json` (macOS `/Library/Application Support/ClaudeCode/`, Linux and WSL `/etc/claude-code/`, Windows `C:\\Program Files\\ClaudeCode\\`), MDM (macOS `com.anthropic.claudecode`, Windows `HKLM\\SOFTWARE\\Policies\\ClaudeCode` value `Settings`), or server-managed settings from the claude.ai admin console. Managed values sit above user, project, local, and `--settings` values.",
+      "verify": "Run `/status` in a session. The `Setting sources` line names the managed source in effect (file, plist, HKLM, or remote). `claude doctor` lists entries the client rejected.",
+      "notes": "Anthropic-hosted cloud sessions do not read device MDM or files; they only receive server-managed settings. A few restrictive keys (for example `disableClaudeAiConnectors`, `permissions.blockReadsOutsideWorkingDirectories`) honor a stricter value from a lower scope.",
+      "docs": [
+        {
+          "label": "Deploy managed settings",
+          "url": "https://code.claude.com/docs/en/managed-settings.md"
+        },
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md"
+        },
+        {
+          "label": "Example managed settings file",
+          "url": "https://code.claude.com/docs/en/settings-example"
+        },
+        {
+          "label": "Server-managed settings",
+          "url": "https://code.claude.com/docs/en/server-managed-settings.md"
+        }
+      ]
+    },
+    {
+      "id": "claude_ai",
+      "prefix": "CA",
+      "label": "Claude Enterprise / Team",
+      "vendor": "Anthropic",
+      "plans": "Most controls below are Enterprise-only (audit logs, custom retention, role-based permissions). Team plans have a subset; confirm in the admin console before claiming a control.",
+      "enforcement_plane": "claude.ai Organization settings (web admin console) plus Claude Desktop enterprise policy via MDM (macOS `com.anthropic.claudefordesktop`, Windows `HKLM\\SOFTWARE\\Policies\\Claude`). Claude Code is governed separately; see the Claude Code baseline.",
+      "verify": "Organization settings pages for console controls. For Desktop policy, Help > Troubleshooting > Generate Diagnostic Report on a managed machine shows applied values.",
+      "notes": "Custom data retention does not cover Claude Design, Claude Tag, Claude Managed Agents, or cloud-run Claude Code. Audit log export does not work for organizations using customer-managed keys; use the Compliance API there.",
+      "docs": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        },
+        {
+          "label": "Enterprise configuration for Claude Desktop",
+          "url": "https://support.claude.com/en/articles/12622667-enterprise-configuration-for-claude-desktop"
+        },
+        {
+          "label": "Access audit logs",
+          "url": "https://support.claude.com/en/articles/9970975-access-audit-logs"
+        },
+        {
+          "label": "Custom data retention",
+          "url": "https://support.claude.com/en/articles/10440198-configure-custom-data-retention-controls-for-enterprise-plans"
+        }
+      ],
+      "gaps": {
+        "policy": "The admin console is the policy plane and applies server-side, so there is no client policy to drift. Desktop MDM policy is covered under CA-1.2 and CA-7.2.",
+        "context": "No admin-enforced content exclusion for chat. Control what enters context through connector policies (CA-7.1), role scoping (CA-5.2), and DLP at the browser or network layer."
+      }
+    },
+    {
+      "id": "cursor",
+      "prefix": "CU",
+      "label": "Cursor",
+      "vendor": "Anysphere",
+      "plans": "Org-wide enforcement, MDM policies, audit log streaming, and policy locks are Enterprise features. Teams can enforce Privacy Mode; per-user controls such as `.cursorignore` apply on every plan.",
+      "enforcement_plane": "Cursor admin dashboard (team and Enterprise policies), MDM policies for client-side controls (Allowed Team IDs, Workspace Trust, `UpdateMode`, extension allowlist), and distributed hooks.",
+      "verify": "Admin dashboard policy pages and the Admin API for org settings; MDM compliance reports for client policies; audit log stream for changes.",
+      "notes": "Cursor publishes a consolidated Security and Privacy Hardening checklist. This baseline follows its admin quickstart order and adds levels and audit steps. `.cursorignore` is not honored by terminal or MCP tools.",
+      "docs": [
+        {
+          "label": "Security and Privacy Hardening",
+          "url": "https://cursor.com/docs/enterprise/security-hardening"
+        },
+        {
+          "label": "Enterprise overview",
+          "url": "https://cursor.com/docs/enterprise"
+        },
+        {
+          "label": "Privacy and data governance",
+          "url": "https://cursor.com/docs/enterprise/privacy-and-data-governance"
+        },
+        {
+          "label": "Model and integration management",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management"
+        }
+      ]
+    },
+    {
+      "id": "github_copilot",
+      "prefix": "GH",
+      "label": "GitHub Copilot",
+      "vendor": "GitHub",
+      "plans": "Policies, content exclusion, audit logs, and enterprise managed settings require Copilot Business or Copilot Enterprise.",
+      "enforcement_plane": "Enterprise and organization Copilot policies in GitHub settings, plus enterprise managed settings: `copilot/managed-settings.json` on the default branch of the governing organization's `.github-private` repository (server-managed), MDM string values (Windows `HKEY_LOCAL_MACHINE\\SOFTWARE\\Policies\\GitHubCopilot`, macOS `com.github.copilot`), or a local file (macOS `/Library/Application Support/GitHubCopilot/`, Windows `%ProgramFiles%\\GitHubCopilot\\`, Linux `/etc/github-copilot/`).",
+      "verify": "Enterprise > Policies > Copilot for policies. For managed settings, check the `.github-private` commit history and audit log; server-managed updates reach clients in about an hour.",
+      "notes": "Managed settings are read by Copilot CLI, VS Code, JetBrains IDEs, the GitHub Copilot app, and Copilot cloud agent, but not every client supports every key. Check the reference's client support before treating a key as enforced everywhere.",
+      "docs": [
+        {
+          "label": "Configure enterprise managed settings",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/configure-enterprise-managed-settings"
+        },
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        },
+        {
+          "label": "Manage enterprise Copilot policies",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies"
+        },
+        {
+          "label": "MCP management",
+          "url": "https://docs.github.com/en/copilot/concepts/mcp-management"
+        }
+      ],
+      "gaps": {
+        "tenant": "No Copilot-specific identity control. Copilot inherits GitHub enterprise identity (SAML SSO or Enterprise Managed Users) and seat assignment through organizations; baseline that at the GitHub platform layer, which the CIS GitHub Benchmark addresses."
+      }
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "CC-1.1",
+      "tool": "claude_code",
+      "primitive": "tenant",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Pin login to the corporate claude.ai organization",
+      "setting": "`forceLoginMethod`, `forceLoginOrgUUID`",
+      "value": "`\"claudeai\"` and the organization UUID(s)",
+      "rationale": "Without a pinned org, a developer can sign in with a personal Pro or Max account on a corporate machine and run outside every organization control. Only a managed source enforces `forceLoginOrgUUID`.",
+      "audit": "On a managed machine, `/status` shows the managed source; attempt login with a non-org account and confirm it is refused.",
+      "example": "{\n  \"forceLoginMethod\": \"claudeai\",\n  \"forceLoginOrgUUID\": [\n    \"xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx\"\n  ]\n}",
+      "links": [
+        {
+          "label": "Settings reference: forceLoginOrgUUID",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#forceloginorguuid"
+        }
+      ]
+    },
+    {
+      "id": "CC-2.1",
+      "tool": "claude_code",
+      "primitive": "policy",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Deliver policy through an admin-controlled managed source",
+      "setting": "Managed settings delivery",
+      "value": "MDM profile or HKLM registry for endpoints; server-managed settings for cloud sessions",
+      "rationale": "Managed settings are the only scope users cannot override. A plain file is acceptable, but a local administrator can edit it; MDM redeploys on schedule. Cloud sessions only receive server-managed settings, so device policy alone leaves them uncovered.",
+      "audit": "`/status` `Setting sources` line reads `Enterprise managed settings` with `(plist)`, `(HKLM)`, `(file)`, or remote. `Skipped sources` lists ignored lower-ranked sources.",
+      "links": [
+        {
+          "label": "Choose a delivery mechanism",
+          "url": "https://code.claude.com/docs/en/managed-settings.md"
+        },
+        {
+          "label": "Server-managed settings",
+          "url": "https://code.claude.com/docs/en/server-managed-settings.md"
+        }
+      ]
+    },
+    {
+      "id": "CC-2.2",
+      "tool": "claude_code",
+      "primitive": "policy",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Enforce a minimum client version",
+      "setting": "`requiredMinimumVersion`",
+      "value": "A version string at or above the last release with a security fix you depend on",
+      "rationale": "Managed-only. Keeps clients that predate a security key or fix from starting, so a new control is not silently ignored on old installs.",
+      "audit": "Launch an older client on a managed machine and confirm it refuses to start.",
+      "example": "{\n  \"requiredMinimumVersion\": \"2.1.150\"\n}",
+      "links": [
+        {
+          "label": "Settings reference: requiredMinimumVersion",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#requiredminimumversion"
+        }
+      ]
+    },
+    {
+      "id": "CC-3.1",
+      "tool": "claude_code",
+      "primitive": "data",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Restrict selectable models",
+      "setting": "`availableModels`, `enforceAvailableModels`",
+      "value": "Approved model aliases only; `enforceAvailableModels: true`",
+      "rationale": "Limits sessions to models covered by your data terms and cost controls. With `enforceAvailableModels`, the default option obeys the list too.",
+      "audit": "`/model` in a managed session shows only the approved entries.",
+      "example": "{\n  \"availableModels\": [\n    \"opus\",\n    \"sonnet\"\n  ],\n  \"enforceAvailableModels\": true\n}",
+      "links": [
+        {
+          "label": "Settings reference: availableModels",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#availablemodels"
+        }
+      ]
+    },
+    {
+      "id": "CC-3.2",
+      "tool": "claude_code",
+      "primitive": "data",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Bound local transcript retention",
+      "setting": "`cleanupPeriodDays`",
+      "value": "A value matching your endpoint data retention standard (for example `7` to `30`)",
+      "rationale": "Session transcripts on the endpoint hold prompts, file contents, and command output. Bounding them limits what a compromised laptop exposes.",
+      "audit": "Inspect the managed file; confirm transcripts older than the window are absent from the user's Claude Code data directory.",
+      "links": [
+        {
+          "label": "Settings reference: cleanupPeriodDays",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#cleanupperioddays"
+        }
+      ]
+    },
+    {
+      "id": "CC-4.1",
+      "tool": "claude_code",
+      "primitive": "context",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Deny reads of secrets and credential paths",
+      "setting": "`permissions.deny`",
+      "value": "`Read(...)` rules for `.env`, `.env.*`, secrets directories, and cloud credential files",
+      "rationale": "A `Read` deny rule stops the file tools and commands that name the file, such as `cat .env`, but not a broad `grep -r` over the directory. Pair with the sandbox (CC-6.1), which adds `Read` deny paths to what every sandboxed command cannot read.",
+      "audit": "In a managed session, ask Claude to read a denied path and confirm the tool call is blocked.",
+      "example": "{\n  \"permissions\": {\n    \"deny\": [\n      \"Read(./.env)\",\n      \"Read(./.env.*)\",\n      \"Read(./secrets/**)\"\n    ]\n  }\n}",
+      "links": [
+        {
+          "label": "Permissions: read and edit rules",
+          "url": "https://code.claude.com/docs/en/permissions.md"
+        },
+        {
+          "label": "Settings reference: permissions.deny",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#permissions-deny"
+        }
+      ]
+    },
+    {
+      "id": "CC-4.2",
+      "tool": "claude_code",
+      "primitive": "context",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Block reads outside the working directory",
+      "setting": "`permissions.blockReadsOutsideWorkingDirectories`",
+      "value": "`true`",
+      "rationale": "Stops file tools from reading home-directory credentials and other repositories in every permission mode. A stricter `true` from any scope is honored even if managed sets `false`.",
+      "audit": "Ask Claude to read `~/.aws/credentials` from a project session and confirm refusal.",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#permissions-blockreadsoutsideworkingdirectories"
+        }
+      ]
+    },
+    {
+      "id": "CC-5.1",
+      "tool": "claude_code",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Disable bypass permissions mode",
+      "setting": "`permissions.disableBypassPermissionsMode`",
+      "value": "`\"disable\"`",
+      "rationale": "Bypass mode runs every tool without asking. Removing it is the single highest-value autonomy control for interactive use.",
+      "audit": "Attempt `claude --dangerously-skip-permissions` or cycle modes in a session; bypass is unavailable.",
+      "example": "{\n  \"permissions\": {\n    \"disableBypassPermissionsMode\": \"disable\"\n  }\n}",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#permissions-disablebypasspermissionsmode"
+        }
+      ]
+    },
+    {
+      "id": "CC-5.2",
+      "tool": "claude_code",
+      "primitive": "execution",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Accept permission rules from managed settings only",
+      "setting": "`allowManagedPermissionRulesOnly`",
+      "value": "`true`",
+      "rationale": "Managed-only. Without it, `permissions.allow` merges across scopes, so a committed `.claude/settings.json` can pre-approve commands the organization never reviewed.",
+      "audit": "Add an allow rule to a project file and confirm it does not take effect.",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#allowmanagedpermissionrulesonly"
+        }
+      ]
+    },
+    {
+      "id": "CC-5.3",
+      "tool": "claude_code",
+      "primitive": "execution",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Remove auto mode where human approval is required",
+      "setting": "`disableAutoMode`",
+      "value": "`true` for repositories or roles that require per-action approval",
+      "rationale": "Auto mode lets a classifier approve actions. Some environments require a human decision on every action; deploy this to those groups.",
+      "audit": "Cycle permission modes in a session; auto mode is absent.",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#disableautomode"
+        }
+      ]
+    },
+    {
+      "id": "CC-6.1",
+      "tool": "claude_code",
+      "primitive": "sandbox",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Enable the command sandbox and forbid unsandboxed retry",
+      "setting": "`sandbox.enabled`, `sandbox.allowUnsandboxedCommands`",
+      "value": "`true`, `false`",
+      "rationale": "Runs Bash in an OS-level sandbox (macOS, Linux, WSL2). Without `allowUnsandboxedCommands: false`, a blocked command can be retried outside the sandbox.",
+      "audit": "`/status` shows sandbox active; run a command that writes outside the project and confirm it is blocked with no unsandboxed retry offered.",
+      "example": "{\n  \"sandbox\": {\n    \"enabled\": true,\n    \"allowUnsandboxedCommands\": false\n  }\n}",
+      "links": [
+        {
+          "label": "Sandboxing",
+          "url": "https://code.claude.com/docs/en/sandboxing.md"
+        }
+      ]
+    },
+    {
+      "id": "CC-6.2",
+      "tool": "claude_code",
+      "primitive": "sandbox",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Fail closed when the sandbox is unavailable",
+      "setting": "`sandbox.failIfUnavailable`",
+      "value": "`true`",
+      "rationale": "Refuses to start instead of silently running unsandboxed. Native Windows hosts without WSL2 will not start, so scope this to supported platforms or plan an exception.",
+      "audit": "On a host where the sandbox cannot initialize, Claude Code refuses to start.",
+      "links": [
+        {
+          "label": "Sandboxing",
+          "url": "https://code.claude.com/docs/en/sandboxing.md"
+        }
+      ]
+    },
+    {
+      "id": "CC-6.3",
+      "tool": "claude_code",
+      "primitive": "sandbox",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Lock the sandbox network allowlist to managed domains",
+      "setting": "`sandbox.network.allowedDomains`, `sandbox.network.allowManagedDomainsOnly`",
+      "value": "Package registries and source hosts you approve; `true`",
+      "rationale": "`allowManagedDomainsOnly` is managed-only and stops developers from adding egress destinations. This is the exfiltration backstop when an injected instruction tries to send data out.",
+      "audit": "From a sandboxed command, request a non-allowlisted host and confirm it is blocked without a prompt to allow.",
+      "example": "{\n  \"sandbox\": {\n    \"network\": {\n      \"allowedDomains\": [\n        \"registry.npmjs.org\",\n        \"github.com\"\n      ],\n      \"allowManagedDomainsOnly\": true\n    }\n  }\n}",
+      "links": [
+        {
+          "label": "Settings reference: sandbox.network",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#sandbox-network-alloweddomains"
+        }
+      ]
+    },
+    {
+      "id": "CC-7.1",
+      "tool": "claude_code",
+      "primitive": "extensions",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Allowlist MCP servers by URL or command, managed list only",
+      "setting": "`allowedMcpServers`, `deniedMcpServers`, `allowManagedMcpServersOnly`",
+      "value": "Approved servers matched by `serverUrl` or `serverCommand`; `allowManagedMcpServersOnly: true`",
+      "rationale": "Match on URL or command, not name: a user can name any server `github`. With only URL entries, every stdio server is blocked. `allowManagedMcpServersOnly` is managed-only.",
+      "audit": "`/mcp` in a managed session lists only allowlisted servers; add an unlisted server to `.mcp.json` and confirm it does not load.",
+      "example": "{\n  \"allowedMcpServers\": [\n    {\n      \"serverUrl\": \"https://api.githubcopilot.com/*\"\n    }\n  ],\n  \"allowManagedMcpServersOnly\": true\n}",
+      "links": [
+        {
+          "label": "MCP",
+          "url": "https://code.claude.com/docs/en/mcp.md"
+        },
+        {
+          "label": "Settings reference: allowedMcpServers",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#allowedmcpservers"
+        }
+      ]
+    },
+    {
+      "id": "CC-7.2",
+      "tool": "claude_code",
+      "primitive": "extensions",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Do not auto-approve project MCP servers",
+      "setting": "`enableAllProjectMcpServers`",
+      "value": "`false` (or unset)",
+      "rationale": "When `true`, every server in a cloned repository's `.mcp.json` is approved without a prompt, which turns a malicious repository into a tool-injection path.",
+      "audit": "Inspect effective settings; clone a repo with a `.mcp.json` and confirm a prompt or a block.",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#enableallprojectmcpservers"
+        }
+      ]
+    },
+    {
+      "id": "CC-7.3",
+      "tool": "claude_code",
+      "primitive": "extensions",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Restrict plugin marketplaces",
+      "setting": "`strictKnownMarketplaces`",
+      "value": "Only your approved marketplace sources (an empty array locks out all marketplaces)",
+      "rationale": "Managed-only. Plugins bundle hooks, MCP servers, skills, and agents, so an unvetted marketplace is a full supply-chain path into the agent.",
+      "audit": "Run `/plugin marketplace add` with an unapproved source and confirm refusal.",
+      "example": "{\n  \"strictKnownMarketplaces\": [\n    {\n      \"source\": \"github\",\n      \"repo\": \"acme-corp/approved-plugins\"\n    }\n  ]\n}",
+      "links": [
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#strictknownmarketplaces"
+        },
+        {
+          "label": "Plugin marketplaces",
+          "url": "https://code.claude.com/docs/en/plugins/create-marketplace.md"
+        }
+      ]
+    },
+    {
+      "id": "CC-8.1",
+      "tool": "claude_code",
+      "primitive": "logging",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Export OpenTelemetry to the organization collector",
+      "setting": "`env`: `CLAUDE_CODE_ENABLE_TELEMETRY`, `OTEL_METRICS_EXPORTER`, `OTEL_LOGS_EXPORTER`, `OTEL_EXPORTER_OTLP_PROTOCOL`, `OTEL_EXPORTER_OTLP_ENDPOINT`",
+      "value": "Enabled, `otlp`, pointed at your collector",
+      "rationale": "Gives per-user tool-call and usage events in your SIEM. Set these in managed settings; Claude Code ignores `OTEL_*` exporter variables in repository settings files. Prompt content stays redacted unless `OTEL_LOG_USER_PROMPTS=1`.",
+      "audit": "Confirm events arrive at the collector tagged with the user identity from a managed machine.",
+      "example": "{\n  \"env\": {\n    \"CLAUDE_CODE_ENABLE_TELEMETRY\": \"1\",\n    \"OTEL_METRICS_EXPORTER\": \"otlp\",\n    \"OTEL_LOGS_EXPORTER\": \"otlp\",\n    \"OTEL_EXPORTER_OTLP_PROTOCOL\": \"grpc\",\n    \"OTEL_EXPORTER_OTLP_ENDPOINT\": \"http://collector.example.com:4317\"\n  }\n}",
+      "links": [
+        {
+          "label": "Monitoring usage",
+          "url": "https://code.claude.com/docs/en/monitoring-usage.md"
+        }
+      ]
+    },
+    {
+      "id": "CC-8.2",
+      "tool": "claude_code",
+      "primitive": "logging",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Run only organization-deployed hooks",
+      "setting": "`allowManagedHooksOnly`, `allowedHttpHookUrls`",
+      "value": "`true`; your logging or policy endpoints",
+      "rationale": "Managed-only. Hooks execute arbitrary commands on every tool event; a project-supplied hook is code execution from a cloned repo. Managed hooks are also how you send command-level audit events to the SIEM.",
+      "audit": "Add a hook to a project file and confirm it does not run; confirm managed hooks fire.",
+      "links": [
+        {
+          "label": "Hooks",
+          "url": "https://code.claude.com/docs/en/hooks.md"
+        },
+        {
+          "label": "Settings reference",
+          "url": "https://code.claude.com/docs/en/settings-reference.md#allowmanagedhooksonly"
+        }
+      ]
+    },
+    {
+      "id": "CA-1.1",
+      "tool": "claude_ai",
+      "primitive": "tenant",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Require SSO and automate provisioning",
+      "setting": "Organization settings: SSO, SCIM or JIT provisioning",
+      "value": "SSO enforced; SCIM preferred so deprovisioning follows the IdP",
+      "rationale": "Ties access to corporate identity and closes accounts when people leave. SCIM can also sync role membership, which drives the role-based controls in CA-5.2.",
+      "audit": "Disable a test user in the IdP and confirm the Claude seat is removed.",
+      "links": [
+        {
+          "label": "Set up JIT or SCIM provisioning",
+          "url": "https://support.claude.com/en/articles/13133195-set-up-jit-or-scim-provisioning"
+        }
+      ]
+    },
+    {
+      "id": "CA-1.2",
+      "tool": "claude_ai",
+      "primitive": "tenant",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Pin Claude Desktop to the corporate organization",
+      "setting": "Desktop policy `forceLoginOrgUUID`",
+      "value": "Organization UUID (JSON array string for several)",
+      "rationale": "Login fails for accounts outside the listed organizations, which blocks personal accounts on corporate machines. Read at launch.",
+      "audit": "Generate a Diagnostic Report on a managed machine and confirm the value; attempt a personal login.",
+      "links": [
+        {
+          "label": "Enterprise configuration for Claude Desktop",
+          "url": "https://support.claude.com/en/articles/12622667-enterprise-configuration-for-claude-desktop"
+        }
+      ]
+    },
+    {
+      "id": "CA-3.1",
+      "tool": "claude_ai",
+      "primitive": "data",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Set custom data retention",
+      "setting": "Organization settings > Data and Privacy > custom retention",
+      "value": "A period matching your records schedule (minimum 30 days)",
+      "rationale": "Default is indefinite retention. Enterprise only. Does not cover Claude Design, Claude Tag, Claude Managed Agents, or cloud-run Claude Code, so those need their own decision.",
+      "audit": "Review the setting and the audit log entry recording the change.",
+      "default": "Indefinite",
+      "links": [
+        {
+          "label": "Custom data retention",
+          "url": "https://support.claude.com/en/articles/10440198-configure-custom-data-retention-controls-for-enterprise-plans"
+        }
+      ]
+    },
+    {
+      "id": "CA-3.2",
+      "tool": "claude_ai",
+      "primitive": "data",
+      "level": 2,
+      "assessment": "manual",
+      "title": "Restrict models per organization or role",
+      "setting": "Models page: model allowlist (org or per role)",
+      "value": "Approved models only",
+      "rationale": "Applies to chat and agentic work. Keeps sensitive roles on models covered by your review.",
+      "audit": "Review the Models page for the org and each role.",
+      "links": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        }
+      ]
+    },
+    {
+      "id": "CA-5.1",
+      "tool": "claude_ai",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Disable 'Skip all approvals' mode",
+      "setting": "Organization settings: Allow 'Skip all approvals' mode",
+      "value": "Off",
+      "rationale": "When off, members cannot let Claude act without asking across tools, file edits, browsing, scheduled tasks, and the built-in browser.",
+      "audit": "Review Organization settings; confirm the mode is unavailable to a test member.",
+      "links": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        }
+      ]
+    },
+    {
+      "id": "CA-5.2",
+      "tool": "claude_ai",
+      "primitive": "execution",
+      "level": 2,
+      "assessment": "manual",
+      "title": "Scope agentic capabilities with role-based permissions",
+      "setting": "Organization settings > Roles > Capabilities; Allow 'Automatically approve' mode; Computer access; Scheduled tasks",
+      "value": "Grant per custom role; automatic approval, computer access, and remote scheduled tasks off for roles that do not need them",
+      "rationale": "Role checks run on every request. Narrows the blast radius of agentic features to the people who need them.",
+      "audit": "Review each custom role's capability grants against the access matrix.",
+      "links": [
+        {
+          "label": "Set up role-based permissions",
+          "url": "https://support.claude.com/en/articles/13930458-set-up-role-based-permissions-on-enterprise-plans"
+        }
+      ]
+    },
+    {
+      "id": "CA-6.1",
+      "tool": "claude_ai",
+      "primitive": "sandbox",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Restrict code execution network egress",
+      "setting": "Organization settings > Capabilities > Code execution: Allow network egress",
+      "value": "Off, or package managers only; a custom domain list where required",
+      "rationale": "Code execution runs in a cloud sandbox. Open egress turns it into an exfiltration path for anything placed in context.",
+      "audit": "Review the setting; run a fetch to a non-allowlisted host from a code-execution session.",
+      "default": "Off on Enterprise",
+      "links": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        }
+      ]
+    },
+    {
+      "id": "CA-6.2",
+      "tool": "claude_ai",
+      "primitive": "sandbox",
+      "level": 2,
+      "assessment": "manual",
+      "title": "Restrict sharing of chats and cloud sessions",
+      "setting": "Organization settings: Share chats, Share cloud sessions",
+      "value": "Off, or limited to the organization",
+      "rationale": "A conversation that used the sandbox can be shared only when both are on, and the stricter setting applies.",
+      "audit": "Review both settings.",
+      "links": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        }
+      ]
+    },
+    {
+      "id": "CA-7.1",
+      "tool": "claude_ai",
+      "primitive": "extensions",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Govern connectors with block and approval policies",
+      "setting": "Organization settings: connector policies (Blocked, Needs approval, per-role); Always allow for connector tools",
+      "value": "Unreviewed connectors Blocked or Needs approval; Always allow off",
+      "rationale": "Connector policy is enforced outside the sandbox on every connector call. Turning off Always allow stops members from granting standing approval to write-capable tools.",
+      "audit": "Review connector policies and the Always allow setting.",
+      "links": [
+        {
+          "label": "Unified Enterprise experience: admin controls",
+          "url": "https://support.claude.com/en/articles/17444462-set-up-and-manage-the-new-unified-claude-experience-for-your-enterprise-organization"
+        },
+        {
+          "label": "Use connectors",
+          "url": "https://support.claude.com/en/articles/11176164-use-connectors-to-extend-claude-s-capabilities"
+        }
+      ]
+    },
+    {
+      "id": "CA-7.2",
+      "tool": "claude_ai",
+      "primitive": "extensions",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Disable user-added local MCP servers and unvetted Desktop extensions",
+      "setting": "Desktop policy `isLocalDevMcpEnabled`; extension allowlist (`isDesktopExtensionEnabled`, `isDesktopExtensionDirectoryEnabled`)",
+      "value": "`isLocalDevMcpEnabled: false`; leave extension keys unset and use the admin allowlist",
+      "rationale": "Local MCP servers run with the user's privileges on the endpoint. Machine policy overrides the in-app allowlist.",
+      "audit": "Diagnostic Report on a managed machine shows the values; attempt to add a local MCP server.",
+      "links": [
+        {
+          "label": "Enterprise configuration for Claude Desktop",
+          "url": "https://support.claude.com/en/articles/12622667-enterprise-configuration-for-claude-desktop"
+        },
+        {
+          "label": "Desktop extension allowlist",
+          "url": "https://support.claude.com/en/articles/12592343-enabling-and-using-the-desktop-extension-allowlist"
+        }
+      ]
+    },
+    {
+      "id": "CA-8.1",
+      "tool": "claude_ai",
+      "primitive": "logging",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Pull audit logs into the SIEM",
+      "setting": "Organization settings > Data and Privacy > Export logs; Compliance API",
+      "value": "Scheduled pull through the Compliance API",
+      "rationale": "Enterprise only. Manual export covers 180 days and excludes chat content (IDs only). Organizations using customer-managed keys must use the Compliance API.",
+      "audit": "Confirm audit events (including retention changes) appear in the SIEM.",
+      "links": [
+        {
+          "label": "Access audit logs",
+          "url": "https://support.claude.com/en/articles/9970975-access-audit-logs"
+        }
+      ]
+    },
+    {
+      "id": "CU-1.1",
+      "tool": "cursor",
+      "primitive": "tenant",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Enforce SSO and SCIM",
+      "setting": "Team settings: SSO, SCIM",
+      "value": "SSO enforced; SCIM provisioning on",
+      "rationale": "Centralizes authentication and automates deprovisioning.",
+      "audit": "Deprovision a test user in the IdP and confirm Cursor seat removal.",
+      "links": [
+        {
+          "label": "SSO",
+          "url": "https://cursor.com/docs/account/teams/sso"
+        },
+        {
+          "label": "SCIM",
+          "url": "https://cursor.com/docs/account/teams/scim"
+        }
+      ]
+    },
+    {
+      "id": "CU-1.2",
+      "tool": "cursor",
+      "primitive": "tenant",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Block personal accounts on corporate devices",
+      "setting": "MDM policy: Allowed Team IDs",
+      "value": "Your Cursor team ID(s)",
+      "rationale": "Without it, a personal account on a corporate laptop runs outside Privacy Mode enforcement and every team policy.",
+      "audit": "MDM compliance report; attempt a personal login on a managed device.",
+      "links": [
+        {
+          "label": "Allowed Team IDs",
+          "url": "https://cursor.com/docs/enterprise/identity-and-access-management#allowed-team-ids"
+        }
+      ]
+    },
+    {
+      "id": "CU-2.1",
+      "tool": "cursor",
+      "primitive": "policy",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Keep clients on a supported version",
+      "setting": "MDM policy: `UpdateMode`",
+      "value": "Enforced updates to the supported minimum",
+      "rationale": "Old clients miss security fixes and newer policy enforcement.",
+      "audit": "MDM inventory of Cursor client versions.",
+      "links": [
+        {
+          "label": "Minimum versions",
+          "url": "https://cursor.com/docs/enterprise/deployment-patterns#minimum-versions"
+        }
+      ]
+    },
+    {
+      "id": "CU-3.1",
+      "tool": "cursor",
+      "primitive": "data",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Enforce Privacy Mode org-wide",
+      "setting": "Admin dashboard: Privacy Mode enforcement",
+      "value": "Enforced",
+      "rationale": "Members cannot disable Privacy Mode or its zero data retention guarantees for Cursor-routed models.",
+      "audit": "Review the dashboard policy and confirm members cannot toggle it.",
+      "default": "On for Enterprise",
+      "links": [
+        {
+          "label": "Privacy Mode enforcement",
+          "url": "https://cursor.com/docs/enterprise/privacy-and-data-governance#privacy-mode-enforcement"
+        }
+      ]
+    },
+    {
+      "id": "CU-3.2",
+      "tool": "cursor",
+      "primitive": "data",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Approve models and restrict personal API keys",
+      "setting": "Model access control; BYOK controls",
+      "value": "Approved models only; personal API keys restricted",
+      "rationale": "Non-ZDR models require admin approval. With BYOK, zero data retention depends on the user's own provider agreement, not yours.",
+      "audit": "Review model and BYOK settings in the dashboard.",
+      "links": [
+        {
+          "label": "Model access control",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management#model-access-control"
+        },
+        {
+          "label": "Restrict personal API keys",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management#restrict-personal-api-keys-byok-controls"
+        }
+      ]
+    },
+    {
+      "id": "CU-3.3",
+      "tool": "cursor",
+      "primitive": "data",
+      "level": 2,
+      "assessment": "manual",
+      "title": "Cap Cloud Agent retention and enable CMEK where required",
+      "setting": "Cloud Agent retention policy; customer-managed encryption keys",
+      "value": "90 days (or a custom window); CMEK when compliance requires it",
+      "rationale": "Cloud Agents keep transcripts and artifacts server-side; bound them like any other record.",
+      "audit": "Review the retention policy and CMEK configuration.",
+      "links": [
+        {
+          "label": "Cloud Agent retention",
+          "url": "https://cursor.com/docs/cloud-agent/security-network#cloud-agent-retention-policies"
+        },
+        {
+          "label": "Data encryption",
+          "url": "https://cursor.com/docs/enterprise/privacy-and-data-governance#data-encryption"
+        }
+      ]
+    },
+    {
+      "id": "CU-4.1",
+      "tool": "cursor",
+      "primitive": "context",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Exclude secrets and regulated paths, and block sensitive repositories",
+      "setting": "`.cursorignore`; Git repository blocklist",
+      "value": "Entries for secrets and regulated trees; sensitive repos blocklisted",
+      "rationale": "`.cursorignore` blocks agent reads but terminal and MCP tools do not honor it, so pair with sandboxing (CU-6.1) and hooks. The repository blocklist keeps whole repos out of Cursor.",
+      "audit": "Inspect `.cursorignore` in governed repos and the blocklist in the dashboard.",
+      "links": [
+        {
+          "label": "Ignore file",
+          "url": "https://cursor.com/docs/reference/ignore-file"
+        },
+        {
+          "label": "Repository blocklist",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management#git-repository-blocklist"
+        }
+      ]
+    },
+    {
+      "id": "CU-5.1",
+      "tool": "cursor",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Set org Run Mode to Auto-review",
+      "setting": "Org Run Mode policy",
+      "value": "Auto-review (not Run Everything)",
+      "rationale": "Run Everything executes agent commands without review. Auto-review keeps a check in the loop; pair with hooks for deterministic blocks.",
+      "audit": "Review the org policy and confirm members cannot select Run Everything.",
+      "links": [
+        {
+          "label": "Run modes",
+          "url": "https://cursor.com/docs/agent/security/run-modes#run-mode"
+        }
+      ]
+    },
+    {
+      "id": "CU-5.2",
+      "tool": "cursor",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Keep built-in agent protections enabled",
+      "setting": "Browser, File-Deletion, External-File, and `.cursor` directory protection",
+      "value": "Enabled",
+      "rationale": "These stop the agent from deleting files, writing outside the workspace, or rewriting its own configuration without approval.",
+      "audit": "Review agent protection settings.",
+      "links": [
+        {
+          "label": "Other protections",
+          "url": "https://cursor.com/docs/agent/security/run-modes#other-protections"
+        },
+        {
+          "label": ".cursor directory protection",
+          "url": "https://cursor.com/docs/enterprise/llm-safety-and-controls#cursor-directory-protection"
+        }
+      ]
+    },
+    {
+      "id": "CU-5.3",
+      "tool": "cursor",
+      "primitive": "execution",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Enforce Workspace Trust",
+      "setting": "MDM policy: Workspace Trust",
+      "value": "Enforced",
+      "rationale": "Untrusted folders open in restricted mode with limited AI features, which reduces the risk of a cloned repository steering the agent.",
+      "audit": "MDM compliance report; open an untrusted folder and confirm restricted mode.",
+      "links": [
+        {
+          "label": "Workspace Trust",
+          "url": "https://cursor.com/docs/enterprise/identity-and-access-management#workspace-trust"
+        }
+      ]
+    },
+    {
+      "id": "CU-6.1",
+      "tool": "cursor",
+      "primitive": "sandbox",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Enforce the agent sandbox org-wide",
+      "setting": "Agent Sandbox Mode",
+      "value": "Enforced",
+      "rationale": "Sandboxing limits file and network access for agent-run commands and covers the terminal gap left by `.cursorignore`.",
+      "audit": "Review the sandbox enforcement setting.",
+      "links": [
+        {
+          "label": "Sandboxing",
+          "url": "https://cursor.com/docs/agent/security/run-modes#sandboxing"
+        }
+      ]
+    },
+    {
+      "id": "CU-6.2",
+      "tool": "cursor",
+      "primitive": "sandbox",
+      "level": 2,
+      "assessment": "manual",
+      "title": "Lock Cloud Agent and sandbox network egress",
+      "setting": "Network access mode: Default + allowlist or Allowlist-only; Lock Network Access Policy",
+      "value": "Allowlist-only, locked",
+      "rationale": "One allowlist controls both Cloud Agent egress and the desktop sandbox defaults. Locking is Enterprise only.",
+      "audit": "Review network policy; confirm users cannot change the mode.",
+      "links": [
+        {
+          "label": "Cloud Agent network access",
+          "url": "https://cursor.com/docs/cloud-agent/security-network#network-access"
+        }
+      ]
+    },
+    {
+      "id": "CU-7.1",
+      "tool": "cursor",
+      "primitive": "extensions",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Allowlist MCP servers and set per-server network policy",
+      "setting": "MCP allowlist; per-server network controls",
+      "value": "Approved servers only; network restricted per server",
+      "rationale": "Restricts tool surface and limits what an approved server can reach.",
+      "audit": "Review the MCP allowlist in the dashboard.",
+      "links": [
+        {
+          "label": "MCP allowlist",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management#mcp-allowlist"
+        },
+        {
+          "label": "Per-server network controls",
+          "url": "https://cursor.com/docs/enterprise/model-and-integration-management#per-server-network-controls"
+        }
+      ]
+    },
+    {
+      "id": "CU-7.2",
+      "tool": "cursor",
+      "primitive": "extensions",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Allowlist editor extensions with install cooldown",
+      "setting": "Allowed Extensions; marketplace install cooldown; extension signature verification",
+      "value": "Trusted publishers only; cooldown set; verification on",
+      "rationale": "Editor extensions run with full user privileges. Cooldown delays freshly published versions, which blunts marketplace takeover attacks.",
+      "audit": "MDM compliance report and extension inventory.",
+      "links": [
+        {
+          "label": "Allowed extensions",
+          "url": "https://cursor.com/docs/enterprise/identity-and-access-management#allowed-extensions"
+        }
+      ]
+    },
+    {
+      "id": "CU-8.1",
+      "tool": "cursor",
+      "primitive": "logging",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Stream audit logs and OpenTelemetry to the SIEM",
+      "setting": "Audit log streaming (SIEM, webhook, or S3); OpenTelemetry export",
+      "value": "Both enabled",
+      "rationale": "Audit logs capture admin changes; OTLP export carries usage and activity telemetry. They are separate streams.",
+      "audit": "Confirm events arrive in the SIEM for a test policy change.",
+      "links": [
+        {
+          "label": "Audit logs",
+          "url": "https://cursor.com/docs/enterprise/compliance-and-monitoring#audit-logs"
+        },
+        {
+          "label": "OpenTelemetry export",
+          "url": "https://cursor.com/docs/enterprise/opentelemetry-export"
+        }
+      ]
+    },
+    {
+      "id": "CU-8.2",
+      "tool": "cursor",
+      "primitive": "logging",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Distribute enforcement hooks that fail closed",
+      "setting": "Team hooks distribution; `failClosed`",
+      "value": "Hooks for command blocking, secret scrubbing, and audit; `failClosed` on critical hooks",
+      "rationale": "Hooks are the deterministic layer behind non-deterministic rules. A hook that fails open lets the action through when the policy endpoint is down.",
+      "audit": "Review distributed hooks; stop the policy endpoint and confirm actions are blocked.",
+      "links": [
+        {
+          "label": "Hooks team distribution",
+          "url": "https://cursor.com/docs/hooks#team-distribution"
+        }
+      ]
+    },
+    {
+      "id": "GH-2.1",
+      "tool": "github_copilot",
+      "primitive": "policy",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Govern managed settings from .github-private",
+      "setting": "`copilot/managed-settings.json` in the governing organization's `.github-private` repo",
+      "value": "Committed to the default branch with branch protection and required review",
+      "rationale": "This file is the Copilot policy plane. Treat it like infrastructure code: protected branch, CODEOWNERS, and review, because a commit changes agent behavior for the whole enterprise within about an hour.",
+      "audit": "Review branch protection and CODEOWNERS on `.github-private`; review recent commits.",
+      "links": [
+        {
+          "label": "Configure enterprise managed settings",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/configure-enterprise-managed-settings"
+        }
+      ]
+    },
+    {
+      "id": "GH-2.2",
+      "tool": "github_copilot",
+      "primitive": "policy",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Force a fresh settings fetch at startup",
+      "setting": "`forceRemoteSettingsRefresh`",
+      "value": "`true`",
+      "rationale": "Without it, a client can run on a cached policy until the next refresh, which delays emergency changes such as a new MCP denial.",
+      "audit": "Inspect managed settings; change a policy and confirm a restarted client picks it up immediately.",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-3.1",
+      "tool": "github_copilot",
+      "primitive": "data",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Block suggestions matching public code",
+      "setting": "Policy: Suggestions matching public code (Privacy section)",
+      "value": "Blocked",
+      "rationale": "Reduces license-contamination risk from verbatim public code in suggestions.",
+      "audit": "Review the enterprise Copilot policy page.",
+      "default": "Allowed for Copilot Business",
+      "links": [
+        {
+          "label": "Manage enterprise Copilot policies",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies"
+        }
+      ]
+    },
+    {
+      "id": "GH-4.1",
+      "tool": "github_copilot",
+      "primitive": "context",
+      "level": 1,
+      "assessment": "manual",
+      "title": "Configure content exclusion at the enterprise or organization level",
+      "setting": "Content exclusion (enterprise, organization, repository)",
+      "value": "Paths for secrets, regulated data, and sensitive repositories",
+      "rationale": "Enterprise-level rules apply to all Copilot users in the enterprise. Known gaps: not supported in Edit and Agent modes of Copilot Chat in VS Code and other editors, not applied to symlinks or remote filesystems, and semantic leakage through IDE type information. Pair with `permissions.deny` (GH-5.2) for agentic clients.",
+      "audit": "Review exclusion rules; open an excluded file and confirm inline suggestions are disabled.",
+      "links": [
+        {
+          "label": "Content exclusion",
+          "url": "https://docs.github.com/en/copilot/concepts/security-governance-and-network-settings/content-exclusion"
+        },
+        {
+          "label": "Exclude content from Copilot",
+          "url": "https://docs.github.com/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot"
+        }
+      ]
+    },
+    {
+      "id": "GH-5.1",
+      "tool": "github_copilot",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Disable bypass permissions mode",
+      "setting": "`permissions.disableBypassPermissionsMode`",
+      "value": "`\"disable\"`",
+      "rationale": "Blocks the allow-all mode in Copilot CLI, VS Code, and the GitHub Copilot app.",
+      "audit": "Attempt to enable allow-all mode in the CLI on an enterprise seat; confirm refusal.",
+      "example": "{\n  \"permissions\": {\n    \"disableBypassPermissionsMode\": \"disable\"\n  }\n}",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-5.2",
+      "tool": "github_copilot",
+      "primitive": "execution",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Deny reads and commands that touch secrets",
+      "setting": "`permissions.deny`",
+      "value": "`Read(...)`, `Shell(...)`, and `Domain(...)` rules for secrets paths, credential commands, and exfiltration destinations",
+      "rationale": "Deny has the highest precedence and covers the agentic modes where content exclusion is not honored.",
+      "audit": "Ask the agent to read a denied path in the CLI and confirm the block.",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-5.3",
+      "tool": "github_copilot",
+      "primitive": "execution",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Disable computer use and restrict remote control",
+      "setting": "`features.computerUse`, `remoteControl.mode`",
+      "value": "`false`; `\"disabled\"` or `\"requireSSO\"`",
+      "rationale": "Computer use extends the agent from the repository to the desktop. Remote control lets sessions on a device be driven from elsewhere.",
+      "audit": "Inspect managed settings; confirm the options are unavailable in the client.",
+      "example": "{\n  \"features\": {\n    \"computerUse\": false\n  },\n  \"remoteControl\": {\n    \"mode\": \"requireSSO\"\n  }\n}",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-6.1",
+      "tool": "github_copilot",
+      "primitive": "sandbox",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Enforce the local sandbox and fail closed",
+      "setting": "`sandbox.enabled`, `sandbox.failIfUnavailable`, `sandbox.allowBypass`",
+      "value": "`true`, `true`, `false`",
+      "rationale": "Enforced by Copilot CLI, VS Code (Agent Host 1.138.0+), and the GitHub Copilot app. The sandbox object is overridable only as a whole, so set it completely.",
+      "audit": "Run a command that writes outside the workspace in the CLI and confirm it is blocked.",
+      "example": "{\n  \"sandbox\": {\n    \"enabled\": true,\n    \"failIfUnavailable\": true,\n    \"allowBypass\": false\n  }\n}",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-7.1",
+      "tool": "github_copilot",
+      "primitive": "extensions",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Allowlist MCP servers in managed settings",
+      "setting": "Policy: MCP servers in Copilot; `allowedMcpServers`, `deniedMcpServers`",
+      "value": "Policy enabled only where MCP is approved; servers matched by `serverUrl` or `serverCommand`",
+      "rationale": "Policies fail closed: a malformed list blocks everything except built-in defaults, and a deny from any layer wins. Servers whose URL or command contains an unresolved variable are blocked. Enforced on the GitHub Copilot app, Copilot CLI, and VS Code.",
+      "audit": "Configure an unlisted server in VS Code and confirm it does not start.",
+      "example": "{\n  \"allowedMcpServers\": [\n    {\n      \"serverUrl\": \"https://api.githubcopilot.com/*\"\n    },\n    {\n      \"serverCommand\": [\n        \"npx\",\n        \"@playwright/mcp@latest\"\n      ]\n    }\n  ]\n}",
+      "links": [
+        {
+          "label": "Configure an MCP allowlist",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-enterprise-allowlist"
+        },
+        {
+          "label": "MCP management",
+          "url": "https://docs.github.com/en/copilot/concepts/mcp-management"
+        }
+      ]
+    },
+    {
+      "id": "GH-7.2",
+      "tool": "github_copilot",
+      "primitive": "extensions",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Restrict plugin marketplaces",
+      "setting": "`strictKnownMarketplaces`",
+      "value": "Approved sources only (an empty array locks out all marketplaces)",
+      "rationale": "Plugins can bring MCP servers, skills, and hooks into the client.",
+      "audit": "Inspect managed settings; attempt to add an unapproved marketplace.",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    },
+    {
+      "id": "GH-8.1",
+      "tool": "github_copilot",
+      "primitive": "logging",
+      "level": 1,
+      "assessment": "automated",
+      "title": "Stream the enterprise audit log to the SIEM",
+      "setting": "Enterprise audit log streaming",
+      "value": "Enabled",
+      "rationale": "The audit log keeps 180 days and records plan, policy, and license changes plus agent activity on github.com. It does not capture prompts or local client sessions.",
+      "audit": "Search `action:copilot` and `actor:Copilot` in the SIEM for recent events.",
+      "links": [
+        {
+          "label": "Review audit logs",
+          "url": "https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs"
+        }
+      ]
+    },
+    {
+      "id": "GH-8.2",
+      "tool": "github_copilot",
+      "primitive": "logging",
+      "level": 2,
+      "assessment": "automated",
+      "title": "Export client telemetry over OpenTelemetry",
+      "setting": "`telemetry`: `enabled`, `endpoint`, `protocol`, `capture.*`, `lockCaptureContent`",
+      "value": "Enabled to your collector; `capture` fields set per your privacy review; `lockCaptureContent: true`",
+      "rationale": "Fills the gap the audit log leaves: tool arguments, tool output, and policy decisions from local sessions. Capture flags default to `false`.",
+      "audit": "Confirm events reach the collector from a managed client.",
+      "links": [
+        {
+          "label": "Enterprise managed settings reference",
+          "url": "https://docs.github.com/en/copilot/reference/enterprise-managed-settings-reference"
+        }
+      ]
+    }
+  ],
+  "control_resources": [
+    {
+      "title": "CIS Controls v8.1 AI Companion Guides (LLM, AI Agents, MCP)",
+      "publisher": "CIS, with Astrix Security and Cequence Security",
+      "date": "April 2026",
+      "url": "https://www.cisecurity.org/insights/blog/applying-controls-real-world-ai-environments",
+      "use": "Walk all 18 CIS Controls through an AI lens, one guide per layer: model, agent, and tool protocol. The CIS lineage for every primitive here. Control intent, not settings."
+    },
+    {
+      "title": "CSA AI Controls Matrix (AICM) v1.1",
+      "publisher": "Cloud Security Alliance",
+      "date": "July 2026",
+      "url": "https://cloudsecurityalliance.org/artifacts/ai-controls-matrix-v1-1",
+      "use": "247 control objectives tagged by applicability and ownership, plus the AI-CAIQ questionnaire. Filter to the AI Customer role for SaaS tools like these."
+    },
+    {
+      "title": "OWASP Secure Coding with AI Cheat Sheet",
+      "publisher": "OWASP Cheat Sheet Series",
+      "date": "Current",
+      "url": "https://cheatsheetseries.owasp.org/cheatsheets/Secure_Coding_with_AI_Cheat_Sheet.html",
+      "use": "The most coding-agent-specific guidance available: trust boundaries in agentic coding, hallucinated packages, repo content as untrusted input, MCP least privilege."
+    },
+    {
+      "title": "SANS Critical AI Security Guidelines",
+      "publisher": "SANS Institute",
+      "date": "v1.2",
+      "url": "https://www.sans.org/mlp/critical-ai-security-guidelines",
+      "use": "Six control categories (access, data protection, deployment, inference security, monitoring, GRC). Companion to the AISMM spine of this site."
+    }
+  ]
+}

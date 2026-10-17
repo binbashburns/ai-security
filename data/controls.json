@@ -184,6 +184,12 @@
       ],
       "aicm": [
         "AISC-01 (AI supply chain)"
+      ],
+      "cis_controls": [
+        "2.5",
+        "2.6",
+        "9.4",
+        "15.1"
       ]
     },
     "vendor_implementation": {
@@ -286,6 +292,12 @@
       "iso_42001": [
         "A.6.2.3",
         "A.10.3"
+      ],
+      "cis_controls": [
+        "2.5",
+        "2.6",
+        "9.4",
+        "15.1"
       ]
     },
     "vendor_implementation": {
@@ -481,6 +493,12 @@
       "iso_42001": [
         "A.4.1",
         "A.6.1"
+      ],
+      "cis_controls": [
+        "2.3",
+        "5.6",
+        "6.2",
+        "6.7"
       ]
     },
     "vendor_implementation": {
@@ -519,6 +537,12 @@
       "nist_ai_rmf": [
         "MAP 1.2",
         "MEASURE 2.3"
+      ],
+      "cis_controls": [
+        "2.3",
+        "5.6",
+        "6.2",
+        "6.7"
       ]
     },
     "vendor_implementation": {
@@ -632,6 +656,10 @@
       "nist_ai_rmf": [
         "MAP 1.5",
         "GOVERN 1.4"
+      ],
+      "cis_controls": [
+        "2.7",
+        "6.8"
       ]
     },
     "vendor_implementation": {
@@ -675,6 +703,12 @@
       ],
       "aicm": [
         "AIGV-01"
+      ],
+      "cis_controls": [
+        "2.3",
+        "5.6",
+        "6.2",
+        "6.7"
       ]
     },
     "vendor_implementation": {
@@ -1054,6 +1088,10 @@
       ],
       "aicm": [
         "AIGV-02"
+      ],
+      "cis_controls": [
+        "4.1",
+        "4.6"
       ]
     },
     "vendor_implementation": {
@@ -1089,6 +1127,14 @@
       ],
       "iso_42001": [
         "A.7.4"
+      ],
+      "cis_controls": [
+        "3.3",
+        "3.4",
+        "3.7",
+        "3.12",
+        "3.13",
+        "15.4"
       ]
     },
     "vendor_implementation": {
@@ -1291,6 +1337,11 @@
       ],
       "iso_42001": [
         "A.7.2"
+      ],
+      "cis_controls": [
+        "3.3",
+        "3.12",
+        "3.13"
       ]
     },
     "vendor_implementation": {
@@ -1384,6 +1435,12 @@
       ],
       "nist_ai_rmf": [
         "MANAGE 2.3"
+      ],
+      "cis_controls": [
+        "2.5",
+        "2.6",
+        "9.4",
+        "15.1"
       ]
     },
     "vendor_implementation": {
@@ -1429,6 +1486,11 @@
       ],
       "mitre_atlas": [
         "AML.T0051"
+      ],
+      "cis_controls": [
+        "4.5",
+        "9.3",
+        "13.10"
       ]
     },
     "vendor_implementation": {
@@ -1615,6 +1677,12 @@
       ],
       "nist_ai_rmf": [
         "MANAGE 2.3"
+      ],
+      "cis_controls": [
+        "2.5",
+        "2.6",
+        "9.4",
+        "15.1"
       ]
     },
     "vendor_implementation": {
@@ -1928,6 +1996,10 @@
       ],
       "iso_42001": [
         "A.4.1"
+      ],
+      "cis_controls": [
+        "4.1",
+        "4.6"
       ]
     },
     "vendor_implementation": {
@@ -2000,6 +2072,11 @@
       ],
       "iso_42001": [
         "A.10.2"
+      ],
+      "cis_controls": [
+        "3.4",
+        "3.7",
+        "15.4"
       ]
     },
     "vendor_implementation": {
@@ -2103,6 +2180,10 @@
       ],
       "eu_ai_act": [
         "Art. 14"
+      ],
+      "cis_controls": [
+        "2.7",
+        "6.8"
       ]
     },
     "vendor_implementation": {
@@ -2174,6 +2255,12 @@
       ],
       "eu_ai_act": [
         "Art. 12 (record-keeping)"
+      ],
+      "cis_controls": [
+        "8.2",
+        "8.5",
+        "8.9",
+        "8.11"
       ]
     },
     "vendor_implementation": {
@@ -2277,6 +2364,11 @@
       ],
       "nist_ai_rmf": [
         "MANAGE 2.3"
+      ],
+      "cis_controls": [
+        "4.5",
+        "9.3",
+        "13.10"
       ]
     },
     "vendor_implementation": {
@@ -2310,6 +2402,10 @@
       "nist_ai_rmf": [
         "MANAGE 2.3",
         "MEASURE 2.10"
+      ],
+      "cis_controls": [
+        "2.7",
+        "6.8"
       ]
     },
     "vendor_implementation": {
@@ -2994,6 +3090,12 @@
       "eu_ai_act": [
         "Art. 12",
         "Art. 13"
+      ],
+      "cis_controls": [
+        "8.2",
+        "8.5",
+        "8.9",
+        "8.11"
       ]
     },
     "vendor_implementation": {
